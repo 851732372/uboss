@@ -1,0 +1,147 @@
+<include  file='public:header'/>
+<style>
+	table tr th,td{
+		text-align: center;
+	}
+</style>
+<link rel="stylesheet" href="__PUBLIC__/bs/css/bootstrap.min.css">
+<script src="__PUBLIC__/bs/js/jquery.min.js"></script>
+<script src="__PUBLIC__/bs/js/bootstrap.min.js"></script>
+<ul class="breadcrumb">
+    <li>
+        <a href="#">商家管理</a></span>
+    </li>
+    <li>
+        <a href="#">商家列表</a></span>
+    </li>
+</ul>
+<div class="panel panel-default">
+	<div class="panel-heading">
+		<a class="btn btn-primary" href="<{:U('add')}>"><span class="glyphicon glyphicon-plus"></span>添加申请</a>
+		<div class="pull-right" style="margin-top:5px;margin-left: 25px;">共有<b id="tot"><{$count}></b>条数据</div>
+		<form action="" class="form-inline pull-right">
+			<!-- 商户名称 -->
+			<div class="form-group">
+				<label for="">商户名称</label>
+				<input type="text" class="form-control" name="shop_name" value="<{$shop_name}>">
+			</div>
+			<!-- 分类 -->
+			<div class="form-group">
+				<label for="">商户分类</label>
+				<select name="cate_id" id="" class="form-control">
+					<option value="">请选择</option>
+                    <foreach name="cates" item="var">
+                        <eq name="var.parent_id" value="0">
+                        <option value="<{$var.cate_id}>"  <eq name="var.cate_id" value="$cate_id">selected="selected"</eq> ><{$var.cate_name}></option>                
+                        <foreach name="cates" item="var2">
+                            <eq name="var2.parent_id" value="$var.cate_id">
+                            <option value="<{$var2.cate_id}>"<eq name="var2.cate_id" value="$cate_id">selected="selected"</eq>>|---<{$var2.cate_name}></option>
+                            </eq>
+                        </foreach>
+                        </eq>
+                    </foreach>
+                </select>
+			</div>
+			<button class="btn btn-info" type="submit"><span class="glyphicon glyphicon-search">搜索</span></button>
+		</form> 
+	</div> 
+	<div class="panel-body">
+		<table class="table userIndexTable table-bordered">
+			<tr>
+				<th>编号</th>
+				<th>LOGO</th>
+				<th>商户名称</th>
+				<th>分类名称</th>
+				<th>联系手机</th>
+				<th>总营收</th>
+				<th>余额</th>
+				<th>人均消费</th>
+				<th>生成二维码</th>
+				<th>参数标识</th>
+				<th>创建时间</th>
+			    <th>操作</th>	
+			</tr>
+			<volist name="list" id="lis">
+				<tr>
+					<td><{$lis.shop_id}></td>
+					<td><img src="/attachs/<{$lis.logo}>" alt="" height="50px" width="50px" onclick = "select_img('<{$lis.shop_id}>')"></td>
+					<td><{$lis.shop_name}></td>
+					<td><{$lis.cate_name}></td>
+					<td><{$lis.tel}></td>
+					<td><{$lis['sy']/100}>元</td>
+					<td><{$lis['money']/100}>元</td>
+					<td><{$lis['price']/100}>元</td>
+					<td><img src="/attachs/<{$lis.qrcode}>" alt="" height="50px" width="50px"><br><{:BA('bussiness/short_url',array("shop_id"=>$lis["shop_id"]),'生成二维码','load','',600,280)}></td>
+					<td><{$lis.code}></td>
+					<td><{$lis.create_time|date="Y-m-d H:i:s",###}></td>
+					<td>
+						<eq name="lis.closed" value="0">
+						<eq name="lis.is_recom" value="1"><code><{:BA('bussiness/norecom',array("shop_id"=>$lis["shop_id"]),'取消推荐','act','a2')}> </code></eq>
+						<eq name="lis.is_recom" value="0"><{:BA('bussiness/recom',array("shop_id"=>$lis["shop_id"]),'推荐','act','a2')}> </eq>
+						| <a href="<{:U('set',array('id' => $lis['shop_id']))}>">设置</a> | <a href="<{:U('shop/login',array('shop_id'=>$lis['shop_id']))}>" target="_blank">管理</a> | <{:BA('bussiness/del_shop',array("shop_id"=>$lis["shop_id"]),'删除','act','a2')}>
+						<else/>
+						<code>已经删除</code>
+						</eq>
+						<?php if(in_array($lis['cate_id'],$hotel_id)){ ?> | 
+							<eq name="lis.is_enough" value="0">
+								<{:BA('bussiness/hotel',array("shop_id"=>$lis["shop_id"]),'未满房','act','a2')}>
+							</eq>
+							<eq name="lis.is_enough" value="1">
+								<{:BA('bussiness/hotels',array("shop_id"=>$lis["shop_id"]),'已满房','act','a2')}>
+							</eq>
+						<?php } ?>
+					 </td>
+				</tr>
+			</volist>
+		</table>
+	</div>
+		<{$page}>
+		<style>
+		.simg{
+			position: absolute;
+			width:100%;
+			height:100%;
+			float: left;
+			top:0px;
+			display: none;
+		}
+		.rimg{
+			position: absolute;
+			top:30%;
+			left:40%;
+			text-align: center;
+		}
+		.closed{
+			position: absolute;
+			top:15%;
+			right:38%;
+			background: #ccc;
+			height:30px;
+			width:30px;
+			text-align: center;
+			font-size: 20px;
+			border-radius: 30px;
+			color:white;
+			cursor: pointer;
+		}
+	</style>
+	<div class="simg">
+		<span class="closed">&times;</span>
+		<img src="" alt="" class="rimg img-responsive center-block" height="180px" width="180px">
+	</div>
+<script>
+function select_img(id){
+	$.post("<{:U('ajax_select_simg')}>",{id:id},function(data){
+		$('.simg').show();
+		$('.rimg').attr({'src':''});
+		$('.rimg').attr({'src':'/attachs/'+data});
+	})
+}
+$('.closed').click(function(){
+	$('.simg').hide();
+})
+</script>
+</div>
+<include  file='public:footer'/>  
+
+

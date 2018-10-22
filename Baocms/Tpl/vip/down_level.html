@@ -1,0 +1,63 @@
+<include  file='public:header'/>
+<style>
+	table tr th,td{
+		text-align: center;
+	}
+</style>
+<link rel="stylesheet" href="__PUBLIC__/bs/css/bootstrap.min.css">
+<script src="__PUBLIC__/bs/js/jquery.min.js"></script>
+<script src="__PUBLIC__/bs/js/bootstrap.min.js"></script>
+<ul class="breadcrumb">
+    <li>
+        <a href="#">会员管理</a></span>
+    </li>
+    <li>
+        <a href="#">团队组成</a></span>
+    </li>
+</ul>
+<style>
+	.panel-body{
+		padding:0px;
+	}
+	.panel a{
+		text-decoration: none;
+		font-size: 14px;
+		font-family: "微软雅黑";
+	}
+</style>
+<div class="row">
+	<div class="panel panel-default">
+		<div class="panel-heading">
+			<?php if(isset($parent)){ ?>
+			<span class="help-block"><code>该用户由<{$parent.nickname}>/【<{$parent.mobile}>】邀请</code></span>
+			<?php }else{ ?>
+			<span class="help-block"><code>该用户为自然流量来源</code></span>
+			<?php } ?>
+		</div>
+		<div class="panel-body">
+			
+			<table class="table table-bordered table-striped">
+				<tr>
+					<th>昵称/手机号</th>
+					<th>姓名</th>
+					<th>级别</th>
+					<th>其他</th>
+				</tr>
+				<volist name="users" id="u">
+					<tr>
+						<td><{$u.nickname}>【<{$u.mobile|default='--'}>】</td>
+						<td><{$u.realname|default='<code>未认证</code>'}></td>
+						<td>
+							<code>
+								<eq name="u.level_id" value="1">普通会员</eq>
+								<eq name="u.level_id" value="2">黄金会员</eq>
+								<eq name="u.level_id" value="3">钻石会员</eq>
+							</code>
+						</td>
+						<td><a href="<{:U('info',array('user_id' => $u['user_id']))}>">查看</a></td>
+					</tr>
+				</volist>
+			</table>
+		</div>
+	</div>
+</div>

@@ -1,0 +1,61 @@
+<include  file='public:header'/>
+<link rel="stylesheet" href="__PUBLIC__/bs/css/bootstrap.min.css">
+<script src="__PUBLIC__/bs/js/bootstrap.min.js"></script>
+    <ul class="breadcrumb">
+        <li><a href="">评价</a> ></li>
+        <li> <a>评价管理</a></li>
+    </ul>
+<div class="panel panel-default">
+    <div class="panel-heading">
+    	<div class="pull-right" style="margin-top:5px;margin-left: 25px;">共有<b id="tot"><{$count}></b>条数据</div>
+    	<form action="" class="form-inline" method="POST">
+    		<div class="form-group">
+    			<label for="">状态：</label>
+    			<select name="status" id="" class="form-control">
+                    <option value="">全部</option>
+	    			<option value="1">已回复</option>
+	    			<option value="2">未回复</option>
+	    		</select>
+	    		<button class="btn btn-info" type="submit"><span class="glyphicon glyphicon-search">搜索</span></button>
+    		</div>
+    	</form>
+    </div>
+    <table class="table table-hover table-bordered">
+        <tr style="background-color:#eee;">
+            <td>编号</td>
+            <td>用户</td>
+            <td>评分</td>
+            <td>商品名称</td>
+            <td>评价时间</td>
+            <td>状态</td>
+            <td>操作</td>
+        </tr>
+        <foreach name="data" item="var">
+            <tr>
+                <td><{$var.comment_id}></td>
+                <td><{$var.nickname}></td>
+                <td><{$var.comment_starts}></td>
+                <td><{$var.title}></td>
+                <td><{$var.create_time|date='Y-m-d H:i:s',###}></td>
+                <td>
+                    <eq name="var.reply_status" value="0"> 
+                        未回复(<eq name="var.status" value="0"> <code>审核不通过</code></eq>
+                    <eq name="var.status" value="1"> <code>正在审核</code></eq>
+                    <eq name="var.status" value="2"> <code>审核通过</code></eq>)
+                    </eq>
+                    <eq name="var.reply_status" value="1"> 
+                        已回复(<eq name="var.status" value="0"> <code>审核不通过</code></eq>
+                    <eq name="var.status" value="1"> <code>正在审核</code></eq>
+                    <eq name="var.status" value="2"> <code>审核通过</code></eq>)
+                    </eq>
+                    
+                </td>
+                <td>
+                    <a href="<{:U('order/com_detail',array('com_id' => $var['comment_id']))}>">查看</a>
+                </td>
+        </foreach>
+    </table>
+    <{$page}>
+   
+</div>
+<include  file='public:footer'/>

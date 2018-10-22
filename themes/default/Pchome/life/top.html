@@ -1,0 +1,62 @@
+		<div class="layout">
+			<div class="navbar">
+				<div class="container">			
+					<div class="navbar-body">
+						<div class="main-drop float-left">
+							<span class="main-drop-title">信息分类 <span class="arrow"></span></span>
+							<div class="main-drop-menu out-index">
+								<php>$k = 0;</php>
+								<foreach name="channelmeans" key="key" item="item">
+								<php>$k++;</php>
+								<dl>
+									<dt><a href="<{:U('life/main',array('channel'=>$key))}>"><{$item}></a></dt>
+									<dd class="sub-nav">
+										<php>$i=0;</php>
+										<foreach name="cates" item="var">
+										<if condition="$var['channel_id'] eq $k">
+										<php>$i++;</php>
+										<if condition="$i lt 5">
+										<a href="<{:U('life/main',array('channel'=> $k,'cat'=>$var['cate_id']))}>"><{$var['cate_name']}></a>
+										</if>
+										</if>
+										</foreach>
+									</dd>
+									<dd class="pop-nav">
+										<span><{$item}></span>
+										<ul>
+											<foreach name="cates" item="var">
+											<if condition="$var['channel_id'] eq $k">
+											<li><a href="<{:U('life/main',array('channel'=> $k,'cat'=>$var['cate_id']))}>"><{$var['cate_name']}></a></li>
+											</if>
+											</foreach>
+										</ul>
+									</dd>
+									<span class="icon icon-angle-right"></span>
+								</dl>
+								</foreach>
+							</div>
+						</div>
+						<ul class="nav nav-inline nav-menu">
+
+							<li <if condition="$ctl eq 'index'">class="active"</if> ><a href="/">首页</a></li>
+
+							<li <if condition="$ctl eq 'tuan'">class="active"</if> ><a href="<{:U('tuan/index')}>">抢购</a></li>
+                            <li <if condition="$ctl eq 'huodong'">class="active"</if> ><a href="<{:U('huodong/index')}>">活动</a></li>
+                            <li <if condition="$ctl eq 'shop'">class="active"</if> ><a href="<{:U('shop/index')}>">商家</a></li>
+                            <li <if condition="$ctl eq 'mall'">class="active"</if> ><a href="<{:U('mall/index')}>">商城</a></li>
+                            <li <if condition="$ctl eq 'ele'">class="active"</if> ><a href="<{:U('ele/index')}>">外卖</a></li>
+                            <li <if condition="$ctl eq 'ding'">class="active"</if> ><a href="<{:U('ding/index')}>">订座</a></li>
+                            <li <if condition="$ctl eq 'life'">class="active"</if> ><a href="<{:U('life/index')}>">分类</a></li>
+                            <li <if condition="$ctl eq 'coupon'">class="active"</if> ><a href="<{:U('coupon/index')}>">领劵</a></li>
+                            <li <if condition="$ctl eq 'news'">class="active"</if> ><a href="<{:U('news/index')}>">新闻</a></li>
+                            <li <if condition="$ctl eq 'hotel'">class="active"</if> ><a href="<{:U('hotel/index')}>">酒店</a></li>
+                            <li <if condition="$ctl eq 'housekeeping'">class="active"</if> ><a href="<{:U('housekeeping/index')}>">预约</a></li>
+
+						</ul>
+						<if condition="$ctl eq 'index'">
+						<div class="navbar-text navbar-right"><a class="dialogs" href="javascript:;" data-toggle="click" data-target="#shop-cate" data-mask="1" data-width="60%"><i class="icon icon-bars"></i> 选商家</a></div>
+						</if>
+					</div>
+				</div>
+			</div>
+		</div>

@@ -1,0 +1,27 @@
+<include  file='public:header'/>
+<link href='__PUBLIC__/assets/stylesheets/bootstrap/bootstrap.css' media='all' rel='stylesheet' type='text/css' />
+<div class="panel-primary">
+    <div class="panel-body">
+        <form  action="<{:U('apply/refuse')}>" method="post" class='form form-horizontal ' target="baocms_frm">
+             <div class='control-group'>
+                <div class='control-label'>
+                    <label>拒绝原因：</label>
+                </div>
+                <input type="hidden" name="apply_id" value="<{$_GET['apply_id']}>">
+                <div class='controls'>
+                    <textarea name="reason" id="" cols="20" rows="5"></textarea>
+                </div>
+            </div>
+            <div class='form-actions' style='margin-bottom:0'>
+                <button class='btn btn-primary' type='submit'>
+                    <i class='icon-save'></i>
+                    保存数据
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<include  file='public:footer'/>  
+
+

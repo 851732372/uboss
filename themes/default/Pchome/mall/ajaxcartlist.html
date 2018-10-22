@@ -1,0 +1,43 @@
+
+<if condition="empty($cart_goods)">
+<p class="dropdown-menu-empty">暂时没有商品</p>
+
+<else />
+
+<table width="90%" cellspacing="0" cellpadding="0"   style=" margin: 0 auto;" >
+    <foreach name="cart_goods" item="item">
+        <tr id="jq_cart_goods_<{$item.goods_id}>">
+        <td width="60" height="60">
+            <a target="_blank" title="<{$item.title}>" href="<{:U('mall/detail',array('goods_id'=>$item['goods_id']))}>"><img width="60" height="60" src="__ROOT__/attachs/<{$item.photo}>" /></a>
+        </td>
+        <td style="padding-left: 10px;">
+            <{$item.title}>
+        </td>
+        <td  width="50" style="color: red;">
+            <{:round($item['mall_price']/100,2)}>元
+        </td>
+        <td width="50">
+            <a class="jq_cart_del" rel="<{$item.goods_id}>"  href="<{:U('mall/cartdel',array('goods_id'=>$item['goods_id'],'nowtime'=>$nowtime))}>">删除</a>
+        </td>
+    </tr>
+    </foreach>
+    
+</table>
+
+</if>
+
+<script>
+    var cart_num = <{:count($cart_goods)}>;
+    $(".cart-count").html(cart_num);
+    $(".jq_cart_del").click(function(e){
+        e.preventDefault();
+        var obj = $(this);
+        $.get(obj.attr('href'),function(data){
+            if(data == 0){
+                $("#jq_cart_goods_"+obj.attr('rel')).remove();
+                $(".cart-count").html(cart_num-1);
+            }
+        },'html');
+    });
+    
+</script>

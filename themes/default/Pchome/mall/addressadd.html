@@ -1,0 +1,70 @@
+<div class="pop-box">
+<div class="dialog show radius">
+	<div class="dialog-head">
+		<span class="dialog-close close rotate-hover"></span>
+		<strong>添加配送地址</strong>
+	</div>
+
+	<div class="dialog-body">
+		<form method="post" class="form-auto form form-block" target="x-frame" action="<{:U('mall/addressadd')}>">
+			<input type="hidden" name="backurl" value="<{:U('mall/pay',array('order_id' => $order_id))}>">
+			<div class="form-group">
+				<div class="field">
+					<input type="text" class="input" id="dataname" name="data[name]" size="40" data-validate="required:必填信息" placeholder="联系人" />
+				</div>
+			</div>
+
+			<div class="form-group">
+				<div class="field">
+					<input type="text" class="input" id="datamobile" name="data[mobile]" size="40" data-validate="required:必填信息" placeholder="手机号" />
+				</div>
+			</div>
+	
+			<div class="form-group">
+				<div class="field">
+					<select class="input" name="data[area_id]" id="area_id"  style="text-indent:0px;" data-validate="required:必填信息">
+						<option value="0">请选择...</option>
+						<foreach name="areas" item="var">
+							<option value="<{$var.area_id}>"><{$var.area_name}></option>
+						</foreach>   
+					</select>
+					<script>
+						$(document).ready(function (e) {
+							$("#area_id").change(function () {
+								var url = '<{:U("member/child",array("area_id"=>"0000"))}>';
+								if ($(this).val() > 0) {
+									var url2 = url.replace('0000', $(this).val());
+									$.get(url2, function (data) {
+										$("#business_id").html(data);
+									}, 'html');
+								}
+
+							});
+						});
+					</script>
+					<select class="input" name="data[business_id]" id="business_id" style="text-indent:0px;" data-validate="required:必填信息">
+						<option value="0">请选择...</option>
+						<foreach name="business" item="var">
+							<option value="<{$var.business_id}>"><{$var.business_name}></option>
+						</foreach>   
+					</select>
+
+				</div>
+			</div>
+
+			<div class="form-group">
+				<div class="field">
+					<input type="text" class="input" id="dataname" name="data[addr]" size="40" data-validate="required:必填信息" placeholder="具体地址" />
+					<span class="icon"></span>
+				</div>
+			</div>
+			
+			
+			<div class="form-button">
+				<button class="button bg-yellow" type="submit">提交地址</button>
+			</div>
+
+		</form>
+	</div>
+</div>
+

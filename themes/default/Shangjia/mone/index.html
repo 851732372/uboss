@@ -1,0 +1,53 @@
+<include  file='public:header'/>
+<script src="__PUBLIC__/js/my97/WdatePicker.js"></script>
+<div class="sjgl_lead">
+    <ul>
+        <li><a href="#">结算</a> > <a href="">资金记录</a> > <a>余额日志</a></li>
+    </ul>
+</div>
+<div class="tuan_content">
+    <form method="post" action="<{:U('mone/index')}>">
+    <div class="radius5 tuan_top">
+        <div class="tuan_top_t">
+            <div class="left tuan_topser_l">
+             开始时间：<input type="text" class="radius3 tuan_topser"  name="bg_date" value="<{$bg_date|default=''}>" onfocus="WdatePicker({dateFmt: 'yyyy-MM-dd'});" autocomplete="off"/>
+            结束时间：<input type="text" class="radius3 tuan_topser"  name="end_date" value="<{$end_date|default=''}>" onfocus="WdatePicker({dateFmt: 'yyyy-MM-dd'});" autocomplete="off"/>       
+            <input type="submit" style="margin-left:10px;" class="radius3 sjgl_an tuan_topbt" value="搜 索"/>
+            </div>
+        </div>
+    </div>
+    </form>
+    <div class="tuanfabu_tab">
+        <ul>
+            <li class="tuanfabu_tabli on"><a href="<{:U('mone/index')}>">余额管理</a></li>
+            <li class="tuanfabu_tabli"><a href="<{:U('mone/tixianlog')}>">提现日志</a></li>
+            <li class="tuanfabu_tabli"><a href="<{:U('mone/tixian')}>">提现</a></li>
+        </ul>
+    </div> 
+    <div class="tuanfabu_nr">
+       未入账：<font color="red"><{:round($mone3/100,2)}></font>元！已入账：<font color="red"><{:round($mone2/100,2)}></font>元！已提现：<font color="red"><{:round($mone1/100,2)}></font>元！
+    </div>
+    <table class="tuan_table" width="100%" border="0" cellspacing="0" cellpadding="0">
+        <tr style="background-color:#eee;">
+            <td>类型</td>
+            <td>收支</td>
+            <td>日志</td>
+            <td>时间</td>
+        </tr>
+        <foreach name="list" item="var">
+            <tr>
+                <td>
+                   <{$var.type}>
+                </td>
+                <td><{$var['money']}></td>
+                <td><{$var.intro}></td>
+                <td><{$var.create_time}></td>
+            </tr>
+        </foreach>
+    </table>
+    <div class="paging">
+        <{$page}>
+    </div>
+</div>
+
+<include  file='public:footer'/>

@@ -1,0 +1,13 @@
+<include  file='public:header'/>
+<link rel="stylesheet" href="__PUBLIC__/bs/css/bootstrap.min.css">
+<div class="panel panel-default">
+	<div class="panel-heading">累计分红:<code><{$money/100}>元</code></div>
+	<div class="panel-body">
+		<ol class="list-group">
+		<volist name="phis" id="his">
+	    	<li class="list-group-item"><{$key+1}>.<{$his.username}>在<{$his.create_time|date="Y-m-d H:i:s",###}>收到U店<a href=""><{$his.shop_name}></a>分红<code><{$his['money']/100}></code>元</li>
+	    </volist>
+	    </ol>
+	</div>
+</div>
+<include  file='public:footer'/>  

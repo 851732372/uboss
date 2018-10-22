@@ -1,0 +1,78 @@
+<include  file='public:header'/>
+<link rel="stylesheet" href="__PUBLIC__/bs/css/bootstrap.min.css">
+<ul class="breadcrumb">
+    <li>
+        <a href="#">U店管理</a> <span class="divider">/</span>
+    </li>
+    <li>
+        <a href="<{:U('index')}>">U店列表</a><span class="divider">/</span>
+    </li>
+</ul>
+<div class="panel panel-default">
+	<div class="panel-heading">
+        <div class="pull-right" style="margin-top:5px;margin-left: 25px;">共有<b id="tot"><{$count}></b>条数据</div>
+		<form action="" class="form-inline">
+			<div class="form-group">
+				<label for="">店铺名称：</label>
+				<input type="text" class="form-control" name="shop_name" value="<{$shop_name}>">
+			</div>
+			<div class="form-group">
+				<label for="">店铺类型：</label>
+				<select name="type" id="" class="form-control">
+					<option value="">全部</option>
+					<option value="3" <eq name="type" value="3">selected</eq>>人气店</option>
+					<option value="2" <eq name="type" value="2">selected</eq>>核心店</option>
+					<option value="1" <eq name="type" value="1">selected</eq>>旗舰店</option>
+				</select>
+			</div>
+			<button class="btn btn-info" type="submit"><span class="glyphicon glyphicon-search">搜索</span></button>
+		</form> 
+	</div> 
+	<div class="panel-body">
+		<table class="table userIndexTable table-bordered">
+			<tr>
+				<th>店铺名称</th>
+				<th>总监人数</th>
+				<th>经理人数</th>
+				<th>主管人数</th>
+				<th>所属行业</th>
+				<th>店铺类型</th>
+				<th>店铺地址</th>
+				<th>店铺提成</th>
+				<th>创建时间</th>
+				<th>状态</th>
+			    <th>操作</th>
+			</tr>
+			<volist name="list" id="lis">
+				<tr>
+					<td><{$lis.shop_name}></td>
+					<td><{$lis.zj}></td>
+					<td><{$lis.jl}></td>
+					<td><{$lis.zg}></td>
+					
+					<td><{$lis.cate_name}></td>
+	                <td>
+						<eq name="lis.store_type" value="1">旗舰店</eq>
+						<eq name="lis.store_type" value="2">核心店</eq>
+						<eq name="lis.store_type" value="3">人气店</eq>
+					</td>
+					<td><{$lis.city}> / <{$lis.area}>/ <{$lis.address}></td>
+					<td><{$lis.proportions}>%</td>
+					<td><{$lis.create_time|date="Y-m-d H:i:s",###}></td>
+					<td>
+						<eq name="lis.status" value="0">未运营</eq>
+						<eq name="lis.status" value="1">运营</eq>
+					</td>
+					<td><a href="<{:U('bussiness/set',array('id' => $lis['shop_id']))}>">设置</a> | <a href="<{:U('shop/login',array('shop_id' => $lis['shop_id']))}>" target="_blank">管理</a> | <a href="<{:U('founder/look_info',array('id' => $lis['shop_id']))}>">查看详情</a></td>
+				</tr>
+			</volist>
+		</table>
+	</div>
+		<{$page}>
+	<div class="panel-footer">
+
+	</div>
+</div>
+<include  file='public:footer'/>  
+
+

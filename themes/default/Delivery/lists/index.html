@@ -1,0 +1,186 @@
+<title>物流配送中心</title>
+<include file="public:header"/>
+<link rel="stylesheet" href="/static/default/wap/css/delivery.css">
+<script src = "/themes/default/Mobile/statics/js/jquery-1.7.1.min.js" ></script>
+<script src="/themes/default/Mobile/statics/js/layer/layer.js"></script>
+
+
+<header class="top-fixed bg-yellow bg-inverse">
+	<div class="top-back">
+		<a class="top-addr"><i class="icon-angle-left"></i></a>
+	</div>
+		<div class="top-title">
+			订单列表
+		</div>
+	<div class="top-signed">
+		<a href="<{:U('delivery/login/logout')}>">退出</a>
+	</div>
+</header>
+
+<!-- 筛选TAB -->
+<div class="line tab-bar">
+	<div class="button-toolbar">
+		<div class="button-group">
+			<a class="block button bg-dot active" href="#">订单列表
+            
+             <eq name="ss" value="0">抢单中</eq>
+            <eq name="ss" value="2">配送中</eq>
+            <eq name="ss" value="8">已完成</eq>
+            
+            </a>
+		
+		</div>
+	</div>
+</div>
+
+	
+
+
+
+<div class="container">
+		
+	
+        
+<style>
+.txt-little {width: 56px !important;height: 22px;line-height: 22px;}.chun{background-color: #f5f5f5;}
+body {background: #fff !important;}
+.chun2{background: #e33;     text-align: center;}
+.chun2 span{ color:#FFF; text-align:center}
+
+</style>
+        		
+		
+        
+<volist name="rdv" id="r">  <!--循环开始-->         
+<div class="blank-10"></div>
+<div class="line ">
+     <a href="#"> 订单ID:<{$r.type_order_id}>（   
+     <eq name="ss" value="0">抢
+     <else/><eq name="r.type" value="0">商</eq>
+     <eq name="r.type" value="1">外</eq>
+     </eq>）
+	</a>
+    
+ <php>
+                if($r['type'] == 0){ //商品
+                    $o = D('Order');
+                    $res = $o -> where('order_id ='.$r['type_order_id']) -> find();
+                    $t = 0;
+                    $o2 = D('OrderGoods');
+                    $res2 = $o2 -> where('order_id ='.$res['order_id']) ->  select();
+                    $o3 = D('Goods');
+					foreach($res2 as $key => $val){
+                    	$v = $o3->where('goods_id ='.$val['goods_id'])->getField('title');
+                    	$res2[$key]['t'] = $v ;
+                    }
+                }elseif($r['type'] == 1){ //外卖
+                    $o = D('EleOrder');
+                    $res = $o -> where('order_id ='.$r['type_order_id']) -> find();
+                    $t = 1;
+                    $o2 = D('EleOrderProduct');
+                    $res2 = $o2 -> where('order_id ='.$res['order_id']) ->select();
+                    $o3 = D('EleProduct');
+                   	foreach($res2 as $key => $val){
+                    	$v = $o3->where('product_id ='.$val['product_id'])->getField('product_name');
+                    	$res2[$key]['t'] = $v;  
+                    }
+                }
+</php>    
+    
+    
+    
+    
+    
+<eq name="r.status" value="0"><a><span class="txt txt-little radius-little bg-gray">抢单中</a></eq>
+<eq name="r.status" value="2"><a><span class="txt txt-little radius-little bg-gray">配送中</a></eq>
+<eq name="r.status" value="8"><a><span class="txt txt-little radius-little bg-gray">已完成</a></eq> 
+
+
+
+<eq name="t" value="0"><eq name="res.is_daofu" value="1"><a><span class="txt txt-little radius-little bg-gray">货到付款</a></eq></eq>
+<eq name="t" value="1"><eq name="res.is_pay" value="0"><a><span class="txt txt-little radius-little bg-gray">货到付款</a></eq></eq>
+
+
+
+<eq name="r.status" value="0"><a href="javascript:void(0);" val="<{$r.order_id}>"><span class="txt txt-little radius-little bg-dot qiang_btn">抢单</a></eq>
+<eq name="r.status" value="1"><a href="javascript:void(0);" val="<{$r.order_id}>"><span class="txt txt-little radius-little bg-dot qiang_btn">抢单</a></eq>
+<eq name="r.status" value="2"><a href="javascript:void(0);" val="<{$r.order_id}>"><span class="txt txt-little radius-little bg-dot ok_btn">完成</a></eq>
+
+
+    
+    
+</div>
+<div class="blank-10"></div>
+<div class="list-link detail-link radius-none">	
+<!--商品循环开始-->
+<volist name="res2" id="res2">	
+<a class="chun"><span class="txt txt-little radius-little bg-gray">商品信息
+</span><{$res2.t}> ￥<php>echo round(($res2['total_price']/$res2['num'])/100,2);</php> x<{$res2.num}></a>
+</volist>
+<!--商品循环结束-->
+<a><span class="txt txt-little radius-little bg-green">时间</span> <{$res.create_time|date='Y-m-d H:i:s',###}> 总计：￥<{:round($res['total_price']/100,2)}></a>
+
+<!--商家信息开始-->
+<a class="chun"><span class="txt txt-little radius-little bg-blue">商家名称</span> <{$r.shop_name}>-  <{$r.shop_mobile}></a>
+<a class="chun"><span class="txt txt-little radius-little bg-blue">商家地址</span><{$r.shop_addr}></a>   
+<!--商家信息开始--> 
+   
+
+    
+
+<a class="chun1"><span class="txt txt-little radius-little bg-dot">买家地址</span> <{$r.user_addr}></a>  
+
+<div class="line">
+<div class="x6 border-right text-center"><a><{$r.user_name}></a></div>
+<div class="x6 text-center">
+<a href="tel:<{$r.user_mobile}>"><i class="icon "></i>tel:<{$r.user_mobile}></a>
+</div>
+</div>
+   
+</div>
+
+
+<div class="blank-10"></div>
+</volist><!--循环结束-->
+
+
+
+</div>	
+
+        <script type="text/javascript" language="javascript">
+   
+   		$(document).ready(function(){
+			$('.qiang_btn').click(function(){
+				var id = $(this).parent().attr('val');
+				$.post('<{:U("lists/handle")}>',{order_id:id},function(result){
+					if(result.status == 'success'){
+						layer.msg(result.message,{icon:6});
+						setTimeout(function(){
+							location.reload(true);
+						},3000);
+					}else{
+						layer.msg(result.message);
+					}
+				},'json');
+			})
+            
+            $('.ok_btn').click(function(){
+			    var id = $(this).parent().attr('val');
+				$.post('<{:U("set_ok")}>',{order_id:id},function(result){
+					if(result.status == 'success'){
+						layer.msg(result.message,{icon:6});
+						setTimeout(function(){
+							location.reload(true);
+						},3000);
+					}else{
+						layer.msg(result.message);
+					}
+				},'json');
+			})
+		})
+   
+   </script>
+   
+   
+
+<include  file='public:footer'/>

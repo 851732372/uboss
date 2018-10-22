@@ -1,0 +1,90 @@
+<include file="public:topOne" /> 
+    <div class="topTwo">
+        <div class="left">
+            <if condition="!empty($CONFIG['site']['logo'])">
+                <h1><a href="<{:U('pchome/index/index')}>"><img width="214" height="53" src="__ROOT__/attachs/<{$CONFIG.site.logo}>" /></a></h1>
+                <else/>
+                <h1><a href="<{:U('pchome/index/index')}>"><img width="214" height="53" src="__PUBLIC__/img/logo_03.png" /></a></h1>
+            </if> 
+            <div class="changeCity"><{$city_name}><a href="<{:U('pchome/city/index')}>" class="change">[切换城市]</a></div>
+        </div>
+        <div class="left center">
+            <div class="searchBox">
+                <script>
+                    $(document).ready(function () {
+                        $(".selectList li a").click(function () {
+                            $("#search_form").attr('action', $(this).attr('rel'));
+                            $("#selectBoxInput").html($(this).html());
+                            $('.selectList').hide();
+                        });
+                        $(".selectList a").each(function(){
+                            if($(this).attr("cur")){
+                                $("#search_form").attr('action', $(this).attr('rel'));
+                                $("#selectBoxInput").html($(this).html());                                
+                            }
+                        })
+                    });
+                </script>
+                <form id="search_form"  method="post" action="<{:U('pchome/shop/index')}>">
+                    <div class="selectBox">
+                        <span class="select" id="selectBoxInput">商家</span>
+                        <div  class="selectList">
+                            <ul>
+                                <li><a href="javascript:void(0);" <?php if($ctl == 'shop'){?> cur='true'<?php }?> rel="<{:U('pchome/shop/index')}>">商家</a></li>
+                                <li><a href="javascript:void(0);" <?php if($ctl == 'tuan'){?> cur='true'<?php }?>rel="<{:U('pchome/tuan/index')}>">抢购</a></li>
+                                <li><a href="javascript:void(0);" <?php if($ctl == 'life'){?> cur='true'<?php }?>rel="<{:U('pchome/life/index')}>">生活</a></li>
+                                <li><a href="javascript:void(0);" <?php if($ctl == 'mall'){?> cur='true'<?php }?>rel="<{:U('pchome/mall/index')}>">商品</a></li>
+                                <li><a href="javascript:void(0);" <?php if($ctl == 'tieba'){?> cur='true'<?php }?>rel="<{:U('pchome/tieba/index')}>">贴吧</a></li>
+                                <li><a href="javascript:void(0);" <?php if($ctl == 'news'){?> cur='true'<?php }?>rel="<{:U('pchome/news/index')}>">旅游</a></li>
+                                <li><a href="javascript:void(0);" <?php if($ctl == 'community'){?> cur='true'<?php }?>rel="<{:U('pchome/community/index')}>">小区</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <input type="text" class="text" <if condition="$ctl neq ding">name="keyword" value="<{$keyword|default='输入您要搜索的内容'}>"</if> onclick="if (value == defaultValue) {
+                                value = '';
+                                this.style.color = '#000'
+                            }"  onBlur="if (!value) {
+                                        value = defaultValue;
+                                        this.style.color = '#999'
+                                    }" />
+                    <input type="submit" class="submit" value="搜索" />
+                </form>
+            </div>
+
+
+
+            <div class="hotSearch">
+                <php>$a =1;</php>
+                <calldata mdl="Keyword" where="" limit="0,7" cache="43200" order="key_id desc">
+                    <if condition="$item['type'] eq 0 or $item['type'] eq 1">
+                        <a href="<{:U('pchome/shop/index',array('keyword'=>$item['keyword']))}>"><{$item.keyword}></a>
+                    <elseif condition="$item['type'] eq 2"/>
+                        <a href="<{:U('pchome/tuan/index',array('keyword'=>$item['keyword']))}>"><{$item.keyword}></a>
+                    <elseif condition="$item['type'] eq 3"/>
+                        <a href="<{:U('pchome/life/index',array('keyword'=>$item['keyword']))}>"><{$item.keyword}></a>
+                    <elseif condition="$item['type'] eq 4"/>
+                        <a href="<{:U('pchome/mall/index',array('keyword'=>$item['keyword']))}>"><{$item.keyword}></a>
+                        <elseif condition="$item['type'] eq 5"/>
+                        <a href="<{:U('pchome/tieba/index',array('keyword'=>$item['keyword']))}>"><{$item.keyword}></a>
+                        <elseif condition="$item['type'] eq 6"/>
+                        <a href="<{:U('pchome/news/index',array('keyword'=>$item['keyword']))}>"><{$item.keyword}></a>
+                        <elseif condition="$item['type'] eq 7"/>
+                        <a href="<{:U('pchome/community/index',array('keyword'=>$item['keyword']))}>"><{$item.keyword}></a>
+                    </if>
+                </calldata>
+            </div>
+        </div>
+        <div class="right topTwo_b">
+<!--			<div class="topTwo_tel">
+				服务热线：<big>055-456879852</big>
+			</div>
+-->			<div class="clear"></div>
+            <div class="protect">
+                <ul>
+                    <li><em>&nbsp;</em><a href="javascript:void(0);">随时退</a></li>
+                    <li class="protectLi2"><em>&nbsp;</em><a href="javascript:void(0);">不满意免单</a></li>
+                    <li class="protectLi3"><em>&nbsp;</em><a href="javascript:void(0);">过期退款</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>

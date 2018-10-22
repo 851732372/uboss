@@ -1,0 +1,200 @@
+<include  file='public:heador_niucms'/>  <include file='mall:top'/>  
+<div class="blank-10"></div>
+<div class="container">
+	<div class="line">
+		<div class="x3">
+			<div class="one-box one-shop">
+				<dl>
+					<dt>
+						<img src="__ROOT__/attachs/<{$shop.logo}>" alt="<{$shop.shop_name}>" />
+					</dt>
+					<dd>
+						<h1><{$shop.shop_name}></h1>
+						<p><span class="ui-starbar"><span style="width:<{:round($shop['score']*2,2)}>%;"></span></span></p>
+					</dd>
+				</dl>
+				<if condition="!empty($details[business_time])">
+				<p><em>营业时间</em><{$details.business_time}></p>
+				</if>
+				<if condition="!empty($shop[tel])">
+				<p><em>联系电话</em><{$shop.tel}></p>
+				</if>
+				<p><em>入驻时间</em><{$shop.create_time|date='Y-m-d',###}>入驻 <{$shop.view}>人浏览</p>
+				<if condition="!empty($shop[qq])">
+				<p><a target="_blank" href="http://wpa.qq.com/msgrd?V=3&uin=<{$shop.qq}>&Site=QQ客服&Menu=yes"><img src="http://wpa.qq.com/pa?p=1:<{$shop.qq}>:1" alt="点击这里给我发消息"></a></p>
+				</if>
+				<p><em>店铺地址</em><{$shop.addr}> <a target="_blank" href="<{:U('shop/detail',array('shop_id'=>$shop['shop_id'],'act'=>'map'))}>">查看地图</a></p>
+			</div>
+			<div class="blank-10"></div>
+			
+			<div class="one-tab">
+			<div class="tab">
+				<div class="tab-head">
+					<ul class="tab-nav">
+						<li class="active"><a href="#tab-hot">人气排行</a></li>
+						<li class="border-none"><a href="#tab-sal">销量排行</a></li>
+					</ul>
+				</div>
+				<div class="tab-body">
+					<div class="tab-panel active" id="tab-hot">
+						<div class="deal-side">
+							<div class="side-bd">
+								<ul>
+									<calldata mdl="Goods" where="closed=0 and  audit=1 and  shop_id=$shop_id " order=" views desc" limit="0,5" >
+										<li>
+											<a class="pic" href="<{:U('mall/detail',array('goods_id'=>$item['goods_id']))}>" title="<{$item.title}>" target="_blank"><img src="__ROOT__/attachs/<{$item.photo}>"  /></a>
+											<div class="des">
+												<h3><a href="<{:U('mall/detail',array('goods_id'=>$item['goods_id']))}>" title="<{$item.title}>" target="_blank"><{:niuMsubstr($item['title'],0,15,false)}></a></h3>
+												<php>$itr = cleanHtml($item['instructions']);</php>
+												<p><{:niuMsubstr($itr,0,20,false)}></p>
+												<p class="pri"><em>￥<{:round($item['mall_price']/100,2)}></em><del>￥<{:round($item['price']/100,2)}></del></p>
+											</div>
+										</li>
+									</calldata>
+								</ul>
+							</div>
+						</div>
+					</div>
+					<div class="tab-panel" id="tab-sal">
+						<div class="deal-side">
+							<div class="side-bd">
+								<ul>
+									 <calldata mdl="Goods" where="closed=0 and  audit=1  and  shop_id=$shop_id " order=" sold_num desc" limit="0,5">
+										<li>
+											<a class="pic" href="<{:U('mall/detail',array('goods_id'=>$item['goods_id']))}>" title="<{$item.title}>" target="_blank"><img src="__ROOT__/attachs/<{$item.photo}>"  /></a>
+											<div class="des">
+												<h3><a href="<{:U('mall/detail',array('goods_id'=>$item['goods_id']))}>" title="<{$item.title}>" target="_blank"><{:niuMsubstr($item['title'],0,15,false)}></a></h3>
+												<php>$itr = cleanHtml($item['instructions']);</php>
+												<p><{:niuMsubstr($itr,0,20,false)}></p>
+												<p class="pri"><em>￥<{:round($item['mall_price']/100,2)}></em><del>￥<{:round($item['price']/100,2)}></del></p>
+											</div>
+										</li>
+									</calldata>
+								</ul>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			</div>
+			
+		</div>
+		<div class="x9">
+
+			<div class="menu-table">
+				<div class="filter-section">
+					<php>
+					if($cat){
+						foreach($cates as $ca){
+							if($cat == $ca['cate_id']){
+								$cat_name = $ca['cate_name'];
+							}
+						}
+					}
+					</php>
+
+					<if condition="!empty($cat)">
+					<div class="filter-bread">
+						<a class="button button-small" href="<{:LinkTo('mall/shop',$linkArr,array('cat'=>'0'))}>">全部</a>
+						<if condition="!empty($cat)">
+						<a class="button button-small" href="<{:LinkTo('mall/shop',$linkArr,array('cat'=>'0'))}>"><{$cat_name}> <i class="icon icon-times"></i></a>
+						</if>
+					</div>
+					</if>
+
+					<div class="filter-list filter-first">
+						<div class="list-label">
+							分类：
+						</div>
+						<ul class="list-sect">
+							<li <if condition="$cat eq null">class="current"</if>><a title="所有商品" href="<{:LinkTo('mall/shop',$linkArr,array('cat'=>'0'))}>">全部</a></li>
+							<foreach name="cates" item="item">
+							 <li <eq name="item.cate_id" value="$cat">class="current"</eq>><a href="<{:LinkTo('mall/shop',$linkArr,array('cat'=>$item['cate_id']))}>"><{$item.cate_name}></a></li>
+							</foreach>
+						</ul>
+					</div>
+				</div>
+				
+				<div class="sort-section">
+					<ul>
+						<li <eq name="order" value="d">class="current"</eq> >
+							<a href="<{:LinkTo('mall/shop',$linkArr,array('order'=>'d'))}>">默认排序</a>
+							<if condition="$order eq d">
+								<i class="icon icon-angle-down"></i>
+							<else />
+								<i class="icon icon-angle-up"></i>
+							</if>
+						</li>  
+						<li <eq name="order" value="p">class="current"</eq> >
+							<a href="<{:LinkTo('mall/shop',$linkArr,array('order'=>'p'))}>">价格排序</a>
+							<if condition="$order eq p">
+								<i class="icon icon-angle-down"></i>
+							<else />
+								<i class="icon icon-angle-up"></i>
+							</if>
+						</li>
+						<li <eq name="order" value="v">class="current"</eq> >
+							<a href="<{:LinkTo('mall/shop',$linkArr,array('order'=>'v'))}>">人气排序</a>
+							<if condition="$order eq v">
+								<i class="icon icon-angle-down"></i>
+							<else />
+								<i class="icon icon-angle-up"></i>
+							</if>
+						</li>
+						<li <eq name="order" value="s">class="current"</eq> >
+							<a href="<{:LinkTo('mall/shop',$linkArr,array('order'=>'s'))}>">销量排序</a>
+							<if condition="$order eq s">
+								<i class="icon icon-angle-down"></i>
+							<else />
+								<i class="icon icon-angle-up"></i>
+							</if>
+						</li>
+						<li <eq name="order" value="t">class="current"</eq> >
+							<a href="<{:LinkTo('mall/shop',$linkArr,array('order'=>'t'))}>">时间排序</a>
+							<if condition="$order eq t">
+								<i class="icon icon-angle-down"></i>
+							<else />
+								<i class="icon icon-angle-up"></i>
+							</if>
+						</li>
+					</ul>
+				</div>
+			</div>
+		
+		
+			<div class="blank-10"></div>
+			
+			<div class="one-list">
+				<ul>
+					<foreach name="list" item="item">
+					<li>
+						<dl>
+							<dd class="tags">
+								<if condition="$item.discount LT 10"><span class="zhe"><{$item.discount}>折</span></if>
+								<if condition="$item.save GT 0"><span class="sheng">省<{$item.save}>元</span></if>
+							</dd>
+							<dd class="pic" ><a target="_blank" title="<{$item.title}>" href="<{:U('mall/detail',array('goods_id'=>$item['goods_id']))}>"><img src="__ROOT__/attachs/<{$item.photo}>"></a>
+							</dd>
+							<dd class="pri"><span>&yen;</span><strong><{:round($item['mall_price'],2)}></strong><del>&yen;<{:round($item['price'],2)}></del></dd>
+							<dd class="tit"><a target="_blank" title="<{$item.title}>" href="<{:U('mall/detail',array('goods_id'=>$item['goods_id']))}>"><{$item['title']}></a></dd>
+							<dd class="prm">
+								<span>已售 <{$item.sold_num}> 件</span>
+								<em>关注 <{$item.views}> 次</em>
+							</dd>
+						</dl>
+					</li>
+					</foreach>
+				</ul>
+			</div>
+				
+			<div class="text-center">
+				<div class="pagination">
+					<{$page}>
+				</div>
+			</div>
+		
+		</div>
+	</div>
+</div>
+
+<include file="public:footer_niucms"/>

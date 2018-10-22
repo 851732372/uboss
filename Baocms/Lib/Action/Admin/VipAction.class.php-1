@@ -1,0 +1,298 @@
+<?php
+/*
+ * 会员管理
+ * 作者：liuqiang
+ * 日期: 2018/9/5
+ */
+class VipAction extends CommonAction {
+    public function _initialize()
+    {
+        parent::_initialize();
+        $this->sql = M('users u');
+    }
+    public function index()
+    {   
+        import('ORG.Util.Page'); // 导入分页类
+        $count = $this->sql->count(); // 查询满足要求的总记录数 
+        $Page = new Page($count, 15); // 实例化分页类 传入总记录数和每页显示的记录数
+        $show = $Page->show(); // 分页显示输出
+        $data = $this->sql
+                ->limit($Page->firstRow . ',' . $Page->listRows)
+                ->select();
+        $this->assign('count', $count);
+        $this->assign('list', $data); // 赋值数据集
+        $this->assign('page', $show); // 赋值分页输出
+        $this->display(); // 输出模板
+    }
+    // 查看
+    public function info()
+    {
+        $id = intval($_GET['user_id']);
+        if(IS_POST){
+           
+            $user_id = $_POST['id'];
+            unset($_POST['id']);
+            unset($_POST['file']);
+            // 密码
+            $res = $this->sql
+                    ->field('u.pay_password')
+                    ->where('user_id = '.$id)
+                    ->find();
+            if($res['pay_password'] != $_POST['pay_password']){
+                $_POST['pay_password'] = md5($_POST['pay_password']);
+            }
+            $r = $this->sql
+                ->where('user_id = '. $user_id)
+                ->save($_POST);
+            if($r){
+                $this->baoSuccess('提交成功',U('index'));
+            }else{
+                $this->baoError('提交失败');
+            }
+        }else{
+            // 级别
+            $level = M('level')->select();
+            $data = $this->sql
+                    ->join('uboss_level l on u.level_id = l.level_id')
+                    ->field('u.*,l.levelname')
+                    ->where('u.user_id = '.$id)
+                    ->find();
+            $data['idcardimgs1'] = array_filter(explode(',',$data['idcardimgs']));
+            $this->assign('level',$level);
+            $this->assign('info',$data);
+        }
+        $this->display();
+    }
+    // 删除图片
+    public function ajax_del()
+    {
+        $user_id = $this->_param('id');
+        $key = $this->_param('key');
+        $res = $this->sql->find($id);
+        $arr = explode(',',$res['idcardimgs']);
+        // 过滤
+        $arr = array_filter($arr);
+        unset($arr[$key]);
+        $img = join(',',$arr);
+        $data['idcardimgs'] = $img;
+        echo $this->sql->where('user_id = '.$user_id)->save($data);
+    }
+    public function level()
+    {
+        // 级别
+        $level = M('level')->select();
+        $this->assign('list',$level);
+        $this->display();
+    }
+    // 修改级别
+    public function edit_level()
+    {
+        if(IS_POST){
+            $id = $_POST['level_id'];
+            unset($_POST['level_id']);
+            
+            $r = M('level')
+                ->where('level_id = '. $id)
+                ->save($_POST);
+            if($r){
+                $this->success('提交成功',U('level'));
+            }else{
+                $this->error('提交失败');
+            }
+        }else{
+            $id = $_GET['level_id'];
+            $level = M('level')->where('level_id = '.$id)->find();
+            $this->assign('info',$level);
+            $this->display();
+        }
+    }
+    // 添加级别
+    public function add_level()
+    {
+        if(IS_POST){
+            $r = M('level')->add($_POST);
+            if($r){
+                $this->success('提交成功',U('level'));
+            }else{
+                $this->error('提交失败');
+            }
+        }else{
+            $this->display();
+        }
+    }
+    // 日志
+    public function vlog()
+    {
+        $this->display(); 
+    }
+    // 地址
+    public function addr()
+    {
+        $id = intval($_GET['id']);
+        $data = M('user_addr')->alias('a')->join('uboss_city c on c.city_id = a.city_id')
+                ->join('uboss_area ar on ar.area_id = a.area_id')
+                ->field('c.name cname,ar.area_name,a.*')
+                ->where('a.user_id = '.$id)
+                ->select();
+        $this->assign('list',$data);
+        $this->display();
+    }
+    // 回收站
+    public function recycle()
+    {
+        $this->display();
+    }
+    // 下级
+    public function down_level()
+    {
+        $id = intval($_GET['user_id']);
+        $r = M('users')->find($id);
+        $level = $r['level_id'];
+        $users = M('users')->where('pid = '.$id.' and level_id < '.$level)->select(); 
+        foreach ($users as $key => $value) {
+            $data = M('level')
+                ->where('level_id = '.$value['level_id'])
+                ->field('levelname')
+                ->find();
+            $users[$key]['levelname'] = $data['levelname'];
+            $users_child = M('users')->where('pid = '.$value['user_id'].' and level_id <'.$level)->select(); 
+            foreach ($users_child as $key1 => $value1) {
+                $data1 = M('level')
+                    ->where('level_id = '.$value1['level_id'])
+                    ->field('levelname')
+                    ->find();
+                $users_child[$key1]['levelname'] = $data1['levelname'];
+            }
+            $users[$key]['child'] = $users_child;
+        }
+        $this->assign('users',$users);
+
+        $this->display();
+    }
+    // 累计分红
+    public function all_divide_money()
+    {
+        $this->display('divide_money');
+    }
+    public function ajax_select_d(){
+        $type = intval($_POST['type']);
+        // 获取今日开始时间戳和结束时间戳
+        if($type != 0){
+            if($type == 1){
+                $begin = mktime(0,0,0,date('m'),date('d'),date('Y'));
+                $end = mktime(0,0,0,date('m'),date('d')+1,date('Y'))-1;
+            }
+            // 获取昨日起始时间戳和结束时间戳
+            if($type == 2){
+                $$begin = mktime(0,0,0,date('m'),date('d')-1,date('Y'));
+                $end = mktime(0,0,0,date('m'),date('d'),date('Y'))-1;
+            }
+            // 获取上周起始时间戳和结束时间戳
+            if($type == 3){
+                $begin = mktime(0,0,0,date('m'),date('d')-date('w')+1-7,date('Y'));
+                $end = mktime(23,59,59,date('m'),date('d')-date('w')+7-7,date('Y'));
+            }
+            // 获取本月起始时间戳和结束时间戳
+            if($type == 4){
+                $begin = mktime(0,0,0,date('m'),1,date('Y'));
+                $end = mktime(23,59,59,date('m'),date('t'),date('Y'));
+            }
+            // $map['o.create_time'] = array('and',array('EGT', $begin), array('ELT', $end));
+            $map['_string'] = "(o.create_time>= $begin AND o.create_time<= $end)";
+            
+        }
+
+        // 以当前用户为顶级 向下查询三级(包括自己)
+        $id = intval($_POST['user_id']);
+        $r = M('users')->find($id);
+        $level = $r['level_id'];
+        // 查询所有子类 下级等级不超过上级 按上级会员级别来算  查询出满足的 user_id
+        $users = M('users')->where('pid = '.$id.' and level_id < '.$level)->field('user_id,level_id')->select(); 
+
+        $newArr =  array();
+        foreach ($users as $key => $value) {
+            $newArr[] = $value['user_id'].'-'.$value['level_id'];
+            $users_child = M('users')->where('pid = '.$value['user_id'].' and level_id < '.$level)->field('user_id,level_id')->select(); 
+            foreach ($users_child as $key2 => $value2) {
+                $newArr[] = $value2['user_id'].'-'.$value2['level_id'];
+            }
+        }
+      
+        // 对应的 订单金额 与 商家提点
+        $map['o.status'] = 4;
+        foreach ($newArr as $key => $value) {
+            $user_id = explode('-', $value);
+            $map['o.user_id'] = $user_id[0];
+            $order[$value] = M('order')->alias('o')
+                            ->join('uboss_shop s on s.shop_id = o.shop_id')
+                            ->where($map)
+                            ->field('o.total_price,s.proportions,o.user_id,o.create_time')
+                            ->order('o.create_time desc')
+                            ->select();
+        }
+        foreach ($order as $key => $value) {
+            foreach ($value as $key1 => $value1) {
+                $o[$key] = $value1;
+            }
+        }
+        foreach ($order as $key => $value) {
+            $level1 = explode('-', $key);
+            $level1 = $level1[1];
+            foreach ($value as $key1 => $value1) {
+                // 钻石
+                if($level == 3){
+                    if($level1 == 2){
+                       $order[$key][$key1]['rate'] = 0.35;
+                    }
+                    if($level1 == 1){
+                         $order[$key][$key1]['rate'] = 0.8;
+                    }
+                }
+                if($level == 2){
+                     $order[$key][$key1]['rate'] = 0.45;
+                }
+            }
+        }
+        $o = array();
+        foreach ($order as $key => $value) {
+            foreach ($value as $key1 => $value1) {
+                $o[] = $value1;
+            }
+        }
+        // // 用户分红
+        foreach ($o as $key => $value) {
+            $o[$key]['pre_money'] = $value['total_price']*$value['proportions']*$value['rate']/100/100;
+            if($type != 0){
+                if($type == 1){
+                    $o[$key]['create_time'] = date('H:i:s',$value['create_time']);
+                }
+                // 获取昨日起始时间戳和结束时间戳
+                if($type == 2){
+                    $o[$key]['create_time'] = date('H:i:s',$value['create_time']);
+                }
+                // 获取上周起始时间戳和结束时间戳
+                if($type == 3){
+                    $o[$key]['create_time'] = date('Y-m-d',$value['create_time']);
+                }
+                // 获取本月起始时间戳和结束时间戳
+                if($type == 4){
+                   $o[$key]['create_time'] = date('Y-m-d',$value['create_time']);
+                }
+               
+            }else{
+                $o[$key]['create_time'] = date('Y-m',$value['create_time']);
+            }
+
+            unset($o[$key]['user_id']);
+            unset($o[$key]['proportions']);
+            unset($o[$key]['total_price']);
+            unset($o[$key]['rate']);
+            $o[$key] = array_reverse($o[$key]);
+        }
+        array_multisort(array_column($o,'create_time'),SORT_ASC,$o);
+        echo outJson($o);
+    }
+ 
+}
+
+

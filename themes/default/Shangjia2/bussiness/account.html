@@ -1,0 +1,53 @@
+<include  file='public:header'/>
+<div class="sjgl_lead">
+    <ul>
+        <li><a href="#">系统设置</a> > <a href="">基础资料</a> > <a>提现账号</a></li>
+    </ul>
+</div>
+<div class="tuan_content">
+    <div class="radius5 tuan_top">
+        <div class="tuan_top_t">
+            <div class="left tuan_topser_l">提现账号 </div>
+        </div>
+    </div> 
+    <div class="tabnr_change  show">
+    	<form method="post" class="password"  action="<{:U('account')}>"  target="baocms_frm">
+            <input type="hidden" name="ex_id" value="<{$detail.ex_id}>">
+    	<table class="tuanfabu_table" width="100%" border="0" cellspacing="0" cellpadding="0">
+            <tr>
+                <td width="120"><p class="tuanfabu_t"><em>·</em>开户行：</p></td>
+                <td>
+                    <div class="tuanfabu_nr">
+                        <select name="bank_name" id="" class="tuanfabu_int tuanfabu_intw2">
+                            <option value="1" <eq name="detail.bank_name" value="1">selected</eq>>中国工商银行</option>
+                            <option value="2" <eq name="detail.bank_name" value="2">selected</eq>>中国建设银行</option>
+                            <option value="3" <eq name="detail.bank_name" value="3">selected</eq>>中国农业银行</option>
+                            <option value="4" <eq name="detail.bank_name" value="4">selected</eq>>中国交通银行</option>
+                            <option value="5" <eq name="detail.bank_name" value="5">selected</eq>>中国银行</option>
+                            <option value="6" <eq name="detail.bank_name" value="6">selected</eq>>支付宝</option>
+                            <option value="7" <eq name="detail.bank_name" value="7">selected</eq>>微信</option>
+                            <option value="8" <eq name="detail.bank_name" value="8">selected</eq>>中国招商银行</option>
+                        </select>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td><p class="tuanfabu_t"><em>·</em>开户人：</p></td>
+                <td><div class="tuanfabu_nr"><input type="text" name="bank_realname" class="tuanfabu_int tuanfabu_intw2" value="<{$detail.bank_realname}>" /></div></td>
+            </tr>
+            <tr>
+                <td><p class="tuanfabu_t"><em>·</em>账号：</p></td>
+                <td><div class="tuanfabu_nr"><input type="text" name="bank_num" class="tuanfabu_int tuanfabu_intw2" value="<{$detail.bank_num}>"/></div></td>
+            </tr>
+            <tr>
+                <td><p class="tuanfabu_t"><em>·</em>手机号：</p></td>
+                <td><div class="tuanfabu_nr"><input type="text" name="tel" class="tuanfabu_int tuanfabu_intw2" value="<{$detail.tel}>"/></div></td>
+            </tr>
+        </table>
+        <div class="tuanfabu_an">
+        <input type="submit" class="radius3 sjgl_an tuan_topbt" value="确认修改" />
+        </div>
+        </form>
+    </div> 
+</div>
+<include  file='public:footer'/>

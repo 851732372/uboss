@@ -1,0 +1,63 @@
+<include  file='public:header'/>
+<style>
+	.breadcrumb .active{
+		background: #ccc;
+		color:#fff;
+	}
+	.breadcrumb li a{
+		padding:5px 10px;
+	}
+	.btn-danger a{
+		color:white;
+	}
+</style>
+<link href='__PUBLIC__/bs/css/bootstrap.min.css' media='all' rel='stylesheet' type='text/css' />
+ <ul class="breadcrumb">
+    <li><a href="<{:U('set',array('id' => $_GET['id']))}>">基本信息</a><span class="divider"></span></li>
+    <li><a href="<{:U('over_order',array('id' => $_GET['id']))}>" class="active">买单设置</a><span class="divider"></span></li>
+    <li><a href="<{:U('check_authen',array('id' => $_GET['id']))}>">认证资料</a><span class="divider"></span></li>
+    <li><a href="<{:U('index')}>">返回商户列表</a></li>
+</ul>
+<div class="panel penel-default">
+	<div class="panel-heading">
+		<button class="btn btn-danger"><{:BA('bussiness/edit_over',array("type" => 3,'shop_id' => $_GET['id']),'添加优惠','load','',600,240)}></button>
+	</div>
+	<div class="panel-body" id="pb">
+		<div>
+			<table class="table table-bordered">
+				<tr>
+					<th>类型</th>
+					<th>优惠</th>
+					<th>活动时间</th>
+					<th>操作</th>
+				</tr>
+				<volist name="data" id="dat">
+					<tr>
+						<td>
+							<eq name="dat.type" value="1">
+								折扣
+							</eq>
+							<eq name="dat.type" value="2">
+								满减
+							</eq>
+						</td>
+						<td>
+							<eq name="dat.type" value="1">
+								<{$dat.rate}>%
+							</eq>
+							<eq name="dat.type" value="2">
+								<?php $arr = explode('/', $dat['rate']); echo '满'.$arr[0].'元减'.$arr[1].'元';?>
+							</eq></td>
+						<td><{$dat.start_time}> -- <{$dat.end_time}></td>
+						<td>
+							<{:BA('bussiness/edit_over',array("type" => $dat['type'],'id' => $dat['id'],'shop_id' => $_GET['id']),'修改','load','',600,240)}>
+						</td>
+					</tr>
+				</volist>
+			</table>
+		</div>
+	</div>
+</div>
+<include  file='public:footer'/>  
+
+

@@ -1,0 +1,3 @@
+<?php
+//000000086400a:2:{i:1;a:9:{s:7:"city_id";s:1:"1";s:4:"name";s:6:"太原";s:6:"pinyin";s:7:"taiyuan";s:7:"is_open";s:1:"1";s:3:"lng";s:10:"112.556405";s:3:"lat";s:9:"37.877061";s:7:"orderby";s:1:"0";s:12:"first_letter";s:1:"T";s:11:"proportions";N;}i:2;a:9:{s:7:"city_id";s:1:"2";s:4:"name";s:6:"汾阳";s:6:"pinyin";s:8:"fengyang";s:7:"is_open";s:1:"1";s:3:"lng";s:10:"111.794555";s:3:"lat";s:9:"37.271453";s:7:"orderby";s:1:"0";s:12:"first_letter";s:1:"F";s:11:"proportions";s:1:"1";}}
+?>

@@ -1,0 +1,187 @@
+<include  file='public:header'/>
+<style>
+	table tr th,td{
+		text-align: center;
+	}
+</style>
+<link rel="stylesheet" href="__PUBLIC__/bs/css/bootstrap.min.css">
+<script src="__PUBLIC__/bs/js/jquery.min.js"></script>
+<script src="__PUBLIC__/bs/js/bootstrap.min.js"></script>
+<ul class="breadcrumb">
+    <li>创始人管理</li>
+    <li>U店详情</li>
+</ul>
+<div class="panel panel-default">
+	<div class="panel-body">
+		<table class="table userIndexTable table-bordered table-hover">
+				<tr>
+					<th>编号</th>
+					<td><{$shop.user_id}></td>
+					<th>创始人</th>
+					<td><{$shop.realname}></td>
+					<th>联系方式</th>
+					<td><{$shop.tel}></td>
+					<th>店铺分类</th>
+					<td><{$shop.cate_name}></td>
+				</tr>
+				<tr>
+					<th>资产</th>
+					<td><{$shop['asset']/100}>元</td>
+					<th>余额</th>
+					<td><{:floor($shop['money'])/100}>元</td>
+					<th>提成</th>
+					<td><{$shop.proportions}>%</td>
+				</tr>
+				<tr>
+					<th>店铺级别</th>
+					<td>
+						<eq name="shop.store_type" value="1">旗舰店</eq>
+						<eq name="shop.store_type" value="2">核心店</eq>
+						<eq name="shop.store_type" value="3">人气店</eq>
+					</td>
+					<th>店铺位置</th>
+					<td><{$shop.city}> / <{$shop.area}> / <{$shop.addr}></td>
+					<th>店铺名称</th>
+					<td><{$shop.shop_name}></td>
+					<th>店铺创建时间</th>
+					<td><{$shop.create_time|date="Y-m-d H:i:s",###}></td>
+				</tr>
+				<tr>
+					<th>总监人数</th>
+					<td><{$shop.zj}></td>
+					<th>经理人数</th>
+					<td><{$shop.jl}></td>
+					<th>主管人数</th>
+					<td><{$shop.zg}></td>
+					<th>状态</th>
+					<td>
+						<eq name="shop.status" value="0"><code>未运营</code></eq>
+						<eq name="shop.status" value="1"><code>已运营</code></eq>
+					</td>
+				</tr>
+				<tr>
+					<th colspan="7">操作<code>注意：分红发放之前U店需要运营</code></th>
+					<td>
+						<eq name="shop.status" value="0">
+							<{:BA('founder/start_business',array('shop_id' => $shop['shop_id']),'开始运营','act','')}>
+						<else/>
+							<{:BA('founder/end_business',array('shop_id' => $shop['shop_id']),'停止运营','act','')}> | <a href="javascript:;"  data-toggle="modal" data-target="#myModal">发放分红</a>
+						</eq>
+						| <a href="<{:U('shop/login',array('shop_id' => $shop['shop_id']))}>" target="_blank">管理U店</a> | <a href="javascript:;" data-toggle="modal" data-target="#myModal1">分红历史</a>
+					</td>
+				</tr>
+		</table>
+		<ul class="breadcrumb">
+		    <li>U店详情</li>
+		    <li>人员组成</li>
+		</ul>
+		<div class="btn-group btn-group-justified" role="group" aria-label="...">
+			<div class="btn-group" role="group">
+				<a type="button" href="<{:U('look_info',array('id' => $_GET['id'],'pos' => 0))}>" class="btn btn-default <eq name='type' value='0'>active</eq>">全部</a>
+			</div>
+			<div class="btn-group" role="group">
+				<a type="button" href="<{:U('look_info',array('id' => $_GET['id'],'pos' => 1))}>" class="btn btn-default <eq name='type' value='1'>active</eq>">总监</a>
+			</div>
+			<div class="btn-group" role="group">
+				<a type="button" href="<{:U('look_info',array('id' => $_GET['id'],'pos' => 2))}>" class="btn btn-default <eq name='type' value='2'>active</eq>">经理</a>
+			</div>
+			<div class="btn-group" role="group">
+				<a type="button" href="<{:U('look_info',array('id' => $_GET['id'],'pos' => 3))}>" class="btn btn-default <eq name='type' value='3'>active</eq>">主管</a>
+			</div>
+		</div>
+		<hr>	
+		<table class="table tabel-hover table-bordered">
+			<tr>
+				<th>用户名称</th>
+				<th>手机号</th>
+				<th>资产</th>
+				<th>余额</th>
+				<th>是否认证</th>
+			</tr>
+			<volist name="user" id="u">
+				<tr>
+					<td><a href=""><{$u.realname}></a></td>
+					<td><{$u.mobile}></td>
+					<td><{$u['asset']/100}>元</td>
+					<td><{$u['money']/100}>元</td>
+					<td>
+						<eq name="u.is_reg" value="1"><code>已认证</code></eq>
+						<eq name="u.is_reg" value="0"><code>未认证</code></eq>
+					</td>
+				</tr>
+			</volist>
+		</table>
+	</div>
+</div>
+<!-- 发放金额 -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="myModalLabel">发放金额</h4>
+            </div>
+            <form  action="<{:U('give_money')}>" method="post" class='form-inline' target="baocms_frm">
+            <div class="modal-body">
+	            <div class='form-group'>
+	                <div class='control-label'>
+	                   发放金额： <input type="text" name="money" class="form-control"/>
+	                   <input type="hidden" value="<{$shop.shop_id}>" name="shop_id">
+	                </div>
+	            </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                <button type="submit" class="btn btn-primary">提交更改</button>
+            </div>
+            </form>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal -->
+</div>
+<!-- 分红历史 -->
+<div class="modal fade" id="myModal1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="myModalLabel">分红历史</h4>
+            </div>
+            <div class="modal-body">
+            	<volist name="his" id="hiss">
+            	<code>操作者:<{$hiss.name}>在<{$hiss.create_time|date="Y-m-d H:i:s",###}>发放金额<{:floor($hiss['total_money'])/100}>元</code>
+            	<table class="table table-bordered table-striped">
+            		<tr>
+            			<th>获得者</th>
+            			<th>分红金额</th>
+            			<th>发放信息</th>
+            		</tr>
+            		
+            		<volist name="hiss.child" id="hist">
+            			<tr>
+            				<td><{$hist.username}></td>
+            				<td><{:floor($hist['money'])/100}></td>
+            				<td><{$hist.intro}></td>
+            			</tr>
+            		</volist>
+            	
+            	</table>
+            	</volist>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+	function refuse(id){
+		$.post('<{:U("ajax_refuse")}>',{id:id},function(data){
+			location.reload();
+		})
+	}
+	function ok(id){
+		$.post('<{:U("ajax_ok")}>',{id:id},function(data){
+			location.reload();
+		})
+	}
+</script>
+<include  file='public:footer'/>  
+
+

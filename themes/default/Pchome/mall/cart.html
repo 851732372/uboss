@@ -1,0 +1,120 @@
+<include  file='public:heador_niucms'/>  <include file='mall:top'/>
+<div class="blank-20"></div>
+
+<div class="container">
+	<div class="progress progress-big progress-striped radius-big">
+		<div class="progress-bar bg-blue" style="width:33%;">提交订单：33%</div>
+	</div>
+
+	<div class="blank-20"></div>
+	
+	<div class="order-box">
+
+        <form method="post" target="x-frame" action="<{:U('mall/order',array('t'=>$nowtime))}>">
+			<table cellpadding="0" cellspacing="0" width="100%" class="table">
+				<tr>
+					<th width="52%">项目</th>
+					<th width="12%">数量</th>
+					<th width="15%">单价</th>
+					<th width="14%">总价</th>
+					<th width="5%">操作</th>
+				</tr>
+                <php>$total_money = 0;</php>
+                <foreach name="cart_goods" item="item">
+				<tr>
+					<td>
+						<div class="media media-x">
+							<a class="float-left" href="<{:U('mall/detail',array('goods_id'=>$item['goods_id']))}>">
+								<img src="__ROOT__/attachs/<{$item.photo}>" width="71" height="48" class="radius" alt="<{$item.title}>">
+							</a>
+							<div class="media-body">
+								<span><a href="<{:U('mall/item',array('goods_id'=>$item['goods_id']))}>" title="<{$item.intro}>" target="_blank"><{$item.title}></a></span>
+							</div>
+						</div>
+						<div class="blank-10"></div>
+					</td>
+					<td>
+						<div class="blank-20"></div>
+						<div class="num-box">
+							<em class="num-btn jq-jian" data="<{$item['goods_id']}>">-</em>
+							<input type="text" value="<{$item.buy_num}>" rel="<{:round($item['mall_price']/100,2)}>" name="num[<{$item['goods_id']}>]"  class="num-num jq_num" />
+							<em class="num-btn jq-jia" data="<{$item['goods_id']}>">+</em>
+						</div>
+					</td>
+					<td>
+						<div class="blank-20"></div>
+						￥<{:round($item['mall_price']/100,2)}>
+					</td>
+					<td>
+						<div class="blank-20"></div>
+						<span id="jq_total_<{$item.goods_id}>">￥<{:round($item['mall_price'] *  $item['buy_num']/100,2)}></span>
+					</td>
+					<td>
+						<a mini="act" href="<{:U('mall/cartdel2',array('goods_id'=>$item['goods_id'],'t'=>$nowtime))}>">删除</a>
+					</td>
+                    <php>
+                        $total_money+= $item['mall_price'] *  $item['buy_num'];
+                    </php>
+                    </tr>
+                </foreach>
+				
+				<tr>
+					<div class="blank-20"></div>
+					<td colspan="1">应付总金额：<code><span id="jq_total">￥<{:round($total_money/100,2)}></span></code></td>
+					
+					<td colspan="3"></td>
+				</tr>
+			</table>
+			<div class="blank-20"></div>
+			<div class="line">
+				<button class="bg-yellow button button-big" type="submit">提交订单</button>
+			</div>
+		</form>
+	</div>
+</div>
+<script>
+	function changetotal(obj) {
+		var money = obj.parent().find('.jq_num').attr('rel');
+		var num = obj.parent().find('.jq_num').val();
+		var total = money * num;
+		$("#jq_total_" + obj.attr('data')).html('￥' + total);
+		changealltotal();
+	}
+	function changealltotal() {
+		var total_price = 0;
+		$(".jq_num").each(function () {
+			total_price += $(this).val() * $(this).attr('rel');
+		});
+		$("#jq_total").html('￥' + total_price);
+	}
+	$(document).ready(function (e) {
+		$(".jq-jian").click(function () {
+			var v = $(this).parent().find(".jq_num").val();
+			if (v > 1) {
+				v--;
+				$(this).parent().find(".jq_num").val(v);
+			}
+			changetotal($(this));
+		});
+		$(".jq-jia").click(function () {
+			var v = $(this).parent().find(".jq_num").val();
+			if (v < 99) {
+				v++;
+				$(this).parent().find(".jq_num").val(v);
+			}
+			changetotal($(this));
+		});
+		$(".jq_num").change(function () {
+			if ($(this).val() < 1) {
+				$(this).val('1');
+			}
+			if ($(this).val() > 99) {
+				$(this).val('99');
+			}
+			changetotal($(this));
+		});
+	});
+</script>
+<div class="blank-10"></div>
+
+<include file="public:footer_niucms"/>

@@ -1,0 +1,118 @@
+<include file="public:header" /> 
+<include file="public:top"/>
+<include file="public:nav"/>
+<style type="text/css">
+    body{overflow-x:hidden;}
+</style>
+
+<div class="top_img"> 
+    <div class="sy_content1" style="width:1200px; margin: 0px auto;">
+        <div class="left sy_content1_l" style="position:absolute; top: 0px;display:none;">
+            <include file="mall:nav"/>
+        </div>
+    </div>
+</div>
+<link href="__TMPL__statics/css/hotel.css?v=20150718" rel="stylesheet" type="text/css">
+<div class="flexslider">
+	<ul class="slides">
+		<calldata mdl="Ad" where=" closed=0 AND  city_id IN ({$city_ids}) AND site_id=38 and bg_date ELT '{$today}' AND end_date EGT '{$today}' " cache="21600"  order="orderby asc">
+			<li style="background: url(__ROOT__/attachs/<{$item.photo}>) 50% 0 no-repeat;cursor:pointer;" onclick="window.location.href='<{$item.link_url}>'"></li>
+         </calldata>
+	</ul>
+</div>
+<script>
+$(window).load(function() {
+	$('.flexslider').flexslider({
+		directionNav: false,
+		pauseOnAction: false
+	});
+});
+</script>
+<div class="content">
+    <div class="address_4" style="min-height:10px;">
+        
+    </div>
+	
+    <!-- *****************************************优惠专区******************************* -->
+    <div class="address_5"> <span class="left spanOne">推荐酒店</span> <a href="<{:U('shop/index',array('cat'=>$cate_id))}>" class="right">更多优惠>></a> </div>
+    <div class="address_6">
+        <div class="address_left2">
+            <div class="address_zuo"> <calldata mdl="Ad" where=" bg_date ELT '{$today}' AND  city_id IN ({$city_ids}) AND end_date EGT '{$today}' AND closed=0 AND site_id=6" limit="0,1" cache="21600" order="orderby asc">
+                    <a target="_blank" href="<{$item.link_url}>" title="<{$item.title}>"><img src="__ROOT__/attachs/<{$item.photo}>" width="200" height="526"  /></a>
+                </calldata> </div>
+            <div class="address_you" style="border:0px;">
+                <calldata mdl="Shop" where="cate_id in $catesStr and closed=0 " limit="0,6" cache="10800" order="orderby asc">
+                    <div class="left onSale" style="<php>if($index % 3 == 0){echo 'margin-right:0px;';}</php><php>if($index > 3){echo 'margin-bottom:0px;';}</php>"> <a target="_blank" href="<{:U('hotel/detail',array('shop_id'=>$item['shop_id']))}>"><img src="__ROOT__/attachs/<{$item.photo}>" width="229" height="158" /></a>
+                        <p style="height:26px; line-height: 26px; overflow: hidden;"><a target="_blank" href="<{:U('hotel/detail',array('shop_id'=>$item['shop_id']))}>"><{:bao_msubstr($item['shop_name'],0,12,false)}></a></p>
+                        <div class="onSale_1">
+                            <div class="left" style="width:68%;">
+                                <p class="onSale_p" style="line-height:14px;font-size:12px;color:#9a9a9a;float:none;"><{$item['addr']}></p>
+                            </div>
+                            <div class="right"> 
+                                <!-- <a target="_blank" class="sc_cpList_goshp" href="<{:U('hotel/detail',array('shop_id'=>$item['shop_id']))}>">
+                                    <img src="__TMPL__statics/images/tp_33.png" />
+                                </a> -->
+                                <a target="_blank" href="<{:U('hotel/detail',array('shop_id'=>$item['shop_id']))}>" style="display:block;padding:2px 5px;background:#E16A28;color:#fff;">立即预定</a>
+                            </div>
+                        </div>
+                    </div>
+                </calldata>
+            </div>
+        </div>
+        <div class="address_right2"> 
+            <calldata mdl="Ad" where=" bg_date ELT '{$today}' AND  city_id IN ({$city_ids}) AND end_date EGT '{$today}' AND closed=0 AND site_id=7" limit="0,2" cache="21600" order="orderby asc">
+                <li><a target="_blank" href="<{$item.link_url}>" title="<{$item.title}>"><img src="__ROOT__/attachs/<{$item.photo}>" width="191" height="248" /></a></li>
+            </calldata> 
+        </div>
+    </div>
+   
+    <volist name="cates" id="tt" key="k">
+        <div class="shangcheng_floor">
+        <div class="address_7 address_s<{$k}>">
+            <div class="left"> <span class="left sock"><{$k}>F<{$tt['cate_name']}></span>
+                <ul class="address_ul2 left address_ultwo">
+                    
+                            <li><a href="javascript:void(0);"></a></li>
+                       
+                </ul>
+            </div>
+            <ul class="address_ul3 right">
+                
+                   <a target="_blank" href="<{:U('shop/index',array('cat'=>$cate_id,'cate_id'=>$tt['cate_id']))}>">更多......</a>
+               
+            </ul>
+        </div>
+        <div class="address_8 mallleft<{$k}>">
+            <div class="address_left3">
+                <div>
+                    <calldata mdl="Ad" where=" closed=0 AND  city_id IN ({$city_ids}) AND site_id='{$tt['ad']}' and bg_date ELT '{$today}' AND end_date EGT '{$today}' " limit="0,1" cache="21600"  order="orderby asc">
+                        <a href="<{$item.link_url}>"><img src="__ROOT__/attachs/<{$item.photo}>" width="199" height="244" /></a>
+                    </calldata>
+                </div>
+            </div>
+            
+                <div class="address_right3 add2" style="border:none;">
+                    <php>
+                        $aa =1;
+                        foreach($hotels[$tt['cate_id']] as $var){</php>   
+
+                    <div class="left onSale onSale_2" style="<php>if($aa % 4 == 0){echo 'margin-right:0px;';}</php><php>if($aa >4){echo 'margin-bottom:0px;';}</php>"><a target="_blank" href="<{:U('hotel/detail',array('shop_id'=>$var['shop_id']))}>"><img src="__ROOT__/attachs/<{$var.photo}>" width="213" height="158" /></a>
+                        <p style="height:26px; line-height: 26px; overflow: hidden;"><a target="_blank" href="<{:U('hotel/detail',array('shop_id'=>$var['shop_id']))}>"><{:bao_msubstr($var['shop_name'],0,12,false)}></a></p>
+                        <div class="onSale_1">
+                            <div class="left" style="width:68%;">
+                                 <p class="onSale_p" style="line-height:14px;font-size:12px;color:#9a9a9a;float:none;"><{$var['addr']}></p>
+                            </div>
+                            <div class="right"> 
+                                <a target="_blank" href="<{:U('hotel/detail',array('shop_id'=>$var['shop_id']))}>" style="display:block;padding:2px 5px;background:#E16A28;color:#fff;">立即预定</a>
+                            </div>
+                        </div>
+                    </div>
+                    <php>$aa++; }</php>
+                </div>
+                
+           
+        </div>
+        </div>
+    </volist> 
+</div>
+<include file="public:footer"/>

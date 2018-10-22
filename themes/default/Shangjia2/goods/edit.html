@@ -1,0 +1,215 @@
+<include  file='public:header'/>
+
+<link href='__PUBLIC__/assets/stylesheets/bootstrap/bootstrap.css' media='all' rel='stylesheet' type='text/css' />
+<link rel="stylesheet" href="__PUBLIC__/umeditor/themes/default/css/umeditor.min.css" type="text/css">
+<script type="text/javascript" charset="utf-8" src="__PUBLIC__/umeditor/umeditor.config.js"></script>
+<script type="text/javascript" charset="utf-8" src="__PUBLIC__/umeditor/umeditor.min.js"></script>
+<script type="text/javascript" src="__PUBLIC__/umeditor/lang/zh-cn/zh-cn.js"></script>
+
+<link rel="stylesheet" type="text/css" href="__PUBLIC__/webupload/globle.css" />
+<script src="http://www.jq22.com/jquery/jquery-1.10.2.js"></script>
+<script src="__PUBLIC__/webupload/webuploader.min.js"></script>
+<script src="__PUBLIC__/webupload/diyUpload.js"></script>
+
+    <div class="panel penel-default">
+        <div class="panel-heading">
+           <ul class="breadcrumb">
+                <li>
+                    <a href="#">商城管理</a> <span class="divider">></span>
+                </li>
+                <li>
+                    <a href="#">商品编辑</a> <span class="divider">></span>
+                </li>
+            </ul>
+        </div>
+        <div class="panel-body">
+            <form class='form form-horizontal validate-form' style='margin-bottom: 0;' target="baocms_frm" action="<{:U('goods/edit')}>" method="post"/>
+                <input type="hidden" name="goods_id" value="<{$Think.get.goods_id}>">
+                <div class='control-group'>
+                    <div class='control-label'>
+                        <label for='validation_secret'>商品名称</label>
+                    </div>
+                    <div class='controls'>
+                        <input name="title" value="<{$detail.title}>" type='text' />
+                    </div>
+                </div>
+                <div class='control-group'>
+                    <label class='control-label' for='validation_iban'>商品标签</label>
+                    <div class='controls'>
+                        <input data-rule-iban='true' data-rule-required='true' id='validation_iban' name='instructions' value="<{$detail.instructions}>" placeholder='商品标签' type='text' />
+                         <small class='muted'>以 | 隔开</small>
+                    </div>
+                </div>
+               <!--  <div class='control-group'>
+                    <label class='control-label' for='validation_select'>商品分类</label>
+                    <div class='controls'>
+                         <select id="cate_id" name="cate_id" class="manageSelect w200" style="width: 140px;">
+                            <foreach name="cates" item="var">
+                                <eq name="var.parent_id" value="0">
+                                    <option value="<{$var.cate_id}>"  <eq name="var.cate_id" value="$detail.cate_id">selected="selected"</eq> ><{$var.cate_name}></option>                
+                                    <foreach name="cates" item="var2">
+                                        <eq name="var2.parent_id" value="$var.cate_id">
+                                        <option value="<{$var2.cate_id}>"  <eq name="var2.cate_id" value="$detail.cate_id">selected="selected"</eq> > &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<{$var2.cate_name}></option>
+                                        </eq>
+                                    </foreach>
+                                </eq>
+                            </foreach>
+                        </select>
+                    </div>
+                </div> -->
+                <div class='control-group'>
+                    <label class='control-label' for='validation_ip'>商品logo图片</label>
+                    <input type="hidden" name="photo" id="logo" value="<{$detail.photo}>">
+                    <div class='controls'>
+                        <ul class="upload-ul clearfix">
+                            <li style="position: relative;">
+                                <img src="/attachs/<{$detail.photo}>" style="height:90px" width="120px">
+                            </li>
+                            <li class="upload-pick">
+                                <div class="webuploader-container clearfix" id="goodsUpload1"></div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <script>
+                    $(function(){
+                        //上传图片
+                        var $tgaUpload = $('#goodsUpload1').diyUpload({
+                            url:'<{:U("app/upload/uploadify")}>',
+                            success:function( data ) {
+                               $("#logo").val(data._raw);
+                            },  
+                            error:function( err ) { },
+                            buttonText : '',
+                            accept: {
+                                title: "Images",
+                                extensions: 'gif,jpg,jpeg,bmp,png'
+                            },
+                            thumb:{
+                                width:120,
+                                height:90,
+                                quality:100,
+                                allowMagnify:false,
+                                crop:true,
+                                type:"image/jpeg, image/png, image/jpg, image/gif"
+                            }
+                        });
+
+                    });
+                </script>
+                <div class='control-group'>
+                    <label class='control-label' for='validation_ip'>商品图片列表</label>
+                    <input type="hidden" name="photos" id="img">
+                    <div class='controls'>
+                        <ul class="upload-ul clearfix">
+                            <?php if(isset($detail['img'])){ ?>
+                            <volist name="detail.img" id="img">
+                                <?php if(!empty($img)){ ?>
+                                <li style="position: relative;">
+                                    <img src="/attachs/<{$img}>" style="height:90px" width="120px" height="90px"> <span class="close" style="position: absolute;top:0px;right:0px;color:white" onclick="deli(this,<{$key}>,<{$detail.goods_id}>)">&times;</span>
+                                </li>
+                                <?php } ?>
+                            </volist>
+                            <?php } ?>
+                            <li class="upload-pick">
+                                <div class="webuploader-container clearfix" id="goodsUpload"></div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <script>
+                    $(function(){
+                        //上传图片
+                        var $tgaUpload = $('#goodsUpload').diyUpload({
+                            url:'<{:U("app/upload/uploadify")}>',
+                            success:function( data ) {
+                                img = $("#img").val();
+                               $("#img").val(img + ','+ data._raw );
+                            },  
+                            error:function( err ) { },
+                            buttonText : '',
+                            accept: {
+                                title: "Images",
+                                extensions: 'gif,jpg,jpeg,bmp,png'
+                            },
+                            thumb:{
+                                width:120,
+                                height:90,
+                                quality:100,
+                                allowMagnify:true,
+                                crop:true,
+                                type:"image/jpeg, image/png, image/jpg, image/gif"
+                            }
+                        });
+
+                    });
+                    function deli(obj,key,id){
+                        $.post('<{:U("ajax_del")}>',{key:key,id:id},function(data){
+                            $(obj).parent().remove();
+                        })
+                    }
+                </script>
+                <div class='control-group'>
+                    <div class='control-label'>
+                        <label for='validation_phone'>商品价格</label>
+                    </div>
+                    <div class='controls'>
+                        <input name='mall_price' value="<{$detail['mall_price']/100}>" placeholder='商城价格' type='text' />
+                        <span class='add-on'>元</span>
+                    </div>
+                </div>
+                <div class='control-group'>
+                    <div class='control-label'>
+                        <label for='validation_phone'>商品库存</label>
+                    </div>
+                    <div class='controls'>
+                        <input data-rule-iban='true' data-rule-required='true' id='validation_iban' name='stock' value="<{$detail.stock}>" placeholder='商品库存' type='text' />
+                    </div>
+                </div>
+                
+                <div class='control-group'>
+                    <div class='control-label'>
+                        <label for='validation_vin'>规格</label>
+                    </div>
+                    <div class='controls'>
+                        <script type="text/plain" id="data_details1" name="standard" style="width:800px;height:360px;"><{$detail.standard}></script>
+                    </div>
+                </div>
+                <script>
+                    um = UM.getEditor('data_details1', {
+                        imageUrl: "<{:U('app/upload/editor')}>",
+                        imagePath: '__ROOT__/attachs/editor/',
+                        lang: 'zh-cn',
+                        langPath: UMEDITOR_CONFIG.UMEDITOR_HOME_URL + "lang/",
+                        focus: false,
+                        initialFrameHeight:120 
+                    });
+                </script>
+                <div class='control-group'>
+                    <div class='control-label'>
+                        <label for='validation_vin'>温馨提示</label>
+                    </div>
+                    <div class='controls'>
+                        <script type="text/plain" id="data_details" name="details" style="width:800px;height:360px;"><{$detail.details}></script>
+                    </div>
+                </div>
+                <script>
+                    um = UM.getEditor('data_details', {
+                        imageUrl: "<{:U('app/upload/editor')}>",
+                        imagePath: '__ROOT__/attachs/editor/',
+                        lang: 'zh-cn',
+                        langPath: UMEDITOR_CONFIG.UMEDITOR_HOME_URL + "lang/",
+                        focus: false,
+                        initialFrameHeight:120 
+                    });
+                </script>
+                <div class='form-actions' style='margin-bottom:0'>
+                    <button class='btn btn-primary' type='submit'>
+                        <i class='icon-save'></i>
+                        保存数据
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+<include  file='public:footer'/>

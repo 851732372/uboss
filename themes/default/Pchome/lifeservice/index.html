@@ -1,0 +1,52 @@
+<include file="public:header" /> 
+<include file="public:top"/>
+<include file="public:nav2"/>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('.sy_flexslider').flexslider({
+            directionNav: true,
+            pauseOnAction: false
+        });
+        $('.syfq_flexslider').flexslider({
+            directionNav: true,
+            pauseOnAction: false
+        });
+        $('.hottj_flexslider').flexslider({
+            directionNav: true,
+            pauseOnAction: false
+        });
+
+    });//首页轮播js
+</script>
+<div class="content" style="overflow:visible;">
+    <div class="shfwsy_C1">
+        
+            <calldata mdl="Ad" where=" bg_date ELT '{$today}' AND  city_id IN ({$city_ids}) AND end_date EGT '{$today}' AND closed=0 AND site_id=4" limit="0,1" cache="21600" order="orderby asc">
+                <a href="<{$item.link_url}>"><img src="__ROOT__/attachs/<{$item.photo}>" width="1200" height="300"></a>
+            </calldata>
+        
+    </div>
+    <div  class="shadowy shfwsy_C2">
+        <ul>
+            <li>
+                <a href="javascript:void(0);"><div class="left shfwsy_C2-li-l"><em class="i-1"></em><p>下载手机版选择你想要的家政服务类型</p></div>
+                    <div class="left shfwsy_C2-li-r"><img src="__PUBLIC__/img/shfw_sj1.png" width="206" height="367" /></div></a>
+            </li>
+            <li>
+                <a href="javascript:void(0);"><div class="left shfwsy_C2-li-l"><em class="i-2"></em><p>下载手机版选择你想要的家政服务类型</p></div>
+                    <div class="left shfwsy_C2-li-r"><img src="__PUBLIC__/img/shfw_sj2.png" width="206" height="367" /></div></a>
+            </li>
+            <li>
+                <a href="javascript:void(0);"><div class="left shfwsy_C2-li-l"><em class="i-3"></em><p>下载手机版选择你想要的家政服务类型</p></div>
+                    <div class="left shfwsy_C2-li-r"><img src="__PUBLIC__/img/shfw_sj3.png" width="206" height="367" /></div></a>
+            </li>
+            <li>
+                <a href="javascript:void(0);"><div class="left shfwsy_C2-li-l"><em class="i-4"></em><p>下载手机版选择你想要的家政服务类型</p></div>
+                    <div class="left shfwsy_C2-li-r"><img src="__PUBLIC__/img/shfw_sj4.png" width="206" height="367" /></div></a>
+            </li>
+        </ul>
+    </div>
+</div>
+
+
+<include file="public:footer" /> 

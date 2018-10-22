@@ -1,0 +1,56 @@
+<include  file='public:header'/>
+<style>
+    table tr th,td{
+        text-align: center;
+    }
+</style>
+<link rel="stylesheet" href="__PUBLIC__/bs/css/bootstrap.min.css">
+<script src="__PUBLIC__/bs/js/jquery.min.js"></script>
+<script src="__PUBLIC__/bs/js/bootstrap.min.js"></script>
+<div class="panel-heading">
+	<ul class="breadcrumb">
+        <li>
+            <a href="#">评论列表</a> <span class="divider"></span>
+        </li>
+        <li>
+            <a href="#">查看评论</a> 
+        </li>
+    </ul>
+</div>
+	<div class="panel-default">
+		<div class="panel-heading">
+			<div class="pull-right" style="margin-top:5px;margin-left: 25px;">共有<b id="tot"><{$count}></b>条数据</div>
+			<form action="" class="form-inline">
+				<input type="text" class="form-control" name="search">
+				<button class="btn btn-info" type="submit"><span class="glyphicon glyphicon-search">搜索</span></button>
+			</form> 
+		</div> 
+		<div class="panel-body">
+			<table class="table table-bordered"> 
+				<tr>
+					<th>订单号</th>
+					<th>商家</th>
+					<th>商品</th>
+					<th>评论内容</th>
+					<th>评论者</th>
+					<th>评论时间</th>
+					<th>状态</th>
+					<th>操作</th>
+				</tr>
+				<volist name="data" id="data">
+					<tr>
+						<td><{$data.orderno}></td>
+						<td><{$data.shop_name}></td>
+						<td><{$data.title}></td>
+						<td><{$data.content}>/<{$data.comment_img}>/<{$data.comment_starts}></td>
+						<td><{$data.nicknname}></td>
+						<td><{$data.create_time}></td>
+						<td><{$data.status}></td>
+						<td><a href="<{:U('reply_com',array('id' => $data['comment_id']))}>">查看回复</a></td>
+					</tr>
+				</volist>
+			</table>
+		</div>
+		<{$page}>
+	</div>
+<include  file='public:footer'/>    

@@ -1,0 +1,41 @@
+<include  file='public:ex_header'/>  
+<include  file='public:ex_top'/> 
+
+<div class="row">
+	<div class="content">
+		<div class="shangjiaC">
+			<div class="left">
+				<div class="scList_leftNr">
+					<ul>
+						<foreach name="list" item="item">
+							<li>
+								<div class="scList_leftNrLi"><img src="__ROOT__/attachs/<{$item.photo}>" width="163" height="121" />
+									<div class="scList_leftNrLiT"><{$item.shop_name}></div>
+									<p>地址：<{$item.addr}></p>
+									<p>电话：<{$item.tel}><if condition="!empty($item['extension'])">转<{$item.extension}>分机</if></p>
+									<a target="_blank" href="<{:U('mall/shop',array('shop_id'=>$item['shop_id']))}>" class="sj_freeyy scList_enterdp">进入店铺</a>
+								</div>
+							</li>
+						</foreach>
+					</ul>
+				</div>
+				<div class="sj_fy" style="padding-right: 0px;">
+					<{$page}>
+				</div>
+			</div>
+			<div class="right">
+				<div class="sj_ad"><a target="_blank" href="<{:U('shop/apply')}>"><img src="__TMPL__statics/images/sj_img2_03.jpg" width="238" height="280" /></a></div>
+				<div class="new_sj">
+					<h3>新入驻商家</h3>
+					<ul class="new_sjul">
+						<calldata mdl="Shop" where=" closed=0 AND audit=1" limit="0,10" cache="21600" order="shop_id desc">
+							<li><a title="<{$item.shop_name}>" target="_blank" href="<{:U('shop/detail',array('shop_id'=>$item['shop_id']))}>"><{:niuMsubstr($item['shop_name'],0,10,false)}></a></li>
+						</calldata>
+					</ul>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<include file="public:ex_footer"/>

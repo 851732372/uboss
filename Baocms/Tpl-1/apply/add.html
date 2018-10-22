@@ -1,0 +1,55 @@
+<include  file='public:header'/>
+<link rel="stylesheet" href="__PUBLIC__/bs/css/bootstrap.min.css">
+<style>
+	.remberBtn{
+		margin-top: 0px!important;
+	}
+</style>
+<ul class="breadcrumb">
+    <li>
+        <a href="#">合伙人管理</a> <span class="divider"></span>
+    </li>
+    <li>
+        <a href="#">添加合伙人</a> <span class="divider"></span>
+    </li>
+</ul>
+<form  action="" method="POST" target="baocms_frm">
+    <div class="mainScAdd">
+        <div class="tableBox">
+            <table bordercolor="#e1e6eb" cellspacing="0" width="100%" border="1px"  style=" border-collapse: collapse; margin:0px; vertical-align:middle; background-color:#FFF;" >
+	            <tr>
+                    <td class="lfTdBt">选择用户：</td>
+                    <td class="rgTdBt">
+                        <div class="lt">
+                            <input type="hidden" id="user_id" name="user_id"/>
+                            <input type="text" id="mobile" name="mobile" value="" class="manageInput" />
+                        </div>
+                        <a mini="select"  w="1000" h="600" href="<{:U('founder/userinfo')}>" class="remberBtn">选择用户</a>
+                    </td>
+                </tr>
+            	<tr>
+	                <td class="lfTdBt">职位：</td>
+	                <td class="rgTdBt">
+	                    <select id="cate_id" name="apply_position" class="seleFl w210">
+	                    	<option value="1">总监</option>
+	                    	<option value="2">经理</option>
+	                    	<option value="3">主管</option>
+	                    </select>
+	                </td>
+	            </tr>
+	            <tr>
+	                <td class="lfTdBt">选择U店：</td>
+                    <td class="rgTdBt">
+                        <div class="lt">
+                            <input type="hidden" id="shop_id" name="shop_id"/>
+                            <input type="text" id="shop_name" name="shop_name" value="" class="manageInput" />
+                        </div>
+                        <a mini="select"  w="1000" h="600" href="<{:U('apply/select_ustore')}>" class="remberBtn">选择U店</a>
+                    </td>
+	            </tr>
+	        </table>
+       		<input type="submit" value="确认添加" class="smtQrIpt" />
+		</div>
+	</div>
+</form>
+<include  file='public:footer'/>       

@@ -1,0 +1,423 @@
+<include file="public:header"/>
+<include file="public:top"/>
+<include file="public:nav"/>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('.sy_flexslider').flexslider({
+            directionNav: false,
+            pauseOnAction: false
+        });//首页大幻灯片
+        $('.syfq_flexslider').flexslider({
+            directionNav: true,
+            pauseOnAction: false
+        });
+        $('.hottj_flexslider').flexslider({
+            directionNav: true,
+            pauseOnAction: false
+        });
+		
+				
+		$(".sy_flsx .all_locate").mouseover(function(){
+			$(this).parent().find(".all_location_list").addClass("hover");
+			$(".sy_flsx .all_location_list").mouseleave(function(){
+				$(this).removeClass("hover");
+			});
+		});//首页全部区域显示js
+		
+		
+		/*$(".sy_Floor_box .sy_FloorBt .center a").each(function(e){
+			$(this).parents(".sy_Floor_box").find(".sy_FloorNr ul").each(function(i){
+				if(e==i){
+					$(this).parent().find("ul");
+					$(this).show();
+				}
+				else{
+					$(this);
+				}
+			});
+		});*/
+		
+    });
+</script>
+<div class="content" id="index-gun">
+    <div class="sy_content1">
+        <div class="left sy_content1_l">
+            <include file="public:cate"/>
+        </div>
+        <div class="center sy_content1_c">
+        	<div class="sy_hotgz">
+                <div class="sy_hotgzNr">
+                    <div class="sy_flexslider">
+                        <ul class="slides">
+                            <calldata mdl="Ad" where=" closed=0 AND site_id=1 AND  city_id IN ({$city_ids})  AND bg_date ELT '{$today}' AND end_date EGT '{$today}' " limit="0,9" cache="43200" order="orderby asc">
+                                <if condition="$index%3 eq 1">
+                                    <li class="sy_hotgzLi">
+                                        <a target="_blank" href="<{$item.link_url}>"><img src="__ROOT__/attachs/<{$item.photo}>" width="748" height="310" /></a>
+                                    </li>
+                                    <else/>
+                                    <li><a target="_blank" href="<{$item.link_url}>"><img src="__ROOT__/attachs/<{$item.photo}>" width="748" height="310" /></a></li>
+                                </if>
+                            </calldata>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="sy_flsx">
+            	<div>
+                	<div class="title">热门抢购</div>
+                    <ul class="mid_list">
+                        <php>$i=0;</php>
+                        <foreach name="tuancates" item="item">
+                            <eq name="item.is_hot" value="1">
+                            <php>$i++;if($i<12){</php>
+                            <if condition="$item['parent_id'] eq 0">
+                                <li><a title="<{$item.cate_name}>" target="_blank" href="<{:U('tuan/index',array('cat'=>$item['cate_id']))}>"><{$item['cate_name']}></a></li>
+                                <else/>
+                                <li><a title="<{$item.cate_name}>" target="_blank" href="<{:U('tuan/index',array('cat'=>$item['parent_id'],'cate_id'=>$item['cate_id']))}>"><{$item['cate_name']}></a></li>
+                            </if>
+                            <php>}</php>
+                            </eq>
+
+                        </foreach>
+                    </ul>
+                </div>
+                <div>
+                	<div class="title">全部区域</div>
+                    <ul class="mid_list">
+                        <php>$i=0;</php>
+                        <foreach name="areas" item="item">
+                            <php>$i++;if($i<=15&&$item['city_id'] == $city_id){</php>
+                            <li><a href="<{:U('tuan/index',array('area'=>$item['area_id']))}>"><{$areas[$item['area_id']]['area_name']}></a></li>
+                            <php>}</php>
+                        </foreach>
+                    </ul>
+                    <div class="all_locate"></div>
+                    <div class="all_location_list">
+                    	<div class="title">全部区域</div>
+                        <ul class="mid_list">
+                        	<foreach name="areas" item="item">
+                                <php>if($item['city_id'] == $city_id){</php>
+                                <li><a href="<{:U('tuan/index',array('area'=>$item['area_id']))}>"><{$areas[$item['area_id']]['area_name']}></a></li>
+                                <php>}</php>
+                            </foreach>
+                        </ul>
+                    </div>
+                </div>
+                <div>
+                	<div class="title">热门商圈</div>
+                    <ul class="mid_list">
+                        <php>$i=0;</php>
+                            <foreach name="bizs" item="item">
+                                <php>if(in_array($item['area_id'],$limit_area)&&$i<=10&&$item['is_hot']=='1'){</php>
+                                <li><a href="<{:U('tuan/index',array('area'=>$item['area_id'],'business'=>$item['business_id']))}>"><{$bizs[$item['business_id']]['business_name']}></a></li>
+                                <php>$i++;}</php>
+                            </foreach>
+                    </ul>
+                </div>
+            </div>     
+        </div>
+        <div class="right sy_content1_r">
+            <div class="sy_hotfq">
+                <div class="syfq_flexslider">
+                    <ul class="slides">
+                        <calldata mdl="Ad" where=" closed=0 AND site_id=2 AND city_id IN ({$city_ids}) AND bg_date ELT '{$today}' AND end_date EGT '{$today}' " limit="0,3" cache="21600" order="orderby asc">
+                            <li class="sy_hotgzLi"><a target="_blank" href="<{$item.link_url}>"><img src="__ROOT__/attachs/<{$item.photo}>" width="200" height="212" /></a></li>
+                        </calldata>
+                    </ul>
+                </div>
+                <div class="sy_hotfqT"><img src="__TMPL__statics/images/hott_03.jpg" /></div>
+            </div>
+            <div class="sy_c1wx">
+                <p><img src="__PUBLIC__/img/wx.png" width="140" height="140" /></p>
+                <p class="wz">扫一扫关注微信</p>
+                <p><img src="__ROOT__/themes/default/Pchome/statics/images/sywx_03.png" width="64" height="45" /></p>
+            </div>
+        </div>
+        <div class="clear"></div>
+    </div>
+    <div class="sy_content2">
+        <div class="sy_hottjTab">
+            <ul>
+                <li class="on">今日新单</li>
+                <li>最热抢购</li>
+            </ul>
+        </div>
+        <div class="sy_hottj" style="display:block;">
+            <div class="hottj_flexslider">
+                <ul class="slides">
+                    <calldata mdl="Tuan" order="create_time desc" where=" bg_date ELT '{$today}' AND end_date EGT '{$today}' AND audit=1 AND closed=0 AND city_id='{$city_id}'" format='true' cache="600" limit="0,25">
+                        <if condition="$index%5 eq 1">
+                            <li class="sy_hotgzLi">
+                                <ul>
+                                    <li>
+                                        <div class="sy_hottjList"><a title="<{$item['title']}>" target="_blank" href="<{:U('tuan/detail',array('tuan_id'=>$item['tuan_id']))}>"><img src="__ROOT__/attachs/<{$item.photo}>" width="216" height="130" />
+                                                <p class="sy_hottjbt"><{$item['title']}></p>
+                                                <p class="sy_hottjp"><{$item['intro']}></p>
+                                                <hr style=" border:none 0px; border-bottom: 1px solid #e0e0e0; margin-top:6px;" />
+                                                <p class="sy_hottjJg"><span class="left">¥<{:round($item['tuan_price']/100,2)}><del>¥<{:round($item['price']/100,2)}></del></span><span class="right">已售<{$item.sold_num}></span></p>
+                                            </a></div>
+                                    </li>
+                                    <elseif condition="$index%5 eq 0"/>
+                                    <li>
+                                        <div class="sy_hottjList"><a title="<{$item['title']}>" target="_blank" href="<{:U('tuan/detail',array('tuan_id'=>$item['tuan_id']))}>"><img src="__ROOT__/attachs/<{$item.photo}>" width="216" height="130" />
+                                                <p class="sy_hottjbt"><{$item['title']}></p>
+                                                <p class="sy_hottjp"><{$item['intro']}></p>
+                                                <hr style=" border:none 0px; border-bottom: 1px solid #e0e0e0; margin-top:6px;" />
+                                                <p class="sy_hottjJg"><span class="left">¥<{:round($item['tuan_price']/100,2)}><del>¥<{:round($item['price']/100,2)}></del></span><span class="right">已售<{$item.sold_num}></span></p>
+                                            </a></div>
+                                    </li>
+                                </ul>
+                            </li>
+                            <else/>
+                            <li>
+                                <div class="sy_hottjList"><a title="<{$item['title']}>" target="_blank" href="<{:U('tuan/detail',array('tuan_id'=>$item['tuan_id']))}>"><img src="__ROOT__/attachs/<{$item.photo}>" width="216" height="130" />
+                                        <p class="sy_hottjbt"><{$item['title']}></p>
+                                        <p class="sy_hottjp"><{$item['intro']}></p>
+                                        <hr style=" border:none 0px; border-bottom: 1px solid #e0e0e0; margin-top:6px;" />
+                                        <p class="sy_hottjJg"><span class="left">¥<{:round($item['tuan_price']/100,2)}><del>¥<{:round($item['price']/100,2)}></del></span><span class="right">已售<{$item.sold_num}></span></p>
+                                    </a></div>
+                            </li>
+                        </if>
+                    </calldata>
+                </ul>
+            </div>
+        </div>
+        <div class="sy_hottj">
+            <div class="hottj_flexslider">
+                <ul class="slides">
+                    <calldata mdl="Tuan" order="sold_num desc" where=" bg_date ELT '{$today}' AND end_date EGT '{$today}' AND audit=1 AND closed=0 AND city_id='{$city_id}'" format='true' cache="600" limit="0,25">
+                        <if condition="$index%5 eq 1">
+                            <li class="sy_hotgzLi">
+                                <ul>
+                                    <li>
+                                        <div class="sy_hottjList"><a title="<{$item['title']}>" target="_blank" href="<{:U('tuan/detail',array('tuan_id'=>$item['tuan_id']))}>"><img src="__ROOT__/attachs/<{$item.photo}>" width="216" height="130" />
+                                                <p class="sy_hottjbt"><{$item['title']}></p>
+                                                <p class="sy_hottjp"><{$item['intro']}></p>
+                                                <hr style=" border:none 0px; border-bottom: 1px solid #e0e0e0; margin-top:6px;" />
+                                                <p class="sy_hottjJg"><span class="left">¥<{:round($item['tuan_price']/100,2)}><del>¥<{:round($item['price']/100,2)}></del></span><span class="right">已售<{$item.sold_num}></span></p>
+                                            </a></div>
+                                    </li>
+                                    <elseif condition="$index%5 eq 0"/>
+                                    <li>
+                                        <div class="sy_hottjList"><a title="<{$item['title']}>" target="_blank" href="<{:U('tuan/detail',array('tuan_id'=>$item['tuan_id']))}>"><img src="__ROOT__/attachs/<{$item.photo}>" width="216" height="130" />
+                                                <p class="sy_hottjbt"><{$item['title']}></p>
+                                                <p class="sy_hottjp"><{$item['intro']}></p>
+                                                <hr style=" border:none 0px; border-bottom: 1px solid #e0e0e0; margin-top:6px;" />
+                                                <p class="sy_hottjJg"><span class="left">¥<{:round($item['tuan_price']/100,2)}><del>¥<{:round($item['price']/100,2)}></del></span><span class="right">已售<{$item.sold_num}></span></p>
+                                            </a></div>
+                                    </li>
+                                </ul>
+                            </li>
+                            <else/>
+                            <li>
+                                <div class="sy_hottjList"><a title="<{$item['title']}>" target="_blank" href="<{:U('tuan/detail',array('tuan_id'=>$item['tuan_id']))}>"><img src="__ROOT__/attachs/<{$item.photo}>" width="216" height="130" />
+                                        <p class="sy_hottjbt"><{$item['title']}></p>
+                                        <p class="sy_hottjp"><{$item['intro']}></p>
+                                        <hr style=" border:none 0px; border-bottom: 1px solid #e0e0e0; margin-top:6px;" />
+                                        <p class="sy_hottjJg"><span class="left">¥<{:round($item['tuan_price']/100,2)}><del>¥<{:round($item['price']/100,2)}></del></span><span class="right">已售<{$item.sold_num}></span></p>
+                                    </a></div>
+                            </li>
+                        </if>
+                    </calldata>
+                </ul>
+            </div>
+        </div>
+    </div>
+    
+
+
+    
+    <script type="text/javascript" language="javascript">
+    
+		$(document).ready(function(){
+			
+			$('.center a').click(function(){
+				var val = $(this).attr('val');
+				var f = $(this).parent().parent().parent().attr('ajax');
+				$.post('<{:U("Pchome/index/get_arr")}>',{val:val},function(result){
+					if(result.status == 'success'){
+						var arr = result.arr;
+						var res = '';
+						var url = '';
+						var price = 0;
+						var tuan_price = 0;
+						$.each(arr, function (n, value) {
+							url = "<{:U('tuan/detail',array('tuan_id'=>$item['tuan_id']))}>";
+							price = (value.price/100).toFixed(2);
+							tuan_price = (value.tuan_price/100).toFixed(2);
+							res += '<ul>';
+							res += '<li class="sy_FloorLi"><div class="sy_sjcpLi">';
+							res += '<a target="_blank" href="'+url+'"><img src="__ROOT__/attachs/'+value.photo+'"  width="275" height="166" /></a>';
+							res += '<p class="sy_hottjbt">'+value.title+'</p><p class="sy_hottjp">'+value.intro+'</p><hr style="border:none 0px; border-bottom: 1px solid #e0e0e0; margin-top:6px;" />';
+							res += '<p class="sy_hottjJg sy_sjcpJg"><span class="left">¥'+tuan_price+'<del>¥'+price+'</del></span><span class="right"><a target="_blank" class="sy_hottjJd" href="'+url+'">立即抢购</a></span></p>';
+							res += '</div></li>';
+							res += '</ul>';
+
+						});
+						$('#ajaxc'+f).html(res);
+						
+					}else{
+						$('#ajaxc'+f).html('');
+					}
+				},'json')
+			})
+			
+		})
+	
+    </script>
+    
+    <php>$i=0;</php>
+    <foreach name="tuancates" item="item1">
+        <eq name="item1.parent_id" value="0"> 
+        <php>$i++;if($i <= 10){</php>
+        <div class="sy_Floor_box">
+            <div class="radius3 sy_FloorBt" data="top_<{$i}>" id="floor<{$i}>"  ajax="<{$i}>">
+                <div class="left sy_FloorBtz"><span><{$i}>F</span><span class="sy_FloorBtl"><{:msubstr($item1['cate_name'],0,2,'utf-8',false)}></span></div>
+                <div class="fr">
+                    <div class="center">
+                        <php>$i2=0;</php>
+                        <foreach name="tuancates" item="item2">
+                            <eq name="item2.parent_id" value="$item1.cate_id"> 
+                                <php>$i2++;if($i2 <= 10){</php>
+                                <a title="<{$item2.cate_name}>" href="javascript:void(0);" val="<{$item2.cate_id}>"><{$item2.cate_name}></a> <!-- <{:U('tuan/index',array('cat'=>$item1['cate_id'],'cate_id'=>$item2['cate_id']))}> -->
+                                <php>}</php>
+                                </eq>
+                            </foreach>
+                        </div>
+                    <div class="right"><a target="_blank" href="<{:U('tuan/index',array('cat'=>$item1['cate_id']))}>">查看全部>></a></div>
+                    <div class="clear"></div>
+                    </div>
+                <div class="clear"></div>
+            </div>
+            <php>
+                $cate_id = $item1['cate_id']; 
+                $catarray = D('Tuancate')->getChildren($cate_id);
+                $cateids = join(',',$catarray);
+            </php>
+            
+            <div class="sy_FloorNr"  id="ajaxc<{$i}>">
+                <ul>
+                    <calldata mdl="Tuan" order="orderby asc" where=" bg_date ELT '{$today}' AND end_date EGT '{$today}' AND audit=1 AND closed=0 AND city_id='{$city_id}' AND cate_id IN ({$cateids})" format='true' cache="600" limit="0,8">
+                        <li class="sy_FloorLi">
+                            <div class="sy_sjcpLi">
+                                <a target="_blank" href="<{:U('tuan/detail',array('tuan_id'=>$item['tuan_id']))}>"><img src="__ROOT__/attachs/<{$item.photo}>"  width="275" height="166" /></a>
+                                <p class="sy_hottjbt"><{$item.title}></p>
+                                <p class="sy_hottjp"><{$item.intro}></p>
+                                <hr style=" border:none 0px; border-bottom: 1px solid #e0e0e0; margin-top:6px;" />
+                                <p class="sy_hottjJg sy_sjcpJg"><span class="left">¥<{:round($item['tuan_price']/100,2)}><del>¥<{:round($item['price']/100,2)}></del></span><span class="right"><a target="_blank" class="sy_hottjJd" href="<{:U('tuan/detail',array('tuan_id'=>$item['tuan_id']))}>">立即抢购</a></span></p>
+                                <div class="sy_sjcpBq"><eq name="item.freebook" value="1"><span class="sy_sjcpBq1">免预约</span></eq><eq name="item.is_new" value="1"><span class="sy_sjcpBq2">新单</span></eq><eq name="item.is_hot" value="1"><span class="sy_sjcpBq3">热门</span></eq><eq name="item.is_chose" value="1"><span class="sy_sjcpBq4">精选</span></eq></div>
+
+                                </div>
+                            </li>
+                        </calldata>
+                    </ul>
+            </div>
+        </div>
+        <php>}</php>
+        </eq>
+    </foreach>
+</div>
+
+
+<div class="indexpop" id="fox-food">
+    <ul>
+        <php>$i=0;</php>
+        <foreach name="tuancates" item="item">
+            <eq name="item.parent_id" value="0">
+            <php>$i++;</php>
+            <li><a href="#floor<{$i}>"><div class="floorico">&nbsp;</div><{:bao_msubstr($item['cate_name'],0,2,false)}></a></li>
+            </eq>
+        </foreach>
+    </ul>
+</div>
+<script>
+
+
+$(function(){
+    $("#fox-food li").each(function(e){
+        $(this).click(function(event){
+            $(".radius3").each(function(i){
+                if(e==i)
+                {
+                   $("html,body").animate({scrollTop:$(this).offset().top},500);
+                   event.preventDefault();                  
+                }
+            });
+        });
+    });
+});
+
+
+$(document).ready(function(){
+    $(window).scroll(function(){
+        var top = $(document).scrollTop();          //定义变量，获取滚动条的高度
+        var menu = $("#fox-food");                      //定义变量，抓取#menu
+        var items = $("#index-gun").find(".sy_FloorBt");    //定义变量，查找.item
+
+        var curId = "";                             //定义变量，当前所在的楼层item #id 
+
+        items.each(function(){
+            var m = $(this);                        //定义变量，获取当前类
+            var itemsTop = m.offset().top;        //定义变量，获取当前类的top偏移量
+            if(top > itemsTop-92){
+                curId = "#" + m.attr("id");
+            }else{
+                return false;
+            }
+        });
+
+        //给相应的楼层设置cur,取消其他楼层的cur
+        var curLink = menu.find(".cur");
+        if( curId && curLink.attr("href") != curId ){
+            curLink.removeClass("cur");
+            menu.find( "[href=" + curId + "]" ).addClass("cur");
+        }
+        // console.log(top);
+    });
+	/*控制*/
+	$(window).scroll(function () {
+		if ($(window).scrollTop() <220) {
+			$(".indexpop").css("top","220px");
+			$(".indexpop").css("bottom","auto");
+		}
+		else{
+			$(".indexpop").css("top","40px");
+			$(".indexpop").css("bottom","auto");
+		}
+	});
+	
+	
+});
+
+
+$(function () {
+	if (document.all) {
+		$('.indexpop ul li:nth-child(1) .floorico').css('background-position', 'center -2px')
+		$('.indexpop ul li:nth-child(2) .floorico').css('background-position', 'center -69px')
+		$('.indexpop ul li:nth-child(3) .floorico').css('background-position', 'center -131px')
+		$('.indexpop ul li:nth-child(4) .floorico').css('background-position', 'center -266px')
+		$('.indexpop ul li:nth-child(5) .floorico').css('background-position', 'center -470px')
+		$('.indexpop ul li:nth-child(6) .floorico').css('background-position', 'center -330px')
+		$('.indexpop ul li:nth-child(7) .floorico').css('background-position', 'center -601px')
+		$('.indexpop ul li:nth-child(8) .floorico').css('background-position', 'center -399px')
+		$('.indexpop ul li:nth-child(9) .floorico').css('background-position', 'center -532px')
+		$('.indexpop ul li:nth-child(10) .floorico').css('background-position', 'center -198px')
+
+
+		$('.menu_fllist2 .item2:nth-child(1) span').css('background-position', 'center 10px')
+		$('.menu_fllist2 .item2:nth-child(2) span').css('background-position', 'center -35px')
+		$('.menu_fllist2 .item2:nth-child(3) span').css('background-position', 'center -83px')
+		$('.menu_fllist2 .item2:nth-child(4) span').css('background-position', 'center -179px')
+		$('.menu_fllist2 .item2:nth-child(5) span').css('background-position', 'center -324px')
+		$('.menu_fllist2 .item2:nth-child(6) span').css('background-position', 'center -227px')
+		$('.menu_fllist2 .item2:nth-child(7) span').css('background-position', 'center -416px')
+		$('.menu_fllist2 .item2:nth-child(8) span').css('background-position', 'center -273px')
+		$('.menu_fllist2 .item2:nth-child(9) span').css('background-position', 'center -369px')
+		$('.menu_fllist2 .item2:nth-child(10) span').css('background-position', 'center -135px')
+	}
+});
+</script>
+
+<include file="public:footer"/>
+
+

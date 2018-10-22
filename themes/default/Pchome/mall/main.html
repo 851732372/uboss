@@ -1,0 +1,271 @@
+<include  file='public:heador_niucms'/>  <include  file='mall:top'/>  
+<div class="blank-10"></div>
+<div class="container">
+	<div class="line">
+		<div class="x3" style="width:21%;"></div>
+		<div class="x6" style="width:54%;">
+			<div class="main-focos">
+				<div class="banner" data-style="border-white">
+					<div class="carousel">
+						<calldata mdl="Ad" where=" bg_date ELT '{$today}'  AND  city_id IN ({$city_ids}) AND end_date EGT '{$today}' AND closed=0 AND site_id=21" limit="0,3" cache="21600" order="orderby asc">
+						<div class="item"><a href="<{$item.link_url}>"><img src="__ROOT__/attachs/<{$item.photo}>"  /></a></div>
+						</calldata> 
+					</div>
+				</div>
+			</div>
+			<div class="blank-10"></div>
+			<div class="main-roll">
+				<div class="banner" data-pointer="1" data-interval="6" data-item="2"  data-big="4" data-style="border-white">
+					<ul class="carousel">
+						<calldata mdl="Ad" where=" bg_date ELT '{$today}'  AND  city_id IN ({$city_ids}) AND end_date EGT '{$today}' AND closed=0 AND site_id=22" limit="0,8" cache="21600" order="orderby asc">
+						<div class="item"><a href="<{$item.link_url}>"><img src="__ROOT__/attachs/<{$item.photo}>"  /></a></div>
+						</calldata>
+					</ul>
+				</div>
+			</div>
+		</div>
+		<div class="x3">
+			<div class="main-side">
+				<div class="side-user">
+					<div class="line">
+						<div class="x4">
+							<img src="__ROOT__/attachs/<{$MEMBER.face|default='avatar.jpg'}>" width="100%" height="100%" />
+						</div>
+						<div class="x8">
+							<p>Hi! <{$MEMBER.nickname}></p>
+							<p>在这里享全市<em>最低折扣</em>哦</p>
+						</div>
+					</div>
+					<div class="button-group">
+						<a href="<{:U('passport/login')}>" class="button icon-heart-o text-blue"> 登录</a>
+						<a href="<{:U('passport/register')}>" class="button icon-star-o text-green"> 注册</a>
+						<a href="<{:U('shop/apply')}>" class="button icon-thumbs-o-up text-yellow"> 开店</a>
+					</div>
+				</div>
+				
+				<div class="side-ads">
+					<php>$i=0;</php>
+					<calldata mdl="Ad" where=" bg_date ELT '{$today}'  AND  city_id IN ({$city_ids}) AND end_date EGT '{$today}' AND closed=0 AND site_id=23" limit="0,2" cache="21600" order="orderby asc">
+					<php>$i++;</php>
+					<div class="ads-ad <eq name='i' value='2'>border-none</eq>"><a href="<{$item.link_url}>"><img src="__ROOT__/attachs/<{$item.photo}>"  /></a></div>
+					</calldata>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	<!--新品-->
+	<div class="blank-10"></div>
+
+	<div class="rec-block">
+		<div class="line rec-block rec-new">
+			<div class="x2">
+				<div class="rec-left">
+					<div class="left-intro">
+						<h3>今日上新</h3>
+						<p>每天十点上新新品，价格惊喜不断，期待您的光临哦</p>
+						<a class="left-button" href="<{:U('mall/index',array('order'=>'t'))}>">查看更多新品 <i class="icon-angle-right"></i></a>
+					</div>
+					<i class="left-arrow"></i>
+				</div>
+			</div>
+			<div class="x10">
+				<div class="rec-list">
+					<ul>
+						<calldata mdl="Goods" where="closed=0" limit="0,4" cache="10800" order="goods_id desc">
+                        <php>if($item['city_id'] == $city_id){</php>
+						<li>
+							<a class="item-pic" href="<{:U('mall/detail',array('goods_id'=>$item['goods_id']))}>" target="_blank">
+								<img class="lazy" src="__ROOT__/attachs/<{$item.photo}>" />
+							</a>
+							<p class="item-tit"><a href="<{:U('mall/detail',array('goods_id'=>$item['goods_id']))}>" target="_blank"><{$item.title}></a></p>
+							<p class="item-pri"><span>¥ <{:round($item['mall_price']/100,2)}></span> <del>¥ <{:round($item['price']/100,2)}></del></p>
+						</li>
+                        <php>}</php>
+						</calldata>
+					</ul>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	
+	<!--热卖-->
+	<div class="blank-10"></div>
+
+	<div class="rec-block">
+		<div class="line rec-block rec-hot">
+			<div class="x2">
+				<div class="rec-left">
+					<div class="left-intro">
+						<h3>人气爆款</h3>
+						<p>销量排行冠军往往都集结在此，优质优价才能创造爆款</p>
+						<a class="left-button" href="<{:U('mall/index',array('order'=>'s'))}>">查看更多爆款 <i class="icon-angle-right"></i></a>
+					</div>
+					<i class="left-arrow"></i>
+				</div>
+			</div>
+			<div class="x10">
+				<div class="rec-list">
+					<ul>
+						<calldata mdl="Goods" where="closed=0" limit="0,4" cache="10800" order="sold_num desc">
+                        <php>if($item['city_id'] == $city_id){</php>
+						<li>
+							<a class="item-pic" href="<{:U('mall/detail',array('goods_id'=>$item['goods_id']))}>" target="_blank">
+								<img class="lazy" src="__ROOT__/attachs/<{$item.photo}>" />
+							</a>
+							<p class="item-tit"><a href="<{:U('mall/detail',array('goods_id'=>$item['goods_id']))}>" target="_blank"><{$item.title}></a></p>
+							<p class="item-pri"><span>¥ <{:round($item['mall_price']/100,2)}></span> <del>¥ <{:round($item['price']/100,2)}></del></p>
+						</li>
+                        <php>}</php>
+						</calldata>
+					</ul>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	
+	<!--六格-->
+	<div class="blank-10"></div>
+	<div class="main-ht">
+		<h3><{$CONFIG[site][cityname]}> · 服装城</h3>
+		<ul>
+			<li><a href="#">男装</a></li>
+			<li><a href="#">女装</a></li>
+			<li><a href="#">内衣</a></li>
+		</ul>
+	</div>
+	<div class="six-col">
+		<ul class="line">
+			<php>$i = 0;</php>
+			<calldata mdl="Goods" where="cate_id IN(3,4,15,16,17,18) AND closed=0" limit="0,6" cache="10800" order="goods_id desc">
+            <php>if($item['city_id'] == $city_id){</php>
+			<php>$i++;$k=$i%3;</php>
+			<li class="x4 <eq name='k' value='0'>border-right</eq>">
+				<div class="item-des">
+					<h3>韦克瑞希官方旗舰店</h3>
+					<p class="des-tit"><a href="<{:U('mall/detail',array('goods_id'=>$item['goods_id']))}>" target="_blank"><{$item.title}></a></p>
+					<p class="des-pri"><span>¥</span><{:round($item['mall_price']/100,2)}></p>
+				</div>
+				<a class="item-pic" href="<{:U('mall/detail',array('goods_id'=>$item['goods_id']))}>"><img class="lazy" src="__ROOT__/attachs/<{$item.photo}>" /></a>
+			</li>
+            <php>}</php>
+			</calldata>
+		</ul>
+	</div>
+	
+	
+	<!--通栏-->
+	<div class="blank-10"></div>
+	<div class="main-ht">
+		<h3><{$CONFIG[site][cityname]}> · 家居电器</h3>
+	</div>
+	<div class="all-col">
+		<ul class="item">
+			<calldata mdl="Goods" where="cate_id IN (3,4,15,16,17,18) AND closed=0" limit="0,10" cache="10800" order="goods_id desc">
+            <php>if($item['city_id'] == $city_id){</php>
+			<li>
+				<a class="item-pic" href="<{:U('mall/detail',array('goods_id'=>$item['goods_id']))}>">
+					<img class="lazy" src="__ROOT__/attachs/<{$item.photo}>" alt="<{$item['title']}>"/>
+				</a>
+				<a class="item-tit" href="<{:U('mall/detail',array('goods_id'=>$item['goods_id']))}>"><{$item['title']}></a>
+				<span class="item-pri">￥<em><{:round($item['mall_price']/100,2)}></em></span>
+				<p class="item-des">
+					<span class="float-left">已购买<{$item[sold_num]}>次</span>
+					<span class="float-right"><{$item[views]}>人关注</span>
+				</p>
+			</li>
+            <php>}</php>
+			</calldata>
+
+		</ul>
+	</div>
+	
+
+	<!--六格-->
+	<div class="blank-10"></div>
+	<div class="main-ht">
+		<h3><{$CONFIG[site][cityname]}> · 丽人专区</h3>
+	</div>
+	<div class="two-col">
+		<div class="line">
+			<div class="x6">
+				<div class="col-block float-left">
+					<div class="block-ad">
+						<a href="#"><img src="http://pics3.paipaiimg.com/update/20150629/pcd_103109121.jpg" /></a>
+					</div>
+					<ul class="block-list line">
+						<php>$i = 0;</php>
+						<calldata mdl="Goods" where="cate_id IN(3,4,15,16,17,18) AND closed=0" limit="0,4" cache="10800" order="goods_id desc">
+                        <php>if($item['city_id'] == $city_id){</php>
+						<php>$i++;</php>
+						<li class="x6 item-<{$i}>">
+							<div class="item-des">
+								<p class="des-tit"><a href="<{:U('mall/detail',array('goods_id'=>$item['goods_id']))}>"><{$item['title']}></a></p>
+								<p class="des-pri"><span>¥</span><{:round($item['mall_price']/100,2)}></p>
+							</div>
+							<div class="item-pic">
+								<a href="<{:U('mall/detail',array('goods_id'=>$item['goods_id']))}>"><img class="lazy" src="__ROOT__/attachs/<{$item.photo}>" /></a>
+							</div>
+						</li>
+                        <php>}</php>
+						</calldata>
+					</ul>
+				</div>
+			</div>
+			<div class="x6">
+				<div class="col-block float-right">
+					<div class="block-ad">
+						<a href="#"><img src="http://pics3.paipaiimg.com/update/20150629/pcd_103109121.jpg" /></a>
+					</div>
+					<ul class="block-list line">
+						<php>$i = 0;</php>
+						<calldata mdl="Goods" where="cate_id IN(3,4,15,16,17,18) AND closed=0" limit="0,4" cache="10800" order="goods_id desc">
+                        <php>if($item['city_id'] == $city_id){</php>
+						<php>$i++;</php>
+						<li class="x6 item-<{$i}>">
+							<div class="item-des">
+								<p class="des-tit"><a href="<{:U('mall/detail',array('goods_id'=>$item['goods_id']))}>" target="_blank"><{$item['title']}></a></p>
+								<p class="des-pri"><span>¥</span><{:round($item['mall_price']/100,2)}></p>
+							</div>
+							<div class="item-pic">
+								<a href="<{:U('mall/detail',array('goods_id'=>$item['goods_id']))}>" target="_blank"><img class="lazy" src="__ROOT__/attachs/<{$item.photo}>" /></a>
+							</div>
+						</li>
+                        <php>}</php>
+						</calldata>
+					</ul>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	<!--通栏-->
+	<div class="blank-10"></div>
+	<div class="main-ht">
+		<h3><{$CONFIG[site][cityname]}> · 小吃街</h3>
+	</div>
+	<div class="all-col">
+		<ul class="item">
+			<calldata mdl="Goods" where="cate_id IN (3,4,15,16,17,18) AND closed=0" limit="0,10" cache="10800" order="goods_id desc">
+            <php>if($item['city_id'] == $city_id){</php>
+			<li>
+				<a class="item-pic" href="<{:U('mall/detail',array('goods_id'=>$item['goods_id']))}>">
+					<img class="lazy" src="__ROOT__/attachs/<{$item.photo}>" alt="<{$item['title']}>"/>
+				</a>
+				<a class="item-tit" href="<{:U('mall/detail',array('goods_id'=>$item['goods_id']))}>"><{$item['title']}></a>
+				<span class="item-pri">￥<em><{:round($item['mall_price']/100,2)}></em></span>
+				<p class="item-des">
+					<span class="float-left">已购买<{$item[sold_num]}>次</span>
+					<span class="float-right"><{$item[views]}>人关注</span>
+				</p>
+			</li>
+            <php>}</php>
+			</calldata>
+
+		</ul>
+	</div>
+</div>
+
+<include file="public:footer_niucms"/>

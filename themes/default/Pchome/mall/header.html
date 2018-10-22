@@ -1,0 +1,54 @@
+<include  file='public:header'/>    
+
+<!--头部-->
+
+<include  file='public:nav'/> 
+
+<div class="topHead">
+
+    <div class="header">
+
+        <if condition="!empty($CONFIG['site']['logo'])">
+
+            <h2><a href="<{:U('index/index')}>"><img width="220" height="75" src="__ROOT__/attachs/<{$CONFIG.site.logo}>" /></a></h2>
+
+            <else/>
+
+            <h2><a href="<{:U('index/index')}>"><img width="220" height="75" src="__TMPL__statics/images/logo2.jpg" /></a></h2>
+
+        </if>
+
+      
+
+        <div class="tuanTop" style="margin:35px 0 0 50px; float:left; display:inline">
+
+            <form method="post" action="<{:U('mall/index')}>" >
+
+                <input type="text" name="keyword" placeholder="输入关键字查找"  value="<{$keyword}>" class="tuanInput">
+
+                <input type="submit"  value=""  class="tuanBtn">
+
+            </form>
+
+        </div>
+
+        <div class="tuanHot tuanHot2">
+
+            <em>
+
+                <div class="shopNum">
+
+                    <a style="color: #fff;" href="<{:U('mall/cart')}>">购物车<cite id="niucms_cart_num"><{$cartnum}></cite></a>
+
+                </div>
+
+            </em>
+
+            热门搜索：<php>$a =1;</php><foreach name="types" item="item"><if condition="($item['type'] eq 1) or ($item['type'] eq 0)"><php>$a++;if($a <= 3){</php><a href="<{:U('mall/index',array('keyword'=>$item['keyword']))}>"><{$item.keyword}></a>&nbsp;<php>}</php></if></foreach>
+
+        </div>
+
+    </div>
+
+</div>
+

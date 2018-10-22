@@ -1,0 +1,259 @@
+<include  file='public:header'/>
+<style>
+    .breadcrumb .active{
+        background: #ccc;
+        color:#fff;
+    }
+    .breadcrumb li a{
+        padding:5px 10px;
+    }
+</style>
+<link href='__PUBLIC__/assets/stylesheets/bootstrap/bootstrap.css' media='all' rel='stylesheet' type='text/css' />
+<script src="__PUBLIC__/bs/js/jquery.min.js"></script>
+<script src="__PUBLIC__/bs/js/bootstrap.min.js"></script>
+<link rel="stylesheet" type="text/css" href="__PUBLIC__/webupload/globle.css" />
+<script src="__PUBLIC__/webupload/webuploader.min.js"></script>
+<script src="__PUBLIC__/webupload/diyUpload.js"></script>
+
+<div class="panel penel-default">
+    <div class="panel-heading">
+       <ul class="breadcrumb">
+            <li><a href="javascript:;">设置</a><span class="divider">/</span></li>
+            <li><a href="javascript:;">认证消息</a></li>
+        </ul>
+    </div>
+    <div class="panel-body">
+        <form action="" method="POST" class='form form-horizontal validate-form' target="baocms_frm">
+            <div class='control-group'>
+                <div class='control-label'>
+                    <label>真实姓名：</label>
+                </div>
+                <div class='controls'>
+                    <input name="realname" type="text" class="form-control" value="<{$info.realname}>" />
+                </div>
+            </div>
+            <div class='control-group'>
+                <div class='control-label'>
+                    <label>手机号：</label>
+                </div>
+                <div class='controls'>
+                    <input name="telphone" type="text" class="form-control" value="<{$info.telphone}>"/>
+                </div>
+            </div>
+            <div class='control-group'>
+                <div class='control-label'>
+                    <label>身份证号：</label>
+                </div>
+                <div class='controls'>
+                    <input name="idcardno" type="text" class="form-control" value="<{$info.idcardno}>"/>
+                </div>
+            </div>    
+            <div class='control-group'>
+                <div class='control-label'>
+                    <label>身份证照片：</label>
+                </div>
+                <div class='controls'>
+                    <input type="hidden" name="idcardimgs" id="img" value="<{$info.idcardimgs}>">
+                    <ul class="upload-ul clearfix">
+                        <?php if(isset($info['idcardimgs1'])){ ?>
+                        <volist name="info.idcardimgs1" id="img">
+                            <?php if(!empty($img)){ ?>
+                            <li style="position: relative;">
+                                <img src="/attachs/<{$img}>" style="height:90px" width="120px" height="90px"> <span class="close" style="position: absolute;top:0px;right:0px;color:white" onclick="deli(this,<{$key}>,<{$info.id}>,1)">&times;</span>
+                            </li>
+                            <?php } ?>
+                        </volist>
+                        <?php } ?>
+                        <li class="upload-pick">
+                            <div class="webuploader-container clearfix" id="goodsUpload"></div>
+                        </li>
+                    </ul>
+                </div>
+            </div>   
+            <div class='control-group'>
+                <div class='control-label'>
+                    <label>营业执照注册号：</label>
+                </div>
+                <div class='controls'>
+                    <input type="text" name="licence" class="form-control" value="<{$info.licence}>"/>
+                </div>
+            </div>  
+            <div class='control-group'>
+                <div class='control-label'>
+                    <label>营业执照照片：</label>
+                </div>
+                <div class='controls'>
+                    <input type="hidden" name="licenceimgs" id="img2" value="<{$info.licenceimgs}>">
+                    <ul class="upload-ul clearfix">
+                        <?php if(isset($info['licenceimgs1'])){ ?>
+                        <volist name="info.licenceimgs1" id="img">
+                            <?php if(!empty($img)){ ?>
+                            <li style="position: relative;">
+                                <img src="/attachs/<{$img}>" style="height:90px" width="120px" height="90px"> <span class="close" style="position: absolute;top:0px;right:0px;color:white" onclick="deli(this,<{$key}>,<{$info.id}>,2)">&times;</span>
+                            </li>
+                            <?php } ?>
+                        </volist>
+                        <?php } ?>
+                        <li class="upload-pick">
+                            <div class="webuploader-container clearfix" id="goodsUpload2"></div>
+                        </li>
+                    </ul>
+                </div>
+            </div>      
+            <div class='control-group'>
+                <div class='control-label'>
+                    <label>餐饮许可证编号：</label>
+                </div>
+                <div class='controls'>
+                    <input type="text" name="meatlicence"  value="<{$info.meatlicence}>"/>
+                </div>
+            </div>  
+            <div class='control-group'>
+                <div class='control-label'>
+                    <label>餐饮许可证图片：</label>
+                </div>
+                <div class='controls'>
+                    <input type="hidden" name="meatlicenceimgs" id="img3" value="<{$info.meatlicenceimgs}>">
+                    <ul class="upload-ul clearfix">
+                        <?php if(isset($info['meatlicenceimgs1'])){ ?>
+                        <volist name="info.meatlicenceimgs1" id="img">
+                            <?php if(!empty($img)){ ?>
+                            <li style="position: relative;">
+                                <img src="/attachs/<{$img}>" style="height:90px" width="120px" height="90px"> <span class="close" style="position: absolute;top:0px;right:0px;color:white" onclick="deli(this,<{$key}>,<{$info.id}>,3)">&times;</span>
+                            </li>
+                            <?php } ?>
+                        </volist>
+                        <?php } ?>
+                        <li class="upload-pick">
+                            <div class="webuploader-container clearfix" id="goodsUpload3"></div>
+                        </li>
+                    </ul>
+                </div>
+            </div>  
+            
+           
+            <div class='control-group'>
+                <div class='control-label'>
+                    <label>状态：</label>
+                </div>
+                <div class='controls'>
+                    <code>
+                        <eq name="info.audit" value="0">正在审核 </eq>
+                        <eq name="info.audit" value="1">审核不通过 | <a href="javascript:;" data-toggle="modal" data-target="#myModala">拒绝原因</a></eq>
+                        <eq name="info.audit" value="2">通过审核</eq>
+                    </code>
+                </div>
+            </div>  
+            
+            <input type="hidden" name="shop_id" value="<{$info.shop_id}>">
+            <div class='form-actions' style='margin-bottom:0'>
+                <button class='btn btn-primary' type='submit'>
+                    <i class='icon-save'></i>
+                    保存资料
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+   <!-- // 拒绝原因 -->
+    <div class="modal fade" id="myModala" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" id="myModalLabel">拒绝原因</h4>
+                </div>
+                <textarea name="reason" cols="90" rows="10"><{$info.reason}></textarea>
+            </div>
+        </div>
+    </div>
+<script>
+// 身份证
+    $(function(){
+        //上传图片
+        var $tgaUpload = $('#goodsUpload').diyUpload({
+            url:'<{:U("app/upload/uploadify")}>',
+            success:function( data ) {
+                img = $("#img").val();
+               $("#img").val(img + ','+ data._raw );
+            },  
+            error:function( err ) { },
+            buttonText : '',
+            accept: {
+                title: "Images",
+                extensions: 'gif,jpg,jpeg,bmp,png'
+            },
+            thumb:{
+                width:120,
+                height:90,
+                quality:100,
+                allowMagnify:true,
+                crop:true,
+                type:"image/jpeg, image/png, image/jpg, image/gif"
+            }
+        });
+
+    });
+    // 营业执照照片
+     $(function(){
+        //上传图片
+        var $tgaUpload = $('#goodsUpload2').diyUpload({
+            url:'<{:U("app/upload/uploadify")}>',
+            success:function( data ) {
+                img = $("#img2").val();
+               $("#img2").val(img + ','+ data._raw );
+            },  
+            error:function( err ) { },
+            buttonText : '',
+            accept: {
+                title: "Images",
+                extensions: 'gif,jpg,jpeg,bmp,png'
+            },
+            thumb:{
+                width:120,
+                height:90,
+                quality:100,
+                allowMagnify:true,
+                crop:true,
+                type:"image/jpeg, image/png, image/jpg, image/gif"
+            }
+        });
+
+    });
+     // 餐饮许可证图片
+      $(function(){
+        //上传图片
+        var $tgaUpload = $('#goodsUpload3').diyUpload({
+            url:'<{:U("app/upload/uploadify")}>',
+            success:function( data ) {
+                img = $("#img3").val();
+               $("#img3").val(img + ','+ data._raw );
+            },  
+            error:function( err ) { },
+            buttonText : '',
+            accept: {
+                title: "Images",
+                extensions: 'gif,jpg,jpeg,bmp,png'
+            },
+            thumb:{
+                width:120,
+                height:90,
+                quality:100,
+                allowMagnify:true,
+                crop:true,
+                type:"image/jpeg, image/png, image/jpg, image/gif"
+            }
+        });
+
+    });
+    function deli(obj,key,id,type){
+        $.post('<{:U("ajax_del")}>',{key:key,id:id,type:type},function(data){
+            arr = $(obj).parent().parent().prev().val().split(',');
+            arr.splice(key,1);
+            $(obj).parent().parent().prev().val(arr);
+            $(obj).parent().remove();
+        })
+    }
+
+</script>
+<include  file='public:footer'/>

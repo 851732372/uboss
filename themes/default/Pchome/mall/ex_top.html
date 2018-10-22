@@ -1,0 +1,104 @@
+<include  file='public:ex_nav'/> 
+<div class="w-head">
+	<div class="row">
+		<div class="logo">
+			<a href="<{:U('index/index')}>">
+				<if condition="!empty($CONFIG['site']['logo'])">
+				<img width="220" height="75" src="__ROOT__/attachs/<{$CONFIG.site.logo}>" />
+				<else/>
+				<img width="220" height="75" src="__TMPL__statics/images/logo.png" />
+				</if> 
+			</a>
+		</div>
+		<{:W('Weather')}>
+		<div class="soso">
+			<form id="search_form"  method="post" action="<{:U('shop/index')}>">
+				<dl class="soso-type">
+					<dt><span>商家</span> <i class="iconfont">&#xf02a9;</i></dt>
+					<dd>
+						<a href="javascript:void(0);" rel="<{:U('shop/index')}>">商家</a>
+						<a href="javascript:void(0);" rel="<{:U('tuan/index')}>">抢购</a>
+						<a href="javascript:void(0);" rel="<{:U('life/index')}>">信息</a>
+						<a href="javascript:void(0);" rel="<{:U('mall/index')}>">商品</a>
+						<a href="javascript:void(0);" rel="<{:U('huodong/index')}>">活动</a>
+						<a href="javascript:void(0);" rel="<{:U('share/index')}>">分享</a>
+					</dd>
+				</dl>
+				<input class="soso-txt" placeholder="请输入您要搜索的关键词" value="<{$keyword}>" name="keyword" type="text">
+				<input type="submit" class="soso-btn" value="搜索" />
+			</form>
+			<p>
+			热门搜索：<php>$a =1;</php><foreach name="kw" item="item"><if condition="($item['type'] eq 1) or ($item['type'] eq 0)"><php>$a++;if($a <= 6){</php><a href="<{:U('shop/index',array('keyword'=>$item['keyword']))}>"><{$item.keyword}></a>&nbsp;<php>}</php></if></foreach>
+			</p>
+		</div>
+	</div>
+</div>
+
+<div class="clear"></div>
+
+
+<div class="w-nav">
+	<div class="row">
+		<div id="nav-drop" class="nav-drop <if condition="$act eq 'main'"> drop-have</if>">
+			<span class="drop-title">全部分类<i class="iconfont">&#xe60d;</i></span>
+			<div class="drop-box">
+					<div class="cate-tree">
+                        <volist name="goodscate" id="item" key="index">
+                        <eq name="item.parent_id" value="0">
+					
+						<dl>
+							<dt><a href="<{:U('mall/index',array('cat'=>$item['cate_id']))}>" ><{$item.cate_name}></a></dt>
+							<dd class="sub-nav">
+								<ul>
+									<php>$j=1;</php>
+									<foreach name="goodscate" item="var">
+                                    <eq name="var['parent_id']" value="$item['cate_id']">
+									<if condition="$j elt 3">
+                                    <li><a href="<{:U('mall/index',array('cat'=>$var['cate_id']))}>"><{$var.cate_name}></a></li>
+									</if>
+                                    <php>$j++;</php>
+                                    </eq>
+                                    </foreach>
+								</ul>
+							</dd>
+							<dd class="pop-nav">
+								<span><a href="<{:U('mall/index',array('cat'=>$item['cate_id']))}>"><{$item.cate_name}></a></span>
+								<ul>
+                                    <php>$j=1;</php>
+                                    <foreach name="goodscate" item="var">
+                                        <eq name="var['parent_id']" value="$item['cate_id']">
+                                        <li><a href="<{:U('mall/index',array('cat'=>$var['cate_id']))}>"><{$var.cate_name}></a>&nbsp;&nbsp;|</li>
+                                        <php>$j++;</php>
+                                        </eq>
+                                    </foreach>
+								</ul>
+							</dd>
+						</dl>
+                        </eq>
+                        </volist>
+					</div>			
+			</div>
+		</div>
+		<div class="nav-main">
+			<ul>
+				<li <if condition="$ctl eq  'index'">class="active"</if> ><a title="首页" href="/" >首页</a></li>
+				<li <if condition="$ctl eq  'news'">class="active"</if> ><a title="新闻" href="<{:U('news/index')}>" >新闻</a></li>
+				<li <if condition="$ctl eq  'shop'">class="active"</if> ><a title="商家" href="<{:U('shop/index')}>" >商家</a></li>
+				<li <if condition="$ctl eq  'huodong'">class="active"</if> ><a title="活动" href="<{:U('huodong/index')}>" >活动</a></li>
+				<li <if condition="$ctl eq  'tuan'">class="active"</if> ><a title="抢购" href="<{:U('tuan/index')}>" >抢购</a></li>
+				<li <if condition="$ctl eq  'mall'">class="active"</if> ><a title="购物" href="<{:U('mall/main')}>" >购物</a></li>
+				<li <if condition="$ctl eq  'coupon'">class="active"</if> ><a title="优惠" href="<{:U('coupon/index')}>" >优惠</a></li>
+				<li <if condition="$ctl eq  'ele'">class="active"</if> ><a title="餐饮" href="<{:U('ele/index')}>" >餐饮</a>
+				<span class="tip-dingzuo"></span></li>
+				<li <if condition="$ctl eq  'life'">class="active"</if> ><a title="信息" href="<{:U('life/index')}>" >信息</a></li>
+				<li <if condition="$ctl eq  'billboard'">class="active"</if> ><a title="榜单" href="<{:U('billboard/index')}>" >榜单</a></li>
+				<li <if condition="$ctl eq  'jifen' or $ctl eq 'vip'">class="active"</if> ><a title="积分商城" href="<{:U('jifen/main')}>" >积分</a></li>
+				<li <if condition="$ctl eq  'tieba'">class="active"</if>><a title="贴吧" href="<{:U('tieba/index')}>">贴吧</a></li>
+				<li <if condition="$ctl eq  'community'">class="active"</if>><a title="小区" href="<{:U('community/index')}>">小区</a></li>
+			</ul>
+		</div>
+	</div>
+</div>
+
+
+<div class="clear"></div>

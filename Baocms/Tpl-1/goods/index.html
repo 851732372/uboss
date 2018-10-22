@@ -1,0 +1,131 @@
+<include  file='public:header'/>
+<link rel="stylesheet" href="__PUBLIC__/bs/css/bootstrap.min.css">
+<style>
+    tr th,tr td{
+        text-align: center;
+        vertical-align: middle;
+    }
+</style>
+<ul class="breadcrumb">
+    <li>
+        <a href="#">商家管理</a></span>
+    </li>
+    <li>
+        <a href="#">商品列表</a></span>
+    </li>
+</ul>
+
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <a href="<{:U('goods/create')}>" class="btn btn-info btn-sm">添加商品</a>
+        <form method="post" action="<{:U('goods/index')}>" class="pull-right form-inline">
+            <div class="form-group">
+                <select name="shop_id" id="" class="form-control">
+                    <option value="">请选择商家</option>
+                    <volist name="shop" id="shop">
+                        <option value="<{$shop.shop_id}>" <eq name="shop.shop_id" value="$shop_id">selected="selected"</eq> ><{$shop.shop_name}>(<{$shop.shop_id}>)</option>
+                    </volist>
+                </select>
+            </div>
+          <!--   <div class="form-group">
+                <select class="form-control" name="audit">
+                    <option>全部</option>
+                    <option value="-1" <eq name="audit" value="-1">selected="selected"</eq> >等待审核</option>
+                    <option value="1" <eq name="audit" value="1">selected="selected"</eq> >正常</option>
+                </select>
+            </div> -->
+            <div class="form-group">
+                <select class="form-control" name="is_shelf">
+                    <option value="">全部</option>
+                    <option value="1" <eq name="is_shelf" value="1">selected="selected"</eq> >上架</option>
+                    <option value="2" <eq name="is_shelf" value="2">selected="selected"</eq> >下架</option>
+                </select>
+            </div>
+             <div class="form-group">
+                <select class="form-control" name="closed">
+                    <option value="">状态</option>
+                    <option value="1" <eq name="closed" value="1">selected="selected"</eq> >已删除</option>
+                    <option value="0" <eq name="closed" value="0">selected="selected"</eq> >正常</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <input type="text" name="title" value="<{$title}>" class="form-control" placeholder="商品名称"/>
+            </div>
+            <input type="submit" class="btn btn-info" value="  搜索" />
+        </form>
+        <span>共有<{$count}>条数据</span>
+    </div>
+    <div class="panel-body">
+        <table class="table table-bordered table-hover">
+            <tr>
+                <td class="w50"><input type="checkbox" class="checkAll" rel="goods_id" /></td>
+                <td class="w50">ID</td>
+                <td>产品名称</td>
+                <td>商家</td>
+                <td>缩略图</td>
+                <td>价格</td>
+                <td>卖出数量</td>
+                <td>浏览量</td>
+                <td>创建时间</td>
+                <td>状态</td>
+                <!-- <td>所属分类</td> -->
+                <!-- <td>是否审核</td> -->
+                <td>上下架</td>
+                <td>操作</td>
+            </tr>
+            <foreach name="list" item="var">
+                <tr>
+                    <td><input class="child_goods_id" type="checkbox" name="goods_id[]" value="<{$var.goods_id}>" /> </td>
+                    <td><{$var.goods_id}></td>
+                    <td title="<{$var.title}>"><{$var.title|mb_substr=###,0,8,'utf-8'}>...</td>
+                    <td title="<{$var.shop_name}>"><{$var.shop_name|mb_substr=###,0,8,'utf-8'}>...</td>
+                    <td><img src="__ROOT__/attachs/<{$var.photo}>" class="img-circle" width="50px" /></td>
+                    <td><{$var['price']/100}>元</td>
+                    <td><{$var.sold_num}></td>
+                    <td><{$var.views}></td>
+                    <td><{$var.create_time|date='Y-m-d H:i:s',###}></td>
+                    <td>
+                        <eq name="var.closed" value="1"><code>已删除</code></eq>
+                        <eq name="var.closed" value="0">正常</eq>
+                    </td>
+                    <!-- <td><{$var.cate_name}></td> -->
+                   <!--  <eq name="var.closed" value="0">
+                    <td>
+                        <eq name="var.audit" value="0">
+                            <{:BA('goods/audit',array("goods_id"=>$var["goods_id"]),'通过','act','a2')}> 
+                            <{:BA('goods/unaudit',array("goods_id"=>$var["goods_id"]),'拒绝','act','a2')}> 
+                        </eq>
+                        <eq name="var.audit" value="-1"><code>拒绝</code></eq>
+                        <eq name="var.audit" value="1">通过</eq>
+                    </td>
+                    <td>
+                    <{:BA('goods/edit',array("goods_id"=>$var["goods_id"]),'编辑','','a2')}> | 
+                    <{:BA('goods/delete',array("goods_id"=>$var["goods_id"]),'删除','act','a2')}>
+                    </td>
+                    </eq> -->
+                   
+                    <eq name="var.closed" value="0">
+                    <td>
+                        <eq name="var.is_shelf" value="1">已上架</eq>
+                        <eq name="var.is_shelf" value="0"><code>已下架</code></eq>
+                    </td>
+                    <td>
+                        <eq name="var.is_shelf" value="0">
+                            <{:BA('goods/shelf',array("goods_id"=>$var["goods_id"]),'上架','act','a2')}> |
+                           
+                        </eq>
+                        <eq name="var.is_shelf" value="1">
+                            <{:BA('goods/unshelf',array("goods_id"=>$var["goods_id"]),'下架','act','a2')}> |
+                        </eq>
+                    <{:BA('goods/edit',array("goods_id"=>$var["goods_id"]),'编辑','','a2')}> | 
+                    <{:BA('goods/delete',array("goods_id"=>$var["goods_id"]),'删除','act','a2')}>
+                    </td>
+                    </eq>
+                </tr>
+            </foreach>
+        </table>
+        <{$page}>
+    </div>
+    
+</div>
+<include  file='public:footer'/>       

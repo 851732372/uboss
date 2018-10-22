@@ -1,0 +1,50 @@
+<include  file='public:header'/>
+<script src="__PUBLIC__/js/my97/WdatePicker.js"></script>
+<link rel="stylesheet" href="__PUBLIC__/bs/css/bootstrap.min.css">
+<div class="sjgl_lead">
+    <ul>
+        <li><a href="#">商家管理</a> > <a href="">客户</a> > <a>商品详情</a></li>
+    </ul>
+</div>
+<style>
+    tr td,th{
+        text-align: center;
+        vertical-align: middle!important;
+    }
+    table p{
+        margin:0px!important;
+    }
+</style>
+<table class="table table-bordered">
+    <tr>
+        <th>商品id</th>
+        <th>商品名称</th>
+        <th>商品金额</th>
+        <th>数量</th>
+        <th>总价</th>
+        <th>状态</th>
+        <th>下单时间</th>
+    </tr>
+    <tr>
+        <td><{$goods.goods_id}></td>
+        <td><{$goods.title}></td>
+        <td><{$goods['settlement_price']/100}>元</td>
+        <td><{$goods.num}></td>
+        <td><{$goods['total']/100 }>元</td>
+        <td>
+            <eq name="goods.status" value="1">待付款</eq>
+            <eq name="goods.status" value="2">支付超时</eq>
+            <eq name="goods.status" value="3">取消订单</eq>
+            <eq name="goods.status" value="4">已付款</eq>
+            <eq name="goods.status" value="5">付款失败</eq>
+            <eq name="goods.status" value="6">待使用</eq>
+            <eq name="goods.status" value="7">待评价</eq>
+            <eq name="goods.status" value="8">已完成</eq>
+            <eq name="goods.status" value="9">退款中</eq>
+            <eq name="goods.status" value="10">退款失败</eq>
+            <eq name="goods.status" value="11">已退款</eq>
+        </td>
+        <td><{$goods.time|date='Y-m-d H:i:s',###}></td>
+    </tr>
+</table>
+<include  file='public:footer'/>

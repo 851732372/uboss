@@ -1,0 +1,333 @@
+<include  file='public:heador_niucms'/> 
+ <include  file='mall:top'/> 
+
+<div class="container">
+	<div class="blank-10"></div> 
+	<ul class="bread bg">
+		<li><a href="<{:U('index/index')}>" title="<{$CONFIG.site.sitename}>"><{$CONFIG.site.sitename}></a></li>
+		<li><a href="<{:U('mall/main')}>">在线商城</a></li>
+		<if condition="$cate"><li><a title="<{$cate['cate_name']}>" href="<{:LinkTo('mall/index',array('cat'=>$cate['cate_id']))}>"><{$cate['cate_name']}></a></li></if>
+		<li><{$detail.title}></li>
+	</ul>
+
+	<div class="line">
+		<div class="x9">
+			<div class="item-detail">
+				<div class="i-pic">
+					<img src="__ROOT__/attachs/<{$detail.photo}>" alt="<{$detail.title}>" />
+				</div>
+				<div class="i-det">
+					<h1><{$detail.title}></h1>
+					<ul class="meta-box">
+						<li class="pri-1"><span>市场价</span><del>￥<{:round($detail['price']/100,2)}></del></li>
+						<li class="pri-2"><span>折扣价</span><em>￥<{:round($detail['mall_price']/100,2)}></em></li>
+						<li class="pri-n">
+							<dl class="f-l">
+								<dd><{$totalnum}></dd>
+								<dt>评价数量</dt>
+							</dl>
+							<dl class="f-r">
+								<dd><{$detail.sold_num}></dd>
+								<dt>交易成功</dt>
+							</dl>
+						</li>
+					</ul>
+					<p class="meta-add">所在地：<{$shop.addr}></p>
+					
+					<div class="line"></div>
+					<div class="blank"></div>
+					<div class="meta-buy">
+							<code>数量：</code>
+								<div class="num-box">
+									<em id="jq-jian" class="num-btn">-</em><input type="text" value="1" name="num" id="jq-num" class="num-num" />
+									<em id="jq-jia" class="num-btn">+</em>
+								</div>
+							<script>
+			  
+								$(document).ready(function(){
+									$("#jq-jia").click(function(){
+										var num = $("#jq-num").val();
+										if (num < 99){
+											num++;
+										}
+										$("#jq-num").val(num);
+								 
+									});
+									$("#jq-jian").click(function(){
+										var num = $("#jq-num").val();
+										if (num > 1){
+											num--;
+										}
+										$("#jq-num").val(num);
+									
+									});
+									
+								});
+							</script>
+					</div>
+					<div class="meta-ctrl">
+						<div class="ctrl-btn">
+							<a mini='buy' rel="jq-num"  href="<{:U('mall/cartadd2',array('goods_id'=>$detail['goods_id']))}>">立即购买</a>
+							<a mini="buy" rel="jq-num" href="<{:U('mall/cartadd',array('goods_id'=>$detail['goods_id']))}>"><i class="icon-shopping-cart"></i> 加入购物车</a>
+						</div>
+						<div class="ctrl-share">
+							<span style="width:120px;" data-tag="share_1" class="bdsharebuttonbox">
+								<a mini="act" href="<{:U('shop/favorites',array('shop_id'=>$detail['shop_id']))}>">收藏</a>
+								<a href="javascript:void(0);" data-cmd="more">分享</a>
+							</span>
+							<script>window._bd_share_config={share : [{"tag" : "share_1",'bdCustomStyle':'__TMPL__statics/empty.css'}]};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];</script>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="x3">
+			<div class="shop-detail">
+				<div class="s-det <if condition="shop.wei_date eq $today">s-det-g<else />s-det-n</if>">
+					<h3><a target="_blank" href="<{:U('mall/shop',array('shop_id'=>$shop['shop_id']))}>"><{$shop.shop_name}></a></h3>
+					<div>店铺总评：<span class="ui-starbar"><span style="width:<{:round($shop['score']*2,2)}>%;"></span></span></div>
+					<p>店铺掌柜：<{$shop.contact}></p>
+					<p>联系电话：<{$shop.tel}></p>
+					<p>营业时间：<{$ex.business_time}></p>
+					<if condition="$shop.qq neq ''">
+					<p>在线客服：<a target="_blank" href="http://wpa.qq.com/msgrd?v=3&uin=<{$shop.qq}>&site=qq&menu=yes"><img border="0" src="http://wpa.qq.com/pa?p=2:<{$shop.qq}>:51" alt="点击这里给我发消息" title="点击这里给我发消息"/></a></p>
+					</if>
+					<div class="s-tag">
+						<gt name="shop.card_date" value="$today"><span>卡</span></gt>
+						<gt name="shop.niu_date" value="$today"><span class="ab">宝</span></gt>
+						<gt name="shop.wei_date" value="$today"><span class="ah">微</span></gt>
+						<lt name="shop.orderby" value="100"><span class="stg">推广</span></lt>
+					</div>
+					
+					<div class="wei-pic">
+						<img src="<{$ex['wei_pic']}>" width="120" height="120" />
+						 <p>扫描商家微信,轻松购享优惠</p>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="blank-10"></div>
+
+	<div class="line">
+		<div class="x9">
+			<div class="item-deal">
+				<div class="deal-hd fixed">
+					<ul class="spy" data-offset-spy="100" data-offset-nav="40" >
+						<li class="active"><a rel="#spy-content">商品详情</a></li>
+						<li><a rel="#spy-shop2">购买须知</a></li>
+						<li><a rel="#spy-shop">商家介绍</a></li>
+						<li><a rel="#spy-order">购买记录</a></li>
+						<li><a rel="#spy-ping">会员评价</a></li>
+					</ul>
+				</div>
+				<div class="deal-bd" id="spy-content">
+					<h4 id="spy-1">商品详情</h4>
+					<div class="deal-txt">
+						<{$detail.details}>
+					</div>
+					<div class="blank-10" style="   clear: both;"></div>
+					<h4 id="spy-shop2">购买须知</h4>
+					<div class="deal-txt">
+						<{$detail.instructions}>
+					</div>
+					<div class="blank-10" style="   clear: both;"></div>
+					
+					<h4 id="spy-shop">商家介绍</h4>
+					<div class="deal-shop line">
+						<div class="x5">
+							<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=7b92b3afff29988b6d4dbf9a00698ed8"></script>
+							<div id="allmap" style="width:340px;height:260px;"></div>
+						</div>
+                         <!--店铺新的介绍开始--> 
+                         <div class="x7">
+                         
+                         
+                          <div class="left spxq_xqMap_r">
+                        <script>
+                            $(function () {
+                                $(".spxq_xqMapList li").each(function (e) {
+                                    $(this).click(function () {
+                                        $(".spxq_xqMapList li").removeClass("on");
+                                        $(this).addClass("on");
+                                        $(".spxq_xqMapListNr").each(function (i) {
+                                            if (e == i) {
+                                                $(".spxq_xqMapListNr").hide();
+                                                $(this).show();
+                                            }
+                                            else {
+                                                $(this).hide();
+                                            }
+                                        });
+                                    });
+                                });
+                            });
+                        </script>			
+                        <div class="left spxq_xqMapList">
+                        <ul>
+                            <php>$i=0;</php>
+                            <foreach name="lists" item="item">
+                                <php>$i++;if($i<=5){</php>
+                                <li id="li_<{$i}>" <if condition="$i eq 1">class="on"</if> ><{$item.name}></li>
+                                <php>}else{</php>
+                                <li id="li_<{$i}>" style="display:none;"><{$item.name}></li>
+                                <php>}</php>
+                            </foreach>
+                        </ul>
+                    </div>
+                    <div class="right" style="width:326px;">
+                        <php>$i=0;</php>
+                        <foreach name="lists" item="item">
+                            <php>$i++;if($i<=5){</php>
+                            <div class="spxq_xqMapListNr" id="detail_<{$i}>" <if condition="$i eq 1"> style="display:block;"</if> >
+                                <table width="100%" class="spxq_table" border="0" cellspacing="0" cellpadding="0">
+                                    <tr>
+                                        <td colspan="2"><p class="spxq_xqMapT"><{$shop.shop_name}>（<{$item.name}>）</p></td>
+                                    </tr>
+                                    <tr>
+                                        <td width="50"><p class="spxq_tabT">评价：</p></td>
+                                        <td><a class="" href=""><{$item.score_num}>人评价</a></td>
+                                    </tr>
+                                    <tr>
+                                        <td><p class="spxq_tabT">地址：</p></td>
+                                        <td><p class="spxq_xqMapWz"><{$item.addr}></p></td>
+                                    </tr>
+                                    <tr>
+                                        <td><p class="spxq_tabT">电话：</p></td>
+                                        <td><p class="spxq_xqMapWz"><{$item.telephone}></P></td>
+                                    </tr>
+                                </table>
+                            </div>
+                            <php>}else{</php>
+                            <div class="spxq_xqMapListNr" style="display:none;" id="detail_<{$i}>">
+                                <table width="100%" class="spxq_table" border="0" cellspacing="0" cellpadding="0">
+                                    <tr>
+                                        <td colspan="2"><p class="spxq_xqMapT"><{$shop.shop_name}>（<{$item.name}>）</p></td>
+                                    </tr>
+                                    <tr>
+                                        <td width="50"><p class="spxq_tabT">评价：</p></td>
+                                        <td><a class="" href=""><{$item.score_num}>人评价</a></td>
+                                    </tr>
+                                    <tr>
+                                        <td><p class="spxq_tabT">地址：</p></td>
+                                        <td><p class="spxq_xqMapWz"><{$item.addr}></p></td>
+                                    </tr>
+                                    <tr>
+                                        <td><p class="spxq_tabT">电话：</p></td>
+                                        <td><p class="spxq_xqMapWz"><{$item.telephone}></P></td>
+                                    </tr>
+                                </table>
+
+                            </div>
+                            <php>}</php>
+                        </foreach>
+                    </div>
+
+                </div>
+                         
+                         
+                         
+                         
+                         
+                         </div>
+                          <!--店铺新的介绍开始--> 
+                        
+                       <!--店铺老的介绍开
+						
+							<h3><a href="<{:U('shop/detail',array('shop_id'=>$shop['shop_id']))}>" target="_blank"><{$shop.shop_name}></a></h3>
+							<p><span class="ui-starbar"><span style="width:<{:round($shop['score']*2,2)}>%;"></span></span></p>
+							<p>人均消费: <em>￥158</em>元</p>
+							<p>用户评价：<em><{$totalnum}></em> 条用户评价</p>
+							<p>商家地址：<{$shop.addr}><if condition="!empty($ex['near'])">(<{$ex.near}>)</if></p>
+							<p>联系电话：<{$shop.tel}></p>
+							<p>营业时间：<{$ex.business_time}></p>
+				
+                          <!--店铺老的介绍结束-->  
+                        
+                        
+                        
+                        
+					</div>
+                    
+					<h4 id="spy-order">购买记录</h4>
+					<if condition="empty($allrecod)">
+					<div class="deal-txt">
+					暂时还没有用户下单，赶紧下单抢购哦！
+					</div>
+					<else />
+					<ul class="deal-order">
+						<foreach name="allrecod" item="var">
+							<li class="line">
+								<{$var.create_time|date='Y-m-d',###}> 售出 <{$var.num}>件，单价￥<{:round($var['price']/100,2)}>，总计：￥<{:round($var['total_price']/100,2)}>
+							</li>
+						</foreach>
+					</ul>
+					</if>
+					<div class="blank-10"></div>
+					<h4 id="spy-ping">会员评价</h4>
+					<if condition="empty($list)">
+					<div class="deal-txt">
+					暂时没有用户对该商品进行评价。
+					</div>
+					<else />
+					<div class="del-reply">
+						<foreach name="list" item="var">
+						<dl>
+							<dt><a target="_blank" title="<{$users[$var['user_id']]['nickname']}>" href="<{:U('blog/index',array('user_id'=>$var['user_id']))}>"><img src="__ROOT__/attachs/<{$users[$var['user_id']]['face']|default='default.jpg'}>" /></a>
+							</dt>
+							<dd>
+								<div class="rep-txt">
+									<php>$score = $var['score']*10;</php>
+									<a target="_blank" title="<{$users[$var['user_id']]['nickname']}>" href="<{:U('blog/index',array('user_id'=>$var['user_id']))}>"><{$users[$var['user_id']]['nickname']}></a>
+									<span class="ui-starbar"><span style="width:<{$score}>%;"></span></span>
+								</div>
+								<div class="rep-txt">
+									<{$var.contents}>
+									<p class="rep-time"><{$var.create_time|date='Y-m-d',###}></p>
+								</div>
+							</dd>
+						</dl>
+						</foreach>
+					</div>
+					</if>
+				</div>
+			</div>
+		</div>
+		<div class="x3">
+			<div class="deal-side">
+				<div class="side-hd">
+					<h3>精品推荐</h3>
+				</div>
+				<div class="side-bd">
+					<ul>
+						<calldata mdl="Goods" where=" closed=0 AND audit=1  AND end_date EGT '{$today}' AND is_mall=1 " limit="0,8" cache="43200" order="orderby asc">
+							<li>
+								<a class="pic" href="<{:U('mall/detail',array('goods_id'=>$item['goods_id']))}>" title="<{$item.title}>" target="_blank"><img src="__ROOT__/attachs/<{$item.photo}>"  /></a>
+								<div class="des">
+									<h3><a href="<{:U('mall/detail',array('goods_id'=>$item['goods_id']))}>" title="<{$item.title}>" target="_blank"><{:niuMsubstr($item['title'],0,15,false)}></a></h3>
+									<php>$itr = cleanHtml($item['instructions']);</php>
+									<p><{:niuMsubstr($itr,0,20,false)}></p>
+									<p class="pri"><em>￥<{:round($item['mall_price']/100,2)}></em><del>￥<{:round($item['price']/100,2)}></del></p>
+								</div>
+							</li>
+						</calldata>
+					</ul>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+	<script>
+	// 百度地图API功能
+	var map = new BMap.Map("allmap");
+	map.centerAndZoom(new BMap.Point("<{$shop.lng}>", "<{$shop.lat}>"), 15);
+	var point = new BMap.Point("<{$shop.lng}>", "<{$shop.lat}>");
+	map.centerAndZoom(point, 15);
+	var marker = new BMap.Marker(point); // 创建标注
+	map.clearOverlays();
+	map.addOverlay(marker); // 将标注添加到地图中
+	marker.setAnimation(BMAP_ANIMATION_BOUNCE); //跳动的动画
+	map.addControl(new BMap.NavigationControl()); //添加默认缩放平移控件
+	</script>	
+<include file="public:footer_niucms"/>

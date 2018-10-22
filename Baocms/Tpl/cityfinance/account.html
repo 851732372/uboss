@@ -1,0 +1,132 @@
+<include  file='public:header'/>
+<link href='__PUBLIC__/assets/stylesheets/bootstrap/bootstrap.css' media='all' rel='stylesheet' type='text/css' />
+<link rel="stylesheet" href="__PUBLIC__/zyupload/skins/zyupload-1.0.0.min.css " type="text/css">
+<script type="text/javascript" src="__PUBLIC__/zyupload/zyupload-1.0.0.min.js"></script>
+
+<link rel="stylesheet" type="text/css" href="__PUBLIC__/webupload/globle.css" />
+<script src="__PUBLIC__/webupload/webuploader.min.js"></script>
+<script src="__PUBLIC__/webupload/diyUpload.js"></script>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+        }
+        input {
+            padding:5px;
+            margin-right: 10px;
+            border: 1px solid #d9d9d9;
+            border-radius:4px;
+            color: rgba(0, 0, 0, 0.65);
+            transition: all .3s;
+        }
+        .first_input {
+            margin-right: 7px;
+        }
+        input::-webkit-input-placeholder {
+            color: #c1c1c1;
+        }
+        input::-moz-placeholder {
+            color: #c1c1c1;
+        }
+        input::-ms-input-placeholder {
+            color: #c1c1c1;
+        }
+        input:focus {
+            border-color: #40a9ff;
+            -webkit-box-shadow: 0 2px 0 #1890ff;
+            box-shadow: 0 0 5px rgba(24, 144, 255, 0.5);
+        }
+
+        .btn_common {
+            display: inline-block;
+            background-color: #40a9ff;
+            text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.12);
+            -webkit-box-shadow: 0 2px 0 rgba(0, 0, 0, 0.035);
+            box-shadow: 0 2px 0 rgba(0, 0, 0, 0.035);
+            text-align: center;
+            font-weight: 400;
+            cursor: pointer;
+            border: 1px solid transparent;
+            border-radius: 4px;
+            font-size: 14px;
+            color: #fff;
+            padding: 2.5px 8px;
+            margin: 2.5px;
+        }
+        .btn_common:active {
+            background-color: #1890ff;
+            transition: all 0.1s ease-in, color 0.1s ease-out;
+        }
+
+        .input_Parent, .add_Parent_btn {
+            /*margin-left: 15px;*/
+        }
+        .input_Child {
+            margin-left: 35px;
+        }
+        .first_addclass, .first_removeclass {
+            margin-left: 1px;
+            margin-right: 1px;
+        }
+    </style>
+    <div class="panel penel-default">
+        <div class="panel-heading">
+           <ul class="breadcrumb">
+                <li>
+                    <a href="#">城市提现</a> <span class="divider">></span>
+                </li>
+                <li>
+                    <a href="#">设置提现账号</a> <span class="divider">></span>
+                </li>
+            </ul>
+        </div>
+        <div class="panel-body">
+            <form class='form form-horizontal validate-form' style='margin-bottom: 0;' target="baocms_frm" action="<{:U('cityfinance/account')}>" method="post"/>
+                <div class='control-group'>
+                    <div class='control-label'>
+                        <label for='validation_secret'>开户行</label>
+                    </div>
+                    <div class='controls'>
+                        <select name="bank_name"  >
+                            <option value="1" <eq name="detail.bank_name" value="1">selected</eq>>中国工商银行</option>
+                            <option value="2" <eq name="detail.bank_name" value="2">selected</eq>>中国建设银行</option>
+                            <option value="3" <eq name="detail.bank_name" value="3">selected</eq>>中国农业银行</option>
+                            <option value="4" <eq name="detail.bank_name" value="4">selected</eq>>中国交通银行</option>
+                            <option value="5" <eq name="detail.bank_name" value="5">selected</eq>>中国银行</option>
+                            <option value="6" <eq name="detail.bank_name" value="6">selected</eq>>支付宝</option>
+                            <option value="7" <eq name="detail.bank_name" value="7">selected</eq>>微信</option>
+                            <option value="8" <eq name="detail.bank_name" value="8">selected</eq>>中国招商银行</option>
+                            <option value="9" <eq name="detail.bank_name" value="9">selected</eq>>中信银行</option>
+                            <option value="10" <eq name="detail.bank_name" value="10">selected</eq>>民生银行</option>
+                            <option value="11" <eq name="detail.bank_name" value="11">selected</eq>>信用社</option>
+                        </select>
+                    </div>
+                </div>
+                <div class='control-group'>
+                    <label class='control-label' >开户人</label>
+                    <div class='controls'>
+                        <input  name='bank_realname' value="<{$detail.bank_realname}>" type='text' />
+                    </div>
+                </div>
+                 <div class='control-group'>
+                    <label class='control-label' >账号</label>
+                    <div class='controls'>
+                        <input  name='bank_num' value="<{$detail.bank_num}>" type='text' />
+                    </div>
+                </div>
+                <div class='control-group'>
+                    <label class='control-label' >手机号</label>
+                    <div class='controls'>
+                        <input  name='tel' value="<{$detail.tel}>" type='text' />
+                    </div>
+                </div>
+                <div class='form-actions' style='margin-bottom:0'>
+                    <button class='btn btn-primary' type='submit'>
+                        <i class='icon-save'></i>
+                        保存数据
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+<include  file='public:footer'/>

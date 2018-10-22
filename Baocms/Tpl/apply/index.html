@@ -1,0 +1,123 @@
+<include  file='public:header'/>
+<style>
+	table tr th,td{
+		text-align: center;
+	}
+</style>
+<link rel="stylesheet" href="__PUBLIC__/bs/css/bootstrap.min.css">
+<script src="__PUBLIC__/bs/js/jquery.min.js"></script>
+<script src="__PUBLIC__/bs/js/bootstrap.min.js"></script>
+<div class="mainBt">
+    <ul>
+        <li class="li1">合伙人管理</li>
+        <li class="li2">合伙人列表</li>
+    </ul>
+</div>
+<div class="panel panel-default">
+	<div class="panel-heading">
+		<form action="" class="form-inline">
+			<input type="text" class="form-control" name="search">
+			<button class="btn btn-info" type="submit"><span class="glyphicon glyphicon-search">搜索</span></button>
+		</form> 
+	</div> 
+	<div class="panel-body">
+		<!-- <table class="table userIndexTable table-bordered">
+			<tr>
+				<th>编号</th>
+				<th>user_id</th>
+				<th>申请人名称</th>
+				<th>联系手机</th>
+				<th>身份证号码</th>
+				<th>身份证图片</th>
+			    <th>操作</th>	
+			</tr>
+			<volist name="list" id="lis">
+				<tr>
+					<td><{$lis.af_id}></td>
+					<td><{$lis.user_id}></td>
+					<td><{$lis.name}></td>
+					<td><{$lis.telphone}></td>
+					<td><{$lis.idcardno}></td>
+					<td><img src="/attachs/<{$lis.idcard_zimg}>" alt="" height="50px" width="50px"><img src="/attachs/<{$lis.idcard_fimg}>" alt="" height="50px" width="50px"></td>
+					<td>
+						<a href="<{:U('look_info',array('id' => $lis['user_id']))}>">查看合伙店铺</a>
+					</td>
+				</tr>
+			</volist>
+		</table> -->
+		<volist name="list" id="data">
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				<span>合伙人基本信息: 昵称 <{$data.nickname}> / 手机号 <{$data.mobile}> / 真实姓名 ：<{$data.realname}></span>
+			</div> 
+			<div class="panel-body">
+				<div class="panel panel-default">
+					<div class="panel-heading">
+						<span>合伙人申请信息纪录</span>
+					</div> 
+					<div class="panel-body">
+						<table class="table userIndexTable table-bordered">
+							<tr>
+								<th>编号</th>
+								<th>申请人名称</th>
+								<th>联系手机</th>
+								<th>身份证号码</th>
+								<th>身份证图片</th>
+								<th>店铺名称</th>
+								<th>店铺地址</th>
+								<th>店铺banner图</th>
+								<th>行业分类</th>
+								<th>店铺类型</th>
+								<th>申请职位</th>
+							</tr>
+							<volist name="data.apply" id="lis">
+								<tr>
+									<td><{$lis.af_id}></td>
+									<td><{$lis.name}></td>
+									<td><{$lis.telphone}></td>
+									<td><{$lis.idcardno}></td>
+									<td><img src="/attachs/<{$lis.idcard_zimg}>" alt="" height="50px" width="50px"><img src="/attachs/<{$lis.idcard_fimg}>" alt="" height="50px" width="50px"></td>
+									<td><{$lis.company_name}></td>
+									<td><{$lis.city}> / <{$lis.area}> / <{$lis.address}></td>
+									<td><img src="/attachs/<{$lis.banner}>" alt="" height="50px" width="50px"></td>
+									<td><{$lis.cate}></td>
+									<td>
+										<eq name="lis.store_style" value="1">旗舰店</eq>
+										<eq name="lis.store_style" value="2">核心店</eq>
+										<eq name="lis.store_style" value="3">人气店</eq>
+									</td>
+									<td>
+										<eq name="lis.apply_position" value="1">总监</eq>
+										<eq name="lis.apply_position" value="2">经理</eq>
+										<eq name="lis.apply_position" value="3">主管</eq>
+									</td>
+								</tr>
+							</volist>
+						</table>
+					</div>
+				</div>
+			</div>
+			<div class="panel-footer">
+			</div>
+		</div>
+		</volist>
+	</div>
+	<div class="panel-footer">
+
+	</div>
+</div>
+<script>
+	function refuse(id){
+		$.post('<{:U("ajax_refuse")}>',{id:id},function(data){
+			location.reload();
+		})
+	}
+	function ok(id){
+		$.post('<{:U("ajax_ok")}>',{id:id},function(data){
+			location.reload();
+		})
+	}
+</script>
+<include  file='public:footer'/>  
+
+

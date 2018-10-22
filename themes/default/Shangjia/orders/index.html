@@ -1,0 +1,83 @@
+<include  file='public:header'/>
+<link rel="stylesheet" href="__PUBLIC__/bs/css/bootstrap.min.css">
+<script src="__PUBLIC__/js/my97/WdatePicker.js"></script>
+<div class="sjgl_lead">
+    <ul>
+        <li><a href="#">商家管理</a> > <a href="">商城</a> > <a>我的订单</a></li>
+    </ul>
+</div>
+<div class="tuan_content">
+    <form method="post" action="<{:U('orders/index')}>" class="form-inline">
+    <div class="radius5 tuan_top">
+        <div class="tuan_top_t">
+            <div class="left tuan_topser_l">
+            开始时间：<input type="text" class="radius3 tuan_topser"  name="bg_date" value="<{$bg_date|default=''}>" onfocus="WdatePicker({dateFmt: 'yyyy-MM-dd HH:mm:ss'});"/>
+            结束时间：<input type="text" class="radius3 tuan_topser"  name="end_date" value="<{$end_date|default=''}>" onfocus="WdatePicker({dateFmt: 'yyyy-MM-dd HH:mm:ss'});"/>
+            订单编号：<input type="text" name="keyword" value="<{$keyword}>" class="radius3 tuan_topser" />
+            <input type="submit" style="margin-left:10px;" class="radius3 sjgl_an tuan_topbt" value="搜 索"/>
+            </div>
+        </div>
+    </div>
+    </form>
+    <!-- 1 待付款 2 支付超时 3 取消订单 4 已付款 5 付款失败 6待使用 7待评价 8 已完成 9 退款中 10 退款失败 -->
+    <div class="tuanfabu_tab">
+        <ul>
+            <li class="tuanfabu_tabli <eq name="status" value="1">on</eq>"><a href="<{:U('orders/index')}>">待付款</a></li>
+            <li class="tuanfabu_tabli <eq name="status" value="4">on</eq>"><a href="<{:U('orders/index',array('status' => 4))}>">已付款</a></li>
+            <li class="tuanfabu_tabli <eq name="status" value="7">on</eq>"><a href="<{:U('orders/index',array('status' => 7))}>">待评价</a></li>
+             <li class="tuanfabu_tabli <eq name="status" value="8">on</eq>"><a href="<{:U('orders/index',array('status' => 8))}>">已完成</a></li>
+            <li class="tuanfabu_tabli <eq name="status" value="9">on</eq>"><a href="<{:U('orders/index',array('status' => 9))}>">申请退款</a></li>
+            <li class="tuanfabu_tabli <eq name="status" value="11">on</eq>"><a href="<{:U('orders/index',array('status' => 11))}>">已退款</a></li>
+            <li class="tuanfabu_tabli <eq name="status" value="10">on</eq>"><a href="<{:U('orders/index',array('status' => 10))}>">退款失败</a></li>
+        </ul>
+        <p class="pull-right">共有<{$count}>条数据</p>
+    </div> 
+    <div class="panel panel-default">
+        <div class="panel-body">
+            <table class="tuan_table" width="100%" border="0" cellspacing="0" cellpadding="0">
+                <tr style="background-color:#eee;">
+                    <td>订单ID</td>
+                    <td>订单编号</td>
+                    <td>商品名称</td>
+                    <td>数量</td>
+                    <td>合计</td>
+                    <td>状态</td>
+                    <td>创建时间</td>
+                    <td>来源</td>
+                    <td>操作</td>
+                </tr>
+                <foreach name="list" item="var">
+                    <tr>
+                        <td><{$var.order_id}></td>
+                        <td><{$var.orderno}></td>
+                        <td><{$var.goodsname}></td>
+                        <td><{$var.num}></td>
+                        <td><{:floor($var['total_price'])/100}>元</td>
+                        <td>
+                            <eq name="var.status" value="1">待付款</eq>
+                            <eq name="var.status" value="4">已付款【待使用】</eq>
+                            <eq name="var.status" value="3">已取消</eq>
+                            <eq name="var.status" value="7">待评价</eq>
+                            <eq name="var.status" value="8">已完成</eq>
+                            <eq name="var.status" value="9">申请退款</eq>
+                            <eq name="var.status" value="11">已退款</eq>
+                            <eq name="var.status" value="10">退款失败</eq>
+                            <eq name="var.status" value="12">分红开始结算</eq>
+                        </td>
+                        <td><{$var.create_time|date='Y-m-d H:i:s',###}></td>
+                        <td>
+                            <eq name="var.type" value="1">商城支付</eq>
+                            <eq name="var.type" value="2">扫码支付</eq>
+                        </td>
+                        <td>
+                            <a href="<{:U('info',array('order_id' => $var['order_id'],'status' => $var['status']))}>">查看</a>
+                        </td>
+                    </tr>
+                </foreach>
+            </table>
+            <{$page}>
+        </div>
+    </div>
+</div>
+
+<include  file='public:footer'/>

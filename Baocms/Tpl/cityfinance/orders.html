@@ -1,0 +1,65 @@
+<include  file='public:header'/>
+<link rel="stylesheet" href="__PUBLIC__/bs/css/bootstrap.min.css">
+<ul class="breadcrumb">
+    <li>
+        <a href="#">城市财务</a> <span class="divider"></span>
+    </li>
+    <li>
+        <a href="<{:U('index')}>">对账单</a><span class="divider"></span>
+    </li>
+</ul>
+<div class="panel panel-default">
+	<div class="panel-heading">
+        <div class="pull-right" style="margin-top:5px;margin-left: 25px;">共有<b id="tot"><{$count}></b>条数据</div>
+		<form action="" class="form-inline" method="POST">
+			<div class="form-group">
+				<label for="">类型：</label>
+				<select name="audit" id="" class="form-control">
+					<option value="">全部</option>
+					<option value="1" <eq name="audit" value="1">selected</eq>>已入账</option>
+					<option value="2" <eq name="audit" value="2">selected</eq>>未入账</option>
+				</select>
+			</div>
+			<div class="form-group">
+				<label for="">选择城市：</label>
+				<select name="admin_id" id="" class="form-control">
+					<option value="">全部</option>
+					<volist name="admin" id="admin">
+						<option value="<{$admin.admin_id}>" <eq name="admin_id" value="$admin.admin_id">selected</eq>><{$admin.username}></option>
+					</volist>
+				</select>
+			</div>
+			<button class="btn btn-info" type="submit"><span class="glyphicon glyphicon-search">搜索</span></button>
+		</form> 
+	</div> 
+	<div class="panel-body">
+		<table class="table userIndexTable table-bordered">
+			<tr>
+				<th>城市管理者</th>
+				<th>详情</th>
+				<th>账单日期</th>
+				<th>管理者应得</th>
+				<th>状态</th>
+			</tr>
+			<volist name="list" id="lis">
+				<tr>
+					<td><{$lis.username}>【<{$lis.mobile}>】</td>
+					<td><{$lis.intro}></td>
+					<td><{$lis.create_time|date="Y-m-d H:i:s",###}></td>
+					<td><{:floor($lis['com_money'])/100}>元</td>
+	                <td>
+	                    <eq name="lis.audit" value="1"><code>已入账</code></eq>
+	                    <eq name="lis.audit" value="0"><code>未入账</code></eq>
+	                </td>
+				</tr>
+			</volist>
+		</table>
+	</div>
+		<{$page}>
+	<div class="panel-footer">
+
+	</div>
+</div>
+<include  file='public:footer'/>  
+
+

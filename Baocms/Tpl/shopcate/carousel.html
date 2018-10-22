@@ -1,0 +1,79 @@
+<include  file='public:header'/>
+<link href='__PUBLIC__/assets/stylesheets/bootstrap/bootstrap.css' media='all' rel='stylesheet' type='text/css' />
+<link rel="stylesheet" type="text/css" href="__PUBLIC__/webupload/globle.css" />
+<script src="__PUBLIC__/webupload/webuploader.min.js"></script>
+<script src="__PUBLIC__/webupload/diyUpload.js"></script>
+<div class="panel penel-default">
+    <div class="panel-body">
+    	<form  action="<{:U('Shopcate/carousel')}>" method="post" class='form form-horizontal validate-form' target="baocms_frm">
+            <div class='control-group'>
+                <div class='control-label'>
+                    <label>轮播图片：</label>
+                    <code>修改前请删除</code>
+                </div>
+                <input type="hidden" name="cate_id" value="<{$_GET['cate_id']}>">
+                <div class='controls'> 
+
+                    <input type="hidden" name="carousel" id="img" value="<{$carousel}>">
+                    <ul class="upload-ul clearfix">
+                        <?php if(isset($carousel1)){ ?>
+                        <volist name="carousel1" id="img">
+                            <?php if(!empty($img)){ ?>
+                            <li style="position: relative;">
+                                <img src="/attachs/<{$img}>" style="height:90px" width="120px" height="90px"> <span class="close" style="position: absolute;top:0px;right:0px;color:white" onclick="deli(this,<{$key}>,<{$_GET['cate_id']}>)">&times;</span>
+                            </li>
+                            <?php } ?>
+                        </volist>
+                        <?php } ?>
+                        <li class="upload-pick">
+                            <div class="webuploader-container clearfix" id="goodsUpload"></div>
+                        </li>
+                    </ul>
+                </div>
+            </div>  
+		    <div class='form-actions' style='margin-bottom:0'>
+                <button class='btn btn-primary' type='submit'>
+                    <i class='icon-save'></i>
+                    保存数据
+                </button>
+            </div>
+		</form>
+    </div>
+</div>
+<!-- 商家logo -->
+<script>
+    $(function(){
+        //上传图片
+        var $tgaUpload = $('#goodsUpload').diyUpload({
+            url:'<{:U("app/upload/uploadify")}>',
+            success:function( data ) {
+                img = $("#img").val();
+               $("#img").val(img + ','+ data._raw );
+            },  
+            error:function( err ) { },
+            buttonText : '',
+            accept: {
+                title: "Images",
+                extensions: 'gif,jpg,jpeg,bmp,png'
+            },
+            thumb:{
+                width:120,
+                height:90,
+                quality:100,
+                allowMagnify:true,
+                crop:true,
+                type:"image/jpeg, image/png, image/jpg, image/gif"
+            }
+        });
+
+    });
+    function deli(obj,key,id){
+        $.post('<{:U("ajax_del")}>',{key:key,id:id},function(data){
+            arr = $('#img').val().split(',');
+            arr.splice(key,1);
+            $('#img').val(arr);
+            $(obj).parent().remove();
+        })
+    }
+</script>
+<include  file='public:footer'/>       

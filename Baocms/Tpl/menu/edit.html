@@ -1,0 +1,58 @@
+<div class="listBox clfx">
+    <div class="menuManage">
+        <form target="baocms_frm" action="<{:U('menu/edit',array('menu_id'=>$detail['menu_id']))}>" method="post">
+            <div class="mainScAdd">
+                <div class="tableBox">
+                    <table bordercolor="#e1e6eb" cellspacing="0" width="100%" border="1px"  style=" border-collapse: collapse; margin:0px; vertical-align:middle; background-color:#FFF;" >
+                        <tr>
+                            <td class="lfTdBt">上级菜单：</td>
+                            <td class="rgTdBt">
+                            <select name="data[parent_id]" class="seleFl w200">
+                            <option value="0">一级菜单</option>
+                            <foreach name="menus" item="var">
+                                <option value="<{$var.menu_id}>"   <eq name="var.menu_id" value="$detail[parent_id]"> selected="selected" </eq> ><{$var.menu_name}></option>
+                                <foreach name="var.child" item="var2">
+                                    <option value="<{$var2.menu_id}>"   <eq name="var2.menu_id" value="$detail[parent_id]"> selected="selected" </eq> >|---<{$var2.menu_name}></option>
+                                </foreach>  
+                            </foreach>       
+                        </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="lfTdBt">模块名称：</td>
+                            <td class="rgTdBt">
+                                <input name="data[menu_name]" type="text" class="scAddTextName w200" value="<{$detail[menu_name]}>"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="lfTdBt">action：</td>
+                            <td class="rgTdBt">
+                                <input name="data[menu_action]" type="text" class="scAddTextName w200" value="<{$detail[menu_action]}>"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="lfTdBt">节点类型：</td>
+                            <td class="rgTdBt">
+                                操作：<input name="data[menu_type]" type="radio"value="0" <eq name="detail['menu_type']" value="0">checked </eq>/>
+                                模块：<input name="data[menu_type]" type="radio" value="1" <eq name="detail['menu_type']" value="1">checked</eq>/>
+                                节点：<input name="data[menu_type]" type="radio" value="2" <eq name="detail['menu_type']" value="2">checked</eq>/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="lfTdBt">显示隐藏：</td>
+                            <td class="rgTdBt">
+                                显示：<input name="data[is_show]" type="radio" value="1" <eq name="detail['is_show']" value="1"> checked </eq>/>
+                                隐藏：<input name="data[is_show]" type="radio" value="0" <eq name="detail['is_show']" value="0"> checked </eq>/>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="smtQr"><input type="submit" value="确认修改" class="smtQrIpt" /></div>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+
+

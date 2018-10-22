@@ -1,0 +1,195 @@
+<include  file='public:header'/>
+<link rel="stylesheet" href="__PUBLIC__/bs/css/bootstrap.min.css">
+<script src="__PUBLIC__/js/my97/WdatePicker.js"></script>
+<div class="sjgl_lead">
+    <ul>
+        <li><a href="#">商家管理</a> > <a href="">商城</a> > <a>订单详情</a></li>
+    </ul>
+</div>
+<div class="tuan_content">
+    <div class="tuanfabu_tab">
+        <ul>
+            <li class="tuanfabu_tabli"><a href="<{:U('index')}>">订单列表</a></li>
+            <li class="tuanfabu_tabli on"><a href="javascript:;">订单详情</a></li>
+        </ul>
+    </div> 
+    <table class="table table-hover table-striped table-bordered">
+        <tr>
+            <th>订单ID</th>
+            <td><{$list.order_id}></td>
+            <th>用户</th>
+            <td><{$list.nickname}></td>
+        </tr>
+        <tr>
+            <th>商品数量</th>
+            <td><{$list.num}></td>
+            <th>手机号</th>
+            <td><{$list.mobile}></td>
+        </tr>
+        <tr>
+            <th>订单状态</th>
+            <td>
+                <eq name="list.status" value="1">待付款</eq>
+                <eq name="list.status" value="4">已付款【待使用】</eq>
+                <eq name="list.status" value="3">已取消</eq>
+                <eq name="list.status" value="7">待评价</eq>
+                <eq name="list.status" value="8">已完成</eq>
+                <eq name="list.status" value="9">申请退款</eq>
+                <eq name="list.status" value="11">已退款</eq>
+                <eq name="list.status" value="10">退款失败</eq>
+                <eq name="list.status" value="12">分红开始结算</eq>
+            </td>
+            <th>下单时间</th>
+            <td><{$list.create_time|date='Y-m-d H:i:s',###}></td>
+        </tr>
+        <tr>
+            <th>商品名称</th>
+            <td><{$list.title}></td>
+            <th>订单金额</th>
+            <td><{:floor($list['total'])/100}>元</td>
+        </tr>
+        <tr>
+            <th>支付方式</th>
+            <td>
+                <eq name="list.trade_style" value="1">支付宝</eq>
+                <eq name="list.trade_style" value="2">微信</eq>
+                <eq name="list.trade_style" value="3">余额 </eq>
+                <eq name="list.trade_style" value="4">资产支付</eq>
+                <eq name="list.trade_style" value="5">支付宝+余额</eq>
+                <eq name="list.trade_style" value="6">微信+余额</eq>
+
+            </td>
+             <th>会员级别</th>
+            <td>
+                <eq name="list.level_id" value="1"><code>普通</code></eq>
+                <eq name="list.level_id" value="2"><code>黄金</code></eq>
+                <eq name="list.level_id" value="3"><code>钻石</code></eq>
+            </td>
+        </tr>
+    </table>
+    <eq name="list.status" value="9">
+        <hr>
+        <table class="table table-hover table-bordered">
+            <tr>
+                <th>退款原因</th>
+                <td><{$back.reason}></td>
+                <th>申请时间</th>
+                <td><{$back.create_time|date='Y-m-d H:i:s',###}></td>
+            </tr>
+            <tr>
+                <th>退款操作时间</th>
+                <td><{$back.ok_time|date='Y-m-d H:i:s',###}></td>
+                <th>退款金额</th>
+                <td><{:floor($back['money'])/100}>元</td>
+            </tr>
+            <tr>
+                <th>退款图片</th>
+                <td></td>
+                <th>操作</th>
+                <td>
+                     <a href="javascript:;"  onclick="refuse(this,<{$list.order_id}>)">拒绝</a> 
+                     | <a href="javascript:;" onclick="ok(this,<{$list.order_id}>)">通过</a>
+                </td>
+            </tr>
+        </table>
+    </eq>
+    <eq name="list.status" value="11">
+        <hr>
+        <table class="table table-hover table-bordered">
+            <tr>
+                <th>退款原因</th>
+                <td><{$back.reason}></td>
+                <th>申请时间</th>
+                <td><{$back.create_time|date='Y-m-d H:i:s',###}></td>
+            </tr>
+            <tr>
+                <th>退款操作时间</th>
+                <td><{$back.ok_time|date='Y-m-d H:i:s',###}></td>
+                <th>退款金额</th>
+                <td><{:round($back['money']/100,2)}>元</td>
+            </tr>
+            <tr>
+                <th>退款图片</th>
+                <td></td>
+                <th>操作</th>
+                <td>
+                    <code>已退款</code>
+                </td>
+            </tr>
+        </table>
+    </eq>
+    <eq name="list.status" value="10">
+        <hr>
+        <table class="table table-hover table-bordered">
+            <tr>
+                <th>退款原因</th>
+                <td><{$back.reason}></td>
+                <th>申请时间</th>
+                <td><{$back.create_time|date='Y-m-d H:i:s',###}></td>
+            </tr>
+            <tr>
+                <th>退款操作时间</th>
+                <td><{$back.ok_time|date='Y-m-d H:i:s',###}></td>
+                <th>退款金额</th>
+                <td><{:round($back['money']/100,2)}>元</td>
+            </tr>
+            <tr>
+                <th>退款图片</th>
+                <td></td>
+                <th>操作</th>
+                <td>
+                    <code>已拒绝</code> | 
+                    <a href="">拒绝原因</a>
+                </td>
+            </tr>
+        </table>
+    </eq>
+    <hr>
+    <table class="table table-hover table-striped">
+        <tr>
+            <th>日志</th>
+            <th>时间</th>
+        </tr>
+        <tr>
+            <td>订单提交成功</td>
+            <td><{$list.create_time|date='Y-m-d H:i:s',###}></td>
+        </tr>
+        <tr>
+            <td>订单支付成功</td>
+            <?php if(!empty($list['pay_time'])){ ?>
+             <td><{$list.pay_time|date='Y-m-d H:i:s',###}></td>
+            <?php }else{ ?>
+            <td>--</td>
+            <?php } ?>
+        </tr>
+        <tr>
+            <td>用户消费订单</td>
+            <?php if(!empty($data['use_time'])){ ?>
+              <td><{$list.success_time|date='Y-m-d H:i:s',###}></td>
+            <?php }else{ ?>
+            <td>--</td>
+            <?php } ?>
+        </tr>
+        <tr>
+            <td>用户确认订单完成</td>
+            <?php if(!empty($data['success_time'])){ ?>
+              <td><{$list.success_time|date='Y-m-d H:i:s',###}></td>
+            <?php }else{ ?>
+            <td>--</td>
+            <?php } ?>
+        </tr>
+    </table>
+</div>
+<script>
+   function refuse(obj,id){
+        $.post('<{:U("ajax_refuse")}>',{id:id},function(data){
+            window.location.href="<{:U('orders/info',array('order_id'=>$list['order_id'],'status' => $list['status']))}>";
+        })
+    }
+    function ok(obj,id){
+        $.post('<{:U("ajax_ok")}>',{id:id},function(data){
+            window.location.href="<{:U('orders/info',array('order_id'=>$list['order_id'],'status' => $list['status']))}>";
+        })
+    }
+</script>
+<include  file='public:footer'/>

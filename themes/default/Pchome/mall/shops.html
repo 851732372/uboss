@@ -1,0 +1,28 @@
+<include  file='public:heador_niucms'/>  <include file='mall:top'/> 
+
+<div class="blank-10"></div>
+<div class="container">
+	<div class="shop-list">
+		<ul>
+			<foreach name="list" item="item">
+			<li>
+				<div class="list-item">
+					<a target="_blank" href="<{:U('mall/shop',array('shop_id'=>$item['shop_id']))}>"><img src="__ROOT__/attachs/<{$item.photo}>" /></a>
+					<h2><a target="_blank" href="<{:U('mall/shop',array('shop_id'=>$item['shop_id']))}>"><{$item.shop_name}></a></h2>
+					<p>地址：<{$item.addr}></p>	
+					<p>电话：<{$item.tel}><if condition="!empty($item['extension'])">转<{$item.extension}>分机</if></p>	
+				</div>
+			</li>
+			</foreach>
+		</ul>
+	</div>
+	<div class="text-center">
+		<div class="pagination">
+			<{$page}>
+		</div>
+	</div>
+	
+</div>
+
+
+<include file="public:footer_niucms"/>

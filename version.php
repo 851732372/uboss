@@ -1,0 +1,1 @@
+<?php return  "AICMS7.0.20151015";

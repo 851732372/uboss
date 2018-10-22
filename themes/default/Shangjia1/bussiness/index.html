@@ -1,0 +1,90 @@
+<include  file='public:header'/>
+<div class="sjgl_lead">
+    <ul>
+        <li><a href="#">系统设置</a> > <a href="">认证管理</a> ></li>
+    </ul>
+</div>
+<div class="tuan_content">
+    <div class="radius5 tuan_top">
+        <div class="tuan_top_t">
+            <div class="left tuan_topser_l">认证管理 
+            <h1>请一定要正确填写信息,提交后无法修改，若修改请联系管理者</h1></div>
+        </div>
+    </div> 
+
+    <div class="tuanfabu_tab">
+        <ul>
+          <li class="tuanfabu_tabli tabli_change on"><a href="<{:U('index')}>">主体认证</a></li>
+            <li class="tuanfabu_tabli tabli_change "><a href="<{:U('cpany')}>">企业认证</a></li>
+            <li class="tuanfabu_tabli tabli_change"><a href="<{:U('meat')}>">餐饮认证</a></li>
+        </ul>
+    </div>
+    <div class="tabnr_change  show">
+    	<form method="post"  action="<{:U('index')}>"  target="baocms_frm"> 
+    	<table class="tuanfabu_table" width="100%" border="0" cellspacing="0" cellpadding="0">
+            <tr>
+                <td width="120"><p class="tuanfabu_t"><em>·</em>真实姓名：</p></td>
+                <td><div class="tuanfabu_nr"><input type="text" name="realname" class="tuanfabu_int tuanfabu_intw2" value="<{$info.realname}>"/></div></td>
+            </tr>
+            <tr>
+                <td><p class="tuanfabu_t"><em>·</em>手机号：</p></td>
+                <td><div class="tuanfabu_nr"><input type="text" name="telphone" class="tuanfabu_int tuanfabu_intw2" value="<{$info.telphone}>"/></div></td>
+            </tr>
+            <tr>
+                <td><p class="tuanfabu_t"><em>·</em>身份证号：</p></td>
+                <td><div class="tuanfabu_nr"><input type="text" name="sfznumber" class="tuanfabu_int tuanfabu_intw2" value="<{$info.sfznumber}>"/></div></td>
+            </tr>
+            <tr>
+                <js file='__PUBLIC__/js/uploadify/jquery.uploadify.min.js'/>
+                <link rel="stylesheet" href="__PUBLIC__/js/uploadify/uploadify.css">
+                <td><p class="tuanfabu_t"><em>·</em>身份证正面照片：</p></td>
+                <td class="rgTdBt">
+                    <input type="hidden" name="sfz_file" value="<{$info.sfz_file|default=''}>" id="data_logo" />
+                    <input id="sfz_file" name="sfz_file" type="file" multiple="true" value="" />
+                    <img id="logo_img" width="200" height="150"  src="__ROOT__/attachs/<{$info.sfz_file|default='default.jpg'}>" />
+                    <script>
+                        $("#sfz_file").uploadify({
+                            'swf': '__PUBLIC__/js/uploadify/uploadify.swf?t=<{$nowtime}>',
+                            'uploader': '<{:U("app/upload/uploadify",array("model"=>"sfz"))}>',
+                            'cancelImg': '__PUBLIC__/js/uploadify/uploadify-cancel.png',
+                            'buttonText': '身份证正面照片',
+                            'fileTypeExts': '*.gif;*.jpg;*.png',
+                            'queueSizeLimit': 1,
+                            'onUploadSuccess': function (file, data, response) {
+                                $("#data_logo").val(data);
+                                $("#logo_img").attr('src', '__ROOT__/attachs/' + data).show();
+                            }
+                        });
+                    </script>
+                </td>
+            </tr>
+            <tr>
+                <td><p class="tuanfabu_t"><em>·</em>身份证反面照片：</p></td>
+                <td class="rgTdBt">
+                    <input type="hidden" name="sfz_file1" value="<{$info.sfz_file1|default=''}>" id="data_logo1" />
+                    <input id="sfz_file1" name="sfz_file1" type="file" multiple="true" value="" />
+                      <img id="logo_img1" width="200" height="150"  src="__ROOT__/attachs/<{$info.sfz_file1|default='default.jpg'}>" />
+                    <script>
+                        $("#sfz_file1").uploadify({
+                            'swf': '__PUBLIC__/js/uploadify/uploadify.swf?t=<{$nowtime}>',
+                            'uploader': '<{:U("app/upload/uploadify",array("model"=>"sfz1"))}>',
+                            'cancelImg': '__PUBLIC__/js/uploadify/uploadify-cancel.png',
+                            'buttonText': '身份证反面照片',
+                            'fileTypeExts': '*.gif;*.jpg;*.png',
+                            'queueSizeLimit': 1,
+                            'onUploadSuccess': function (file, data, response) {
+                                $("#data_logo1").val(data);
+                                $("#logo_img1").attr('src', '__ROOT__/attachs/' + data).show();
+                            }
+                        });
+                    </script>
+                </td>
+            </tr>
+        </table>
+        <div class="tuanfabu_an">
+        <input type="submit" class="radius3 sjgl_an tuan_topbt" value="提交主体信息"/>
+        </div>
+        </form>
+    </div> 
+</div>
+<include  file='public:footer'/>

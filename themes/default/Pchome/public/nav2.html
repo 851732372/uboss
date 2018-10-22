@@ -1,0 +1,23 @@
+<div class="nav">
+        <div class="navList">
+            <ul>
+                <li class="navListAll zy_navListAll"><i class="nav-bz left"></i><span class="navListAllt left">全部抢购分类<em></em></span>
+                    <div class="shadowy navAll">
+                        <include file="./themes/default/Pchome/public/cate.html"/>
+                    </div>
+                </li>
+                <li class="navLi"><a <if condition="$ctl eq  'index'"> class="navA  on"<else/>class="navA"</if> title="首页" href="<{:U('pchome/index/index')}>" >首页</a></li>
+                <li class="navLi"><a <if condition="$ctl eq  'tuan'"> class="navA  on"<else/>class="navA"</if> title="热门抢购" href="<{:U('pchome/tuan/index')}>" >热门抢购</a></li>
+                <!-- li class="navLi"><a <if condition="$ctl eq  'huodong'"> class="navA  on"<else/>class="navA"</if> title="活动" href="<{:U('pchome/huodong/index')}>" >活动</a></li -->
+                <li class="navLi"><a <if condition="$ctl eq  'shop'"> class="navA  on"<else/>class="navA"</if> title="商家" href="<{:U('shop/index')}>" >商家</a></li>
+                <li class="navLi"><a <if condition="$ctl eq  'coupon'"> class="navA  on"<else/>class="navA"</if> title="优惠券" href="<{:U('pchome/coupon/index')}>" >优惠券</a></li>
+                <li class="navLi"><a <if condition="$ctl eq  'mall'"> class="navA  on"<else/>class="navA"</if> title="同城优购" href="<{:U('pchome/mall/main')}>" >同城优购</a></li>
+                <!--li class="navLi"><a <if condition="$ctl eq  'ele'"> class="navA  on"<else/>class="navA"</if> title="外卖" href="<{:U('pchome/ele/index')}>" >外卖</a></l--i>
+                <!--li class="navLi"><a <if condition="$ctl eq  'ding'"> class="navA  on"<else/>class="navA"</if> title="订座" href="<{:U('pchome/ding/index')}>" >订座</a></li-->
+                <li class="navLi"><a <if condition="$ctl eq  'life'"> class="navA  on"<else/>class="navA"</if> title="同城信息" href="<{:U('pchome/life/main')}>" >同城信息</a></li>
+				<li class="navLi"><a <if condition="$ctl eq  'community'"> class="navA  on"<else/>class="navA"</if> title="小区" href="<{:U('pchome/community/index')}>" >小区</a></li>
+                <li class="navLi"><a <if condition="$ctl eq  'tieba'"> class="navA  on"<else/>class="navA"</if> title="贴吧" href="<{:U('pchome/tieba/index')}>" >贴吧</a></li>
+                       <li class="navLi"><a <if condition="$ctl eq  'news'"> class="navA  on"<else/>class="navA"</if> title="旅游" href="<{:U('news/index')}>" >旅游资讯</a></li>
+            </ul>
+        </div>
+    </div>

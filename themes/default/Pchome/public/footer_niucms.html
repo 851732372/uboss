@@ -1,0 +1,220 @@
+	<if condition="$ctl eq 'index'">
+
+	<!--商家分类选择对话框-->
+
+	 <div id="shop-cate">
+
+		<div class="dialog radius">
+
+			<div class="dialog-head">
+
+				<span class="close rotate-hover"></span>
+
+				<strong>选择商家分类</strong>
+
+			</div>
+
+			<div class="dialog-body">
+
+				<foreach name="shopcate"  item="item">
+
+				<eq name="item.parent_id" value="0">
+
+				<div class="cate-dialog">
+
+					<span><a href="<{:U('shop/index',array('cat'=>$item['cate_id']))}>"><{$item[cate_name]}></a></span>
+
+					<foreach name="shopcate" item="var">
+
+					<eq name="var.parent_id" value="$item[cate_id]">
+
+					<a href="<{:U('shop/index',array('cat'=>$var['cate_id']))}>"><{$var[cate_name]}></a>
+
+					</eq>
+
+					</foreach>
+
+				</div>
+
+				</eq>
+
+				</foreach>
+
+			</div>
+
+			<div class="dialog-foot">
+
+				<button class="button dialog-close">关闭</button>
+
+			</div>
+
+		</div>
+
+	</div>
+
+	</if>
+
+	
+
+
+
+	
+
+	
+
+	<style>
+
+.m-btn,.m-lbtn,.m-nbtn,.m-new-btn,.m-new-lbtn,.m-new-nbtn,.m-new-rbtn,.m-new-ubtn,.m-rbtn{height:34px;line-height:34px;padding-left:4px;cursor:pointer;text-decoration:none;float:left;zoom:1;border-radius:2px;font-weight:700;font-size:14px}
+.tg-footer{clear:both;width:100%; margin-top:20px;}
+.tg-footer .tg-footer-list{height:188px;border:1px solid #eaeaea;border-width:1px 0;background-color:#fafafa;width:100%}
+.tg-cont{width:1180px;margin:0 auto}
+.tg-footer .tg-footer-list .tg-footer-item-wide{width:209px;height:138px;margin-top:25px;border-right:1px solid #eaeaea;float:left;overflow:hidden}
+.tg-footer .tg-footer-list .tg-footer-item-wide .tg-footer-advice i{background-position:-5px -1528px;background-repeat:no-repeat;overflow:hidden;display:block;width:38px;height:44px;float:left}
+.tg-footer .tg-footer-list .tg-footer-item-wide a i{float:left}
+.icon1{background-image:url(http://si1.s1.dpfile.com/t/cssnew/newhome/sprites/global.28b8ff1175abaac1bb77e0874cb5f8aa.png)}
+.tg-footer .tg-footer-list .tg-footer-item-wide a p{display:block;float:right;width:130px;font-size:14px;text-align:left;color:#999;}
+.Fix:after{display:block;content:'\20';height:0;clear:both}
+.tg-footer .tg-footer-list .tg-footer-item-wide a{width:190px;display:block;margin:0 auto 42px;position:relative;margin: 0 5px 15px 5px;}
+.tg-footer .tg-footer-list .tg-footer-item-wide .tg-footer-call i{background-position:-5px -1335px;background-repeat:no-repeat;overflow:hidden;display:block;width:36px;height:36px}
+.b-lbtn,.m-lbtn,.tg-lbtn{background-color:#fff;border:1px solid #d9d9d9;color:#ff8400}
+.tg-footer .tg-footer-list .tg-footer-item-narrow{width:174px;height:138px;margin-top:25px;border-right:1px solid #eaeaea;float:left}
+.tg-footer .tg-footer-list .tg-footer-item-narrow dl{width:90px;margin:0 auto}
+.tg-footer .tg-footer-list .tg-footer-item-narrow dl dt{font-size:14px;color:#333;line-height:30px;position:relative;margin-top:-8px}
+.tg-footer .tg-footer-list .tg-footer-item-narrow dl dd{font-size:12px;color:#999;line-height:20px; padding:0px;}
+.tg-footer .tg-footer-list .tg-footer-item-narrow dl dd a{color:#999}
+.tg-footer .tg-footer-copyright{text-align:center;line-height:60px;height:60px;display:block;color:#999}
+.tg-footer .tg-footer-credit-box{text-align:center;display:block;padding-bottom:30px}
+.tg-footer .tg-footer-list .tg-footer-item-wide .tg-footer-coop i{background-position:-5px -1381px;background-repeat:no-repeat;overflow:hidden;display:block;width:51px;height:37px}
+.tg-footer .tg-footer-list .tg-footer-item-wide .tg-footer-customer i{background-position:-5px -1428px;background-repeat:no-repeat;overflow:hidden;display:block;width:41px;height:38px}
+.tg-footer .tg-footer-list .tg-footer-item-wide .tg-footer-customer p,.tg-footer .tg-footer-list .tg-footer-item-wide .tg-footer-customer span{width:120px}
+.tg-footer .tg-footer-list .tg-footer-item-wide .tg-footer-customer span{margin-top:-6px}
+.tg-footer .tg-footer-list .tg-footer-item-wide a span{display:block;float:right;width:130px;text-align:left;color:#333;font-size:18px;line-height:27px;position:relative}
+.tg-footer .tg-footer-list .tg-footer-item-wide .tg-footer-customer .m-lbtn{height:20px;line-height:25px;padding:0 15px;margin-left:20px;color:#333;font-weight:400}
+
+.tg-footer .tg-footer-list .tg-footer-item-wide a p, .tg-footer .tg-footer-list .tg-footer-item-wide a span, .tg-footer .tg-footer-list .tg-footer-item-wide a span, .tg-footer .tg-footer-list .tg-footer-item-narrow dl dt, .tg-footer .tg-footer-list .tg-footer-item-narrow dl dt, .tg-footer .tg-footer-list .tg-footer-item-wide .tg-footer-customer .m-lbtn, .tg-footer .tg-footer-list .tg-footer-item-wide .tg-footer-customer .m-lbtn {font:12px/1.5 'Microsoft Yahei','Simsun',Tahoma;}
+
+</style>
+
+<div class="footer-content">
+<div id="footer" class="footer">
+<div class="footer-inner clearfix flexible">
+<div class="footer-size">
+<h3>公司信息</h3>
+<ul>
+ <li><a target="_blank" title="关于我们" href="<{:U('article/system',array('content_id'=>1))}>">关于我们</a></li>
+<li><a target="_blank" title="联系我们" href="<{:U('article/system',array('content_id'=>3))}>">联系我们</a></li>
+<li><a target="_blank" title="人才招聘" href="<{:U('article/system',array('content_id'=>2))}>">人才招聘</a></li>
+<li><a target="_blank" title="免责声明" href="<{:U('article/system',array('content_id'=>6))}>">免责声明</a></li>
+</ul>
+</div>
+<div class="footer-size-2">
+<h3>商户合作</h3>
+<ul>
+<li><a href="<{:U('shop/apply')}>">商家入驻</a></li>
+<li><a target="_blank" title="广告合作" href="<{:U('article/system',array('content_id'=>5))}>">广告合作</a></li>
+<li><a href="<{:U('news/index')}>">商家新闻</a></li>
+</ul>
+</div>
+<div class="footer-size-2">
+<h3>用户帮助</h3>
+<ul>
+<li><a target="_blank" title="服务协议" href="<{:U('article/system',array('content_id'=>7))}>">服务协议</a></li>
+<li><a target="_blank" title="退款承诺" href="<{:U('news/index')}>">退款承诺</a></li>
+</ul>
+</div>
+<div class="footer-size-2">
+<h3>关于我们</h3>
+<ul>
+ <li><a target="_blank" title="关于我们" href="<{:U('community/index')}>">智慧小区</a></li>
+<li><a target="_blank" title="联系我们" href="<{:U('news/index')}>">旅游信息</a></li>
+<li><a target="_blank" title="人才招聘" href="<{:U('pchome/life/main')}>">分类信息</a></li>
+</ul>
+</div>
+<div class="footer-size-3">
+<h3><{$CONFIG.site.tel}></h3>
+<ul>
+<li>周一至周日&nbsp;9:00-22:00</li>
+<li>客服电话&nbsp;免长途费</li>
+</ul>
+<a href="##" class="mobile-btn">手机专享优惠</a>
+</div>
+</div>
+</div>
+<div class="clear"></div>
+<div id="copyright-info">
+<div class="site-info">
+<span class="copyright">
+©</span>2015&nbsp;<{$Think.SERVER.HTTP_HOST}>&nbsp;<{$CONFIG.site.sitename}>版权所有 - <{$CONFIG.site.icp}> 
+<{$CONFIG.site.tongji}>
+</div>
+
+</div>
+</div>
+
+<div class="topUp">
+    <ul>
+        <li class="topBack"><div class="topBackOn">回到<br />顶部</div></li>
+        <li class="topUpWx"><div class="topUpWxk"><img src="__PUBLIC__/img/wx.png" width="149" height="149" /><p>扫描二维码关注微信</p></div></li>
+    </ul>
+</div>
+
+<script>
+    $(document).ready(function () {
+        $(window).scroll(function () {
+            if ($(window).scrollTop() > 100) {
+                $(".topUp").show();
+                $(".indexpop").show();
+            } else {
+                $(".topUp").hide();
+                $(".indexpop").hide();
+            }
+            var ctl = "<{$ctl}>";
+            if(ctl == 'coupon'){
+                if ($(window).scrollTop() > 665) {
+                    $(".spxq_xqT2").show();
+                } else {
+                    $(".spxq_xqT2").hide();
+                }
+            }else{
+                if ($(window).scrollTop() > '<{$height_num}>') {
+                    $(".spxq_xqT2").show();
+                } else {
+                    $(".spxq_xqT2").hide();
+                }
+            }
+        });
+
+        $(".topBack").click(function () {
+           $("html,body").animate({scrollTop: 0}, 200);
+        });
+		$(window).scroll(function(){
+			var top = $(document).scrollTop();          //定义变量，获取滚动条的高度
+			var menu = $(".topUp");                      //定义变量，抓取topUp
+			var items = $(".footerOut");    //定义变量，查找footerOut 
+			items.each(function(){
+				var m=$(this);
+				var itemsTop = m.offset().top;      //定义变量，获取当前类的top偏移量
+				if(itemsTop-360 <= top-360){
+					menu.css('bottom','360px');
+					menu.css('top','auto');
+				}else{
+					menu.css('bottom','0px');
+					menu.css('top','auto');
+				}
+			});
+		});		
+    });
+</script>
+	
+
+
+
+	
+
+	
+
+	<script src="/static/default/pc/js/mod/<{$ctl}>.js"></script>
+
+	</body>
+
+</html>

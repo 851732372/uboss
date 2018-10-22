@@ -1,0 +1,20 @@
+<include  file='public:header'/>   
+<header class="top-fixed bg-yellow bg-inverse">
+	<div class="top-back">
+		<a class="top-addr" href="<{:U('index/index')}>"><i class="icon-angle-left"></i></a>
+	</div>
+	<div class="top-title">
+		分享有礼
+	</div>
+</header>
+
+<ul class="tui-list" id="tui-list">
+</ul>
+
+<script>
+	$(document).ready(function () {
+		loaddata('<{$nextpage}>', $("#tui-list"), true);
+	});
+</script>
+
+<include file="public:footer"/>

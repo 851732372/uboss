@@ -1,0 +1,87 @@
+<include  file='public:header'/>
+<link rel="stylesheet" href="__PUBLIC__/bs/css/bootstrap.min.css">
+<div class="main-jsgl main-sc">
+    <div class="jsglNr">
+        <div class="selectNr" style="margin-top: 0px; border-top:none;">
+            <div class="right">    
+                <form action="" class="form-inline pull-right">
+                    <!-- 商户名称 -->
+                    <div class="form-group">
+                        <label for="">商户名称</label>
+                        <input type="text" class="form-control" name="shop_name" value="<{$shop_name}>">
+                    </div>
+                    <!-- 分类 -->
+                    <div class="form-group">
+                        <label for="">商户分类</label>
+                        <select name="cate_id" id="" class="form-control">
+                            <option value="">请选择</option>
+                            <foreach name="cates" item="var">
+                                <eq name="var.parent_id" value="0">
+                                <option value="<{$var.cate_id}>"  <eq name="var.cate_id" value="$cate_id">selected="selected"</eq> ><{$var.cate_name}></option>                
+                                <foreach name="cates" item="var2">
+                                    <eq name="var2.parent_id" value="$var.cate_id">
+                                    <option value="<{$var2.cate_id}>"<eq name="var2.cate_id" value="$cate_id">selected="selected"</eq>>|---<{$var2.cate_name}></option>
+                                    </eq>
+                                </foreach>
+                                </eq>
+                            </foreach>
+                        </select>
+                    </div>
+                    <input type="submit" value="   搜索"  class="inptButton pull-right" />
+                </form> 
+            </div>
+        </div>
+    </div>
+    <form  target="baocms_frm" method="post">
+        <div class="tableBox">
+            <table class="table table-hover">
+                <tr>
+                	<th></th>
+                    <th>编号</th>
+                    <th>LOGO</th>
+                    <th>商户名称</th>
+                    <th>分类名称</th>
+                    <th>联系手机</th>
+                    <th>总营收</th>
+                    <th>创建时间</th>
+                </tr>
+                <volist name="list" id="lis">
+                    <tr>
+                        <td><input rel="<{$lis.shop_name}>" type="radio" name="shop_id" value="<{$lis.shop_id}>" /></td>
+                        <td><{$lis.shop_id}></td>
+                        <td><img src="/attachs/<{$lis.logo}>" alt="" height="50px" width="50px"></td>
+                        <td><{$lis.shop_name}></td>
+                        <td><{$lis.cate_name}></td>
+                        <td><{$lis.tel}></td>
+                        <td><{$lis['sy']/100}>元</td>
+                        <td><{$lis['money']/100}>元</td>
+                        <td><{$lis.create_time|date="Y-m-d H:i:s",###}></td>
+                    </tr>
+                </volist>
+            </table>
+            <{$page}>
+        </div>
+        <div class="selectNr">
+            <div class="left">
+                <input  type="button" id="select_btn" class="remberBtn" value="确定选择" />
+            </div>
+        </div>
+    </form>
+</div>
+</div>
+
+<script>
+    $(document).ready(function (e) {
+        $("#select_btn").click(function () {
+            $("input[name='shop_id']").each(function (a) {
+                if ($(this).prop("checked") == true) {
+                    parent.selectCallBack('shop_id', 'shop_name', $(this).val(), $(this).attr('rel'));
+                }
+            });
+        });
+
+    });
+</script>
+<include  file='public:footer'/>  
+
+

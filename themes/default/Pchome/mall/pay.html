@@ -1,0 +1,88 @@
+<include  file='public:heador_niucms'/>  <include  file='mall:top'/>
+<div class="blank-20"></div>
+
+
+<div class="container">
+	<div class="progress progress-big progress-striped radius-big">
+		<div class="progress-bar bg-blue" style="width:66%;">提交订单：66%</div>
+	</div>
+	<div class="blank-20"></div>
+	
+	<div class="pay-box">
+		<form action="<{:U('mall/pay2',array('order_id'=>$order['order_id']))}>" method="post" target="x-frame">
+		
+			<h4>选择寄送地址：<a mini="load" href="<{:U('mall/addressadd',array('order_id'=>$order_id))}>" class="tag bg-blue">添加收货信息</a></h4>
+			<ul class="send-list">
+                <foreach name="useraddr" item="item">
+				<li>
+					<input <eq name="item.addr_id" value="$order.addr_id">checked="checked"</eq> type="radio" name="addr_id" value="<{$item.addr_id}>" /><{$areas[$item['area_id']]['area_name']}><{$business[$item['business_id']]['business_name']}><{$item.addr}>,<{$item.name}>,<{$item.mobile}>
+					
+					<a mini="load" href="<{:U('mall/addressdel',array('order_id'=>$order_id,'addr_id'=>$item[addr_id]))}>"  class="tag bg-gray">删除</a>
+					
+					
+				</li>
+                </foreach> 
+			</ul>
+			
+
+			
+			<div class="blank-20"></div>
+			<h4>请选择支付方式：</h4>
+			<ul class="pay-list">
+                <foreach name="payment" item="var">
+                    <if condition="$var['code'] neq 'weixin'">
+                     <li><input value="<{$var.code}>" name="code"  type="radio" /> <img src="__PUBLIC__/images/<{$var.logo}>" width="79" height="30" /></li>
+                    </if>          
+                </foreach> 
+					<li><input value="wait" name="code"  type="radio" /> <img src="__PUBLIC__/images/cash.png" width="79" height="30" /></li>
+			</ul>
+			<div class="blank-20"></div>
+			<h4>您的订单详情：</h4>
+			<table cellpadding="0" cellspacing="0" width="100%" class="table">
+				<tr>
+					<th width="58%">项目</th>
+					<th width="12%">数量</th>
+					<th width="15%">单价</th>
+					<th width="14%">总价</th>
+				</tr>
+				<foreach name="ordergoods" item="item">
+				<tr>
+					<td>
+						<div class="media media-x">
+							<a class="float-left" href="<{:U('mall/detail',array('goods_id'=>$item['goods_id']))}>">
+								<img src="__ROOT__/attachs/<{$goods[$item['goods_id']]['photo']}>" width="71" height="48" class="radius" />
+							</a>
+							<div class="media-body">
+								<a href="<{:U('mall/detail',array('goods_id'=>$item['goods_id']))}>" target="_blank"><{$goods[$item['goods_id']]['title']}></a>
+								<p><a target="_blank" href="<{:U('shop/detail',array('shop_id'=>$item['shop_id']))}>"><{$shops[$item['shop_id']]['shop_name']}></a></p>
+							</div>
+						</div>
+						<div class="blank-10"></div>
+					</td>
+					<td><{$item['num']}></td>
+					<td>￥<{:round($item['price']/100,2)}></td>
+					<td>￥<{:round($item['total_price']/100,2)}></td>
+				</tr>
+				</foreach>
+
+				
+				<tr>
+					<div class="blank-20"></div>
+					<td colspan="1">应付总金额：<code>￥<span id="total"><{:round($order['total_price']/100+$order['total_express']/100,2)}></span></code></td>
+					<td colspan="3">
+						
+							总价：￥ <span id="money"><{:round($order['total_price']/100,2)}></span> 配送费：￥ <span id="express"><{:round($order['total_express']/100,2)}></span> 
+					</td>
+				</tr>
+			</table>
+			<div class="blank-20"></div>
+			<div class="line">
+				<button class="bg-yellow button button-big" type="submit">提交订单</button>
+			</div>
+		</form>
+	</div>
+</div>
+
+<div class="blank-10"></div>
+
+<include file="public:footer_niucms"/>

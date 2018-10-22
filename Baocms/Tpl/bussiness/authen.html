@@ -1,0 +1,164 @@
+<include  file='public:header'/>
+<style>
+	table tr th,td{
+		text-align: center;
+	}
+</style>
+<link rel="stylesheet" href="__PUBLIC__/bs/css/bootstrap.min.css">
+<script src="__PUBLIC__/bs/js/jquery.min.js"></script>
+<script src="__PUBLIC__/bs/js/bootstrap.min.js"></script>
+<ul class="breadcrumb">
+    <li>
+        <a href="#">商家管理</a></span>
+    </li>
+    <li>
+        <a href="#">商家认证</a></span>
+    </li>
+</ul>
+<div class="panel panel-default">
+	<div class="panel-heading">
+		<div class="pull-right" style="margin-top:5px;margin-left: 25px;">共有<b id="tot"><{$count}></b>条数据</div>
+		<form action="" class="form-inline" method="POST">
+			<!-- 商户名称 -->
+			<div class="form-group">
+				<label for="">商户名称</label>
+				<input type="text" class="form-control" name="shop_name" value="<{$shop_name}>">
+			</div>
+			<!-- 分类 -->
+			<div class="form-group">
+				<label for="">状态</label>
+				<select name="audit" id="" class="form-control">
+					<option value="4">请选择</option>
+                    <option value="2" <eq name="audit" value="2">selected</eq>>通过</option>
+                    <option value="0" <eq name="audit" value="0">selected</eq>>正在审核</option>
+                    <option value="1" <eq name="audit" value="1">selected</eq>>拒绝</option>
+                </select>
+			</div>
+			<button class="btn btn-info" type="submit"><span class="glyphicon glyphicon-search">搜索</span></button>
+		</form> 
+	</div> 
+	<div class="panel-body">
+		<table class="table userIndexTable table-bordered">
+			<tr>
+				<th>编号</th>
+				<th>商户名称</th>
+				<th>店主名称</th>
+				<th>联系手机</th>
+				<th>店主身份证</th>
+				<th>营业执照号</th>
+				<th>餐饮执照号</th>
+				<th>创建时间</th>
+				<th>审核状态</th>
+				<th>状态</th>
+			    <th>操作</th>	
+			</tr>
+			<volist name="list" id="lis">
+				<tr <eq name="Think.get.shop_id" value="$lis.shop_id">style="background:#ccc"</eq>>
+					<td><{$lis.id}></td>
+					<td><{$lis.shop_name}></td>
+					<td><{$lis.realname}></td>
+					<td><{$lis.telphone}></td>
+					<td><{$lis.idcardno}></td>
+					<td><{$lis.licence}></td>
+					<td><{$lis.meatlicence}></td>
+					<td><{$lis.create_time|date="Y-m-d H:i:s",###}></td>
+					<td>
+						<eq name="lis.audit" value="2">
+							审核通过
+						</eq>
+						<eq name="lis.audit" value="0">
+							正在审核
+						</eq>
+						<eq name="lis.audit" value="1">
+							<code>已拒绝</code> 
+						</eq>
+					</td>
+					<td>
+						<eq name="lis.delstatus" value="1">
+							<code>已删除</code>
+						<else/>
+							正常
+						</eq>
+					</td>
+					<eq name="lis.delstatus" value="0">
+						<td>
+							<eq name="lis.audit" value="0">
+								<a href="javascript:;" onclick="go(<{$lis.shop_id}>)">通过</a> |
+								<a href="javascript:;" data-toggle="modal" data-target="#myModala<{$key}>">拒绝</a> |
+								<div class="modal fade" id="myModala<{$key}>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+								    <div class="modal-dialog">
+								        <div class="modal-content">
+								            <div class="modal-header">
+								                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+								                <h4 class="modal-title" id="myModalLabel">拒绝原因</h4>
+								            </div>
+								            <form action="" onsubmit="return false" class="reason">
+								            <div class="modal-body">
+								            	<textarea name="reason" cols="90" rows="10"></textarea>
+								            	<input type="hidden" name="shop_id" value="<{$lis.shop_id}>">
+								            </div>
+								            <div class="modal-footer">
+								                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+								                <button type="button" class="btn btn-primary" onclick="down()">提交更改</button>
+								            </div>
+								            </form>
+								        </div>
+								    </div>
+								</div>
+							</eq>
+							<eq name="lis.audit" value="1">
+								<a href="javascript:;" data-toggle="modal" data-target="#myModal<{$key}>">拒绝原因</a> |
+								<div class="modal fade" id="myModal<{$key}>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+								    <div class="modal-dialog">
+								        <div class="modal-content">
+								            <div class="modal-header">
+								                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+								                <h4 class="modal-title" id="myModalLabel">拒绝原因</h4>
+								            </div>
+								            <form action="" onsubmit="return false" id="reason">
+								            <div class="modal-body">
+								            	<textarea name="reason" cols="90" rows="10"><{$lis.reason}></textarea>
+								            </div>
+								            <div class="modal-footer">
+								            </div>
+								            </form>
+								        </div>
+								    </div>
+								</div>
+							</eq>
+							<a href="<{:U('check_authen',array('id' => $lis['shop_id']))}>">查看</a> | <a href="javascript:;" onclick="dela(<{$lis.shop_id}>)">删除</a>
+						</td>
+					</eq>
+				</tr>
+			</volist>
+		</table>
+	</div>
+		<{$page}>
+
+</div>
+<script>
+function go(id)
+{
+	$.post("<{:U('ok')}>",{id:id},function(data){
+		alert('通过审核');
+		location.reload();
+	})
+}
+
+function down()
+{
+	str = $('.reason').serialize();
+	$.post("<{:U('refuse')}>",{str:str},function(data){
+		location.reload();
+	})
+}
+function dela(id)
+{
+	$.post("<{:U('del_authen')}>",{shop_id:id},function(data){
+		location.reload();
+	})
+}
+</script>
+<include  file='public:footer'/>  
+
+

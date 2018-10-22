@@ -1,0 +1,66 @@
+<include  file='public:header'/>
+<style>
+	table tr th,td{
+		text-align: center;
+	}
+</style>
+<link rel="stylesheet" href="__PUBLIC__/bs/css/bootstrap.min.css">
+<script src="__PUBLIC__/bs/js/jquery.min.js"></script>
+<script src="__PUBLIC__/bs/js/bootstrap.min.js"></script>
+<div class="mainBt">
+    <ul>
+        <li class="li1">申请人管理</li>
+        <li class="li2">申请人经营的店铺</li>
+    </ul>
+</div>
+<div class="panel panel-default">
+	<div class="panel-heading">
+		<form action="" class="form-inline">
+			<input type="text" class="form-control" name="search">
+			<button class="btn btn-info" type="submit"><span class="glyphicon glyphicon-search">搜索</span></button>
+		</form> 
+	</div> 
+	<div class="panel-body">
+		<table class="table userIndexTable table-bordered">
+			<tr>
+				<th>店铺名称</th>
+				<th>店铺地址</th>
+				<th>店铺banner图</th>
+				<th>店铺分类</th>
+				<th>职位</th>
+			</tr>
+			<volist name="list" id="lis">
+				<tr>
+					<td><{$lis.company_name}></td>
+					<td><{$lis.city}> / <{$lis.area}> / <{$lis.lat}> / <{$lis.lng}> / <{$lis.address}></td>
+					<td><img src="/attachs/<{$lis.banner}>" alt="" height="50px" width="50px"><img src="/attachs/<{$lis.banner}>" alt="" height="50px" width="50px"></td>
+					<td><{$lis.cate_name}></td>
+					<td>
+						<eq name="lis.apply_position" value="1">总监</eq>
+						<eq name="lis.apply_position" value="2">经理</eq>
+						<eq name="lis.apply_position" value="3">主管</eq>
+					</td>
+				</tr>
+			</volist>
+		</table>
+	</div>
+		<{$page}>
+	<div class="panel-footer">
+
+	</div>
+</div>
+<script>
+	function refuse(id){
+		$.post('<{:U("ajax_refuse")}>',{id:id},function(data){
+			location.reload();
+		})
+	}
+	function ok(id){
+		$.post('<{:U("ajax_ok")}>',{id:id},function(data){
+			location.reload();
+		})
+	}
+</script>
+<include  file='public:footer'/>  
+
+

@@ -1,0 +1,71 @@
+<include  file='public:header'/>
+<style>
+    table tr th,td{
+        text-align: center;
+    }
+</style>
+<link rel="stylesheet" href="__PUBLIC__/bs/css/bootstrap.min.css">
+<script src="__PUBLIC__/bs/js/jquery.min.js"></script>
+<script src="__PUBLIC__/bs/js/bootstrap.min.js"></script>
+<div class="panel panel-primary">
+	<div class="panel-default">
+		<div class="panel-heading">
+			<ul class="breadcrumb">
+	            <li>
+	                <a href="<{:U('index')}>">退货列表</a> <span class="divider"></span>
+	            </li>
+	            <li>
+	                <a href="#">查看退货</a> 
+	            </li>
+	        </ul>
+		</div>
+		<div class="panel-body">
+			<table class="table table-bordered"> 
+				<tr>
+					<th>商品名称</th>
+					<th>订单号</th>
+					<th>退货原因</th>
+					<th>发起时间</th>
+					<th>发起人</th>
+					<th>退货状态</th>
+					<th>操作</th>
+				</tr>
+				<volist name="data" id="data">
+					<tr>
+						<td><{$data.title}></td>
+						<td><{$data.orderno}></td>
+						<td><{$data.reason}></td>
+						<td><{$data.create_time|date="Y-m-d H:i:s",###}></td>
+						<td><{$data.account}></td>
+						<td>
+							<eq name="data.status" value="2">
+								同意
+							</eq>
+							<eq name="data.status" value="1">
+								正在审核
+							</eq>
+							<eq name="data.status" value="0">
+								拒绝
+							</eq>
+						</td>
+						<td><a href="javascript:;" onclick="agree(<{$data.back_id}>)">同意</a> | <a href="javascript:;" onclick="refuse(<{$data.back_id}>)">拒绝</a></td>
+					</tr>
+					
+				</volist>
+			</table>
+		</div>
+		<{$page}>
+	</div>
+	<script>
+		function agree(id){
+			$.post('<{:U("ajax_agree")}>',{id:id},function(data){
+				location.reload();
+			})
+		}
+		function refuse(id){
+			$.post('<{:U("ajax_refuse")}>',{id:id},function(data){
+				location.reload();
+			})
+		}
+	</script>
+<include  file='public:footer'/>    

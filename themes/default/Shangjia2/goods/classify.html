@@ -1,0 +1,101 @@
+<include  file='public:header'/>
+<link rel="stylesheet" href="__PUBLIC__/bs/css/bootstrap.min.css">
+<script src="__PUBLIC__/js/jquery.js"></script>
+<script src="__PUBLIC__/bs/js/bootstrap.min.js"></script>
+<style>
+    th,td{
+        text-align: center;
+    }
+</style>
+<div class="sjgl_lead">
+    <ul>
+        <li><a href="#">商家管理</a> > <a href="">商城</a> > <a>商品类别</a></li>
+    </ul>
+</div>
+<div class="panel-primary">
+    <div class="panel-heading">
+        <a href="javascript:;" class="btn btn-info" data-toggle="modal" data-target="#myModal">添加一级分类</a>
+       
+    </div>
+    <div class="panel-body">
+        <form id="cate_action" action="<{:U('update')}>" target="baocms_frm" method="post">
+            <div class="tableBox">
+                <table class="table table-bordered table-hover">
+                    <tr bgcolor="#F5F6FA" height="35px;" style="color:#333; font-size:16px; line-height:35px;">
+                        <td>分类</td>
+                        <td>排序</td>
+                        <td>操作</td>
+                    </tr>
+                    <foreach name="list" item="var">
+                        <if condition="($var.parent_id eq 0)">  
+                            <tr bgcolor="#f1f1f1" height="48px" style="font-size:14px; color:#545454; text-align:left; line-height:48px;">
+                                <td style="padding-left:20px;"><{$var.cate_name}>(<{$var.cate_id}>)</td>
+                                <td style="padding-left:70px;"><input name="orderby[<{$var.cate_id}>]" value="<{$var.orderby}>" type="text" class="remberinput w80" /></td>
+                                <td style="text-align: center;">
+                                    <{:BA('goods/create',array("parent_id"=>$var["cate_id"]),'添加子分类','load','remberBtn',600,300)}>
+                                    <{:BA('goods/classifyedit',array("cate_id"=>$var["cate_id"]),'编辑','load','remberBtn',600,300)}>
+                                    <{:BA('goods/delete',array("cate_id"=>$var["cate_id"]),'删除','act','remberBtn')}>
+                                </td>
+                            </tr>
+                            <foreach name="list" item="var2">
+                                <eq name="var2.parent_id" value="$var.cate_id">
+                                <tr height="48px" style="font-size:14px; color:#545454; text-align:center; line-height:48px;">
+                                    <td><{$var2.cate_name}>(<{$var2.cate_id}>)</td>
+                                    <td><input name="orderby[<{$var2.cate_id}>]" value="<{$var2.orderby}>" type="text" class="remberinput w80" /></td>
+                                    <td>
+                                        <{:BA('goods/classifyedit',array("cate_id"=>$var2["cate_id"]),'编辑','load','remberBtn',600,300)}>
+                                        <{:BA('goods/delete',array("cate_id"=>$var2["cate_id"]),'删除','act','remberBtn')}>
+                                    </td>
+                                </tr>
+                                </eq>
+                            </foreach>
+                        </if>
+                    </foreach>   
+                    <tr>
+                        <td></td>
+                        <td><button type="submit" class="btn btn-danger">更新</button></td>
+                        <td></td>
+                    </tr>     
+                </table>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="myModalLabel">添加一级分类</h4>
+            </div>
+            <div class="modal-body">
+                <form  target="baocms_frm" action="<{:U('goods/create_classify',array('parent_id'=>$parent_id))}>" method="post" target="baocms_frm">
+                    <table class="table">
+                        <tr>
+                            <td class="lfTdBt">分类：</td>
+                            <td class="rgTdBt"><input type="text" name="data[cate_name]" value="<{$detail.cate_name|default=''}>" class="form-control"/>
+
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="lfTdBt">排序：</td>
+                            <td class="rgTdBt"><input type="text" name="data[orderby]" value="<{$detail.orderby|default=''}>" class="form-control" />
+                                <code>数字越小越高</code>
+                            </td>
+                        </tr>
+                    </table>
+                    <div class="smtQr"><input type="submit" value="确认添加" class="btn btn-danger" /></div>
+                </form>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal -->
+</div>
+
+
+
+
+
+
+
+

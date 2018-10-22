@@ -1,0 +1,82 @@
+<include  file='public:header'/>
+<link rel="stylesheet" href="__PUBLIC__/bs/css/bootstrap.min.css">
+<div class="main-jsgl main-sc">
+    <div class="jsglNr">
+        <div class="selectNr" style="margin-top: 0px; border-top:none;">
+            <div class="right">    
+                <form class="search_form form-inline" method="post" action="<{:U('apply/select_ustore')}>">
+                    <div class="form-group" id="seleHidden">
+                        <span>U店状态：</span>
+                        <select name="status" id="" class="form-control">
+                            <option value="">全部</option>
+                            <option value="1" <eq name="status" value="1">selected</eq>>正在运营</option>
+                            <option value="2" <eq name="status" value="2">selected</eq>>停止运营</option>
+                        </select>
+                    </div>
+                    <div class="form-group" id="seleHidden">
+                        <span>U店名称：</span>
+                        <input type="text" name="shop_name" value="<{$shop_name}>" class="inptText form-control" />
+                    </div>
+                        <input type="submit" value="   搜索"  class="inptButton pull-right" />
+                    </div> 
+                </form>
+            </div>
+        </div>
+    </div>
+    <form  target="baocms_frm" method="post">
+        <div class="tableBox">
+            <table class="table table-hover">
+                <tr>
+                	<th></th>
+                    <th>编号</th>
+                    <th>U店名称</th>
+                    <th>创始人名称</th>
+                    <th>手机号</th>
+                    <th>总监人数</th>
+                    <th>经理人数</th>
+                    <th>主管人数</th>
+                    <th>状态</th>
+                </tr>
+                <volist name="data" id="lis">
+                <tr>
+                    <td><input rel="<{$lis.shop_name}>" type="radio" name="shop_id" value="<{$lis.shop_id}>" /></td>
+                    <td><{$lis.shop_id}></td>
+                    <td><{$lis.shop_name}></td>
+                    <td><{$lis.username}></td>
+                    <td><{$lis.tel}></td>
+                    <td><{$lis.zj}></td>
+                    <td><{$lis.jl}></td>
+                    <td><{$lis.zg}></td>
+                    <td>
+                        <eq name="lis.status" value="1">正在运营</eq>
+                        <eq name="lis.status" value="0">停止运营</eq>
+                    </td>
+                </tr>
+            </volist>
+            </table>
+            <{$page}>
+        </div>
+        <div class="selectNr" style="margin-bottom: 0px; border-bottom: none;">
+            <div class="left">
+                <input style="border:1px solid #dbdbdb; width: 100px; height: 38px; line-height: 38px; text-align: center;" type="button" id="select_btn" class="remberBtn" value="确定选择" />
+            </div>
+        </div>
+    </form>
+</div>
+</div>
+
+<script>
+    $(document).ready(function (e) {
+        $("#select_btn").click(function () {
+            $("input[name='shop_id']").each(function (a) {
+                if ($(this).prop("checked") == true) {
+                    parent.selectCallBack('shop_id', 'shop_name', $(this).val(), $(this).attr('rel'));
+                }
+            });
+        });
+
+    });
+</script>
+<include  file='public:footer'/>  
+
+

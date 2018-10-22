@@ -1,0 +1,36 @@
+<include  file='public:header'/>
+<link rel="stylesheet" href="__PUBLIC__/bs/css/bootstrap.min.css">
+<script src="__PUBLIC__/bs/js/bootstrap.min.js"></script>
+<div class="sjgl_lead">
+    <ul>
+        <li><a href="">收银</a> > <a>台卡管理</a></li>
+    </ul>
+</div>
+<div class="tuan_content">
+    <div class="radius5 tuan_top">
+        <div class="tuan_top_t tuanfabu_top">
+            <!-- <div class="left tuan_topser_l">如果收到恶意评价，可以联系网站客服：<{$CONFIG.site.tel}></div> -->
+        </div>
+    </div>
+    <div class="tuanfabu_tab">
+        <ul>
+            <li class="tuanfabu_tabli on"><a href="<{:U('index')}>">台卡</a></li>
+    </div> 
+    <div style="position: absolute;left:40%">
+        <img src="/attachs/<{$data}>" alt="">
+    </div>
+   
+</div>
+<script>
+    function refuse(id){
+        $.post("<{:U('ajax_refuse')}>",{id:id},function(){
+            location.reload();
+        })
+    }
+     function ok(id){
+        $.post("<{:U('ajax_ok')}>",{id:id},function(){
+            location.reload();
+        })
+    }
+</script>
+<include  file='public:footer'/>

@@ -1,0 +1,13 @@
+<foreach name="list" item="item">
+<li class="line">
+	<div class="x3">
+		 <a href="<{:U('extend/detail',array('goods_id'=>$item['goods_id']))}>"><img src="__ROOT__/attachs/<{$item.photo|default='default.jpg'}>"></a>
+	</div>
+	<div class="x9">
+		<p><{:bao_Msubstr($item['title'],0,15,false)}></p>
+		<p><span class="margin-right">￥<{:round($item['mall_price']/100,2)}></span><span>礼金：<em>￥<{:round($item['commission']/100,2)}></em></span></p>
+		<p><em><{$item.share}></em>人已转发</p>
+		<a href="<{:U('extend/detail',array('goods_id'=>$item['goods_id']))}>" class="button bg-dot">我要推广</a> 
+	</div>
+</li>
+</foreach>

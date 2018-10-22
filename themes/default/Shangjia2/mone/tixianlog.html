@@ -1,0 +1,62 @@
+<include  file='public:header'/>
+<script src="__PUBLIC__/js/my97/WdatePicker.js"></script>
+<div class="sjgl_lead">
+    <ul>
+        <li><a href="#">结算</a> > <a href="">提现申请</a> > <a>提现日志</a></li>
+    </ul>
+</div>
+<div class="tuan_content">
+      <form method="post" action="<{:U('mone/tixianlog')}>">
+    <div class="radius5 tuan_top">
+        <div class="tuan_top_t">
+            <div class="left tuan_topser_l">
+             开始时间：<input type="text" class="radius3 tuan_topser"  name="bg_date" value="<{$bg_date|default=''}>" onfocus="WdatePicker({dateFmt: 'yyyy-MM-dd'});" autocomplete="off"/>
+            结束时间：<input type="text" class="radius3 tuan_topser"  name="end_date" value="<{$end_date|default=''}>" onfocus="WdatePicker({dateFmt: 'yyyy-MM-dd'});" autocomplete="off"/>       
+            <input type="submit" style="margin-left:10px;" class="radius3 sjgl_an tuan_topbt" value="搜 索"/>
+            </div>
+        </div>
+    </div>
+    </form>
+    <div class="tuanfabu_tab">
+        <ul>
+            <li class="tuanfabu_tabli"><a href="<{:U('mone/index')}>">余额管理</a></li>
+            <li class="tuanfabu_tabli  on"><a href="<{:U('mone/tixianlog')}>">提现日志</a></li>
+            <li class="tuanfabu_tabli"><a href="<{:U('mone/tixian')}>">提现</a></li>
+        </ul>
+    </div> 
+    <table class="tuan_table" width="100%" border="0" cellspacing="0" cellpadding="0">
+        <tr style="background-color:#eee;">
+            <td>提现金额</td>
+            <td>提现描述</td>
+            <td>账户信息</td>
+			<td>状态</td>
+            <td>理由</td>
+            <td>处理时间</td>
+            <td>提交时间</td>
+        </tr>
+        <foreach name="list" item="var">
+            <tr>
+                <td><{:round($var['money']/100,2)}>元</td>
+                <td><{$var.intro}></td>
+                <td><{$var.bank_no}></td>
+                <td>
+                    <eq name="var.status" value="0">正在审核</eq>
+                    <eq name="var.status" value="1">拒绝</eq>
+                    <eq name="var.status" value="2">通过审核</eq>
+                </td>
+                <td><{$var.reason}></td>
+                <td><{$var.create_time|date='Y-m-d H:i:s',###}></td>
+                <?php if(isset($var['ok_time'])){ ?>
+                <td><{$var.ok_time|date='Y-m-d H:i:s',###}></td>
+                <?php }else{ ?>
+                <td>--</td>
+                <?php } ?>
+            </tr>
+        </foreach>
+    </table>
+    <div class="paging">
+        <{$page}>
+    </div>
+</div>
+
+<include  file='public:footer'/>
