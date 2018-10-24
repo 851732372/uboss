@@ -829,7 +829,7 @@ class UserinfoAction extends BaseAction
             if (empty($info['nickname']) || empty($info['face'])) $this->usersModel->save(array('user_id' => $info['user_id'], 'face' => session('info.headimgurl'), 'nickname' => htmlspecialchars(session('info.nickname'))));
         }
 //        return outJson($info);
-        setUid($info['user_id']);
+//        setUid($info['user_id']);
         session('userInfo',$info);
         $data = array(
             'id' => $info['user_id'],

@@ -81,7 +81,8 @@ class IndexAction extends CommonAction {
         $this->assign('custorm',$custorm);
         // 待消费
         $consumed = $this->order
-                    ->where('shop_id = '.$this->shop_id.' and status = 6 or status = 4')
+            // TODO 'shop_id = '.$this->shop_id.' and status = 6 or status = 4'
+                    ->where(array('shop_id' => $this->shop_id, array('status', array('eq', 4), array('eq', 6), 'OR')))
                     ->count();
         $this->assign('consumed',$consumed);
          // 待付款
@@ -101,7 +102,8 @@ class IndexAction extends CommonAction {
         $this->assign('evaluated',$evaluated);   
         // 已完成
         $completed = $this->order
-                    ->where('shop_id = '.$this->shop_id.' and status = 8 or status = 12')
+                    //->where('shop_id = '.$this->shop_id.' and status = 8 or status = 12')
+                    ->where(array('shop_id' => $this->shop_id, array('status', array('eq', 8), array('eq', 12), 'OR')))
                     ->count();
         $this->assign('completed',$completed);  
         // 退款中
