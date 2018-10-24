@@ -3,7 +3,7 @@ header("Access-Control-Allow-Credentials:true");
 //header('Access-Control-Allow-Methods', 'GET, POST');
 //header('Access-Control-Allow-Headers','Content-Type, Content-Length, Authorization, Accept, X-Requested-With, Token');
 //header("Access-Control-Allow-Origin: *");
-header("Access-Control-Allow-Origin: http://wx.uboss.net.cn");
+header("Access-Control-Allow-Origin: http://192.168.0.103:3000");
 
 header("Access-Control-Allow-Headers", "access-control-allow-origin,content-type");
 
