@@ -17,6 +17,14 @@ class CommonAction extends Action {
         if (!empty($this->uid)) {
             $this->member = D('Shop')->find($this->uid);
         }
+        // TODO 前端登陆冲突
+        if (!empty(session('admin')))
+        {
+            header("Location: " . U('login/index'));
+            exit();
+        }
+        // 前端登陆冲突
+
         if (strtolower(MODULE_NAME) != 'login' && strtolower(MODULE_NAME) != 'public') { //public 不受权限控制
             if (empty($this->uid)) {
                 header("Location: " . U('login/index'));
