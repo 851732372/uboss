@@ -342,6 +342,14 @@ class PaymentModel extends CommonModel {
                         if ($logs['code'] == 'money') $payType = 3;
                         if ($logs['code'] == 'asset') $payType = 4;
 
+                        // TODO 消费升级 start
+                        $users = D('Users') -> find($logs['user_id']);
+                        $info['user_id'] = $users['user_id'];
+                        if (($logs['need_pay'] >= 199) && ($users['level_id'] < 2)) $info['level_id'] = 2;
+                        if (($logs['need_pay'] >= 999) && ($users['level_id'] < 3)) $info['level_id'] = 3;
+                        D('Users')->save($info);
+                        // TODO 消费升级 end
+
                         if ($logs['type'] == 'goods')
                         {
                             D('Order') -> save(array('order_id' => $logs['order_id'], 'status' => 4, 'pay_time' => NOW_TIME, 'trade_style' => $payType));
