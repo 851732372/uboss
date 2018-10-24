@@ -51,11 +51,11 @@ STR;
 
             'test' => $this->_post('test')
         );
-        var_dump($GLOBALS[HTTP_RAW_POST_DATA]);
-        $postData = file_get_contents('php://input');
-        $a = json_decode($postData, true);
-        var_dump($a);
-        var_dump($this->_post());
+//        var_dump($GLOBALS[HTTP_RAW_POST_DATA]);
+//        $postData = file_get_contents('php://input');
+//        $a = json_decode($postData, true);
+//        var_dump($a);
+//        var_dump($this->_post());
         return outJson($data);
     }
 
