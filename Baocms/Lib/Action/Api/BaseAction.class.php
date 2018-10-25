@@ -1,4 +1,5 @@
 <?php
+
 class BaseAction extends Action
 {
     const FROND_DOMAIN = 'http://wx.uboss.net.cn';
