@@ -1440,4 +1440,106 @@ class UserinfoAction extends BaseAction
          }
          return $json -> access_token;
     }
+
+    /**
+     * 绑定银行卡
+     * @author Ginger
+     * return
+     */
+    public function bindBank()
+    {
+        if ($this->_post())
+        {
+            $params = $this->_post();
+            $userName = htmlspecialchars($params['userName']);
+            $account = htmlspecialchars($params['account']);
+            $mobile = htmlspecialchars($params['mobile']);
+            $bankId = (int) $params['bankId'];
+            $userId = (int) $params['userId'];
+            if (!$userId) return outMessage(-1, '缺少用户id');
+            if ($userId != session('userInfo.user_id')) return outMessage(-1, '用户信息不一致');
+            if (empty($userName) || empty($account) || empty($mobile) || empty($bankId)) return outMessage(-1, '您提交的信息不完整');
+            $cashModel = D('UserCashAccount');
+            $bankModel = D('BankCard');
+            if (!$bankModel->find($bankId)) return outMessage(-1, '请选择列表中支持的银行');
+            if ($cashModel->where(array('account' => $account, 'bcard_id' => $bankId))->find()) return outMessage(-1, '该账号信息您已经绑定过了');
+            $data = array(
+                'bcard_id' => $bankId,
+                'account' => $account,
+                'account_name' => $userName,
+                'tel' => $mobile,
+                'user_id' => $userId,
+                'create_time' => NOW_TIME,
+                'is_del' => 1
+            );
+            return outJson($data);
+            if ($cashModel->add($data))
+            {
+                return outMessage(1, '恭喜您，绑定成功，可以提现喽');
+            }
+            return outMessage(-1, '绑定失败');
+        }
+        else
+        {
+            return outMessage(-1, '非法请求');
+        }
+    }
+
+    /**
+     * 我的银行卡列表
+     * @author Ginger
+     * return
+     */
+    public function myBank()
+    {
+        $userId = (int) $this->_post('userId');
+        if (!$userId) return outMessage(-1, '缺少用户id');
+        if ($userId != session('userInfo.user_id')) return outMessage(-1, '用户信息不一致');
+        $list = D('UserCashAccount')
+            ->field()
+            ->where(array('is_del' => 1, 'user_id' =>$userId))
+            ->order('create_time DESC')
+            ->page($this->page, $this->pageSize)
+            ->select();
+        return outJson($list, array('current' => $this->page, 'pageSize' => $this->pageSize));
+    }
+
+    /**
+     * 删除已绑定银行卡
+     * @author Ginger
+     * return
+     */
+    public function delBank()
+    {
+        $accountId = (int) $this->_post('accountId');
+        $userId = (int) $this->_post('userId');
+        if (!$userId) return outMessage(-1, '缺少用户id');
+        if ($userId != session('userInfo.user_id')) return outMessage(-1, '用户信息不一致');
+        if (D('UserCashAccount')->where(array('is_del' => 1))->find($accountId))
+        {
+            if (D('UserCashAccount')->where(array('account_id' => $accountId))->setField('is_del', 2))
+            {
+                return outMessage(1, '删除成功');
+            }
+            return outMessage(-1, '删除失败');
+        }
+        else
+        {
+            return outMessage(-1, '该银行卡不存在或已删除');
+        }
+    }
+
+    /**
+     * 平台支持的银行卡列表
+     * @author Ginger
+     * return
+     */
+    public function bankList()
+    {
+        $list = D('BankCard')
+            ->field('bcard_id bankId, bank_name bankName,bank_picture bankIcon')
+            ->page($this->page, $this->pageSize)
+            ->select();
+        return outJson($list, array('current' => $this->page, 'pageSize' => $this->pageSize));
+    }
 }
