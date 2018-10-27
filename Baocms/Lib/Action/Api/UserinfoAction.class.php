@@ -1103,7 +1103,6 @@ class UserinfoAction extends BaseAction
                         'account_name' => $accountName,
                         'create_time' => NOW_TIME
                     );
-                    $accountModel->startTrans();
                     $accountId = $accountModel->add($accountData);
                 }
             }
@@ -1134,10 +1133,8 @@ class UserinfoAction extends BaseAction
 
            if ($moneyModel->add($data))
            {
-               $accountModel->commit();
                return outMessage(1, '提现申请成功，审核中...');
            }
-            $accountModel->rollback();
             return outMessage(-1, '失败');
         }
     }
