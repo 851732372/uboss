@@ -1523,7 +1523,7 @@ class UserinfoAction extends BaseAction
         if ($userId != session('userInfo.user_id')) return outMessage(-1, '用户信息不一致');
         $list = D('UserCashAccount')
             ->field('account_id accountId,bcard_id bankId,account,create_time time,user_id userId,account_name userName,tel mobile')
-            ->where(array('is_del' => 1, 'user_id' =>$userId, 'bcard_id' => array('neq' => 6)))
+            ->where(array('is_del' => 1, 'user_id' =>$userId, 'bcard_id' => array('neq', 6)))
             ->order('create_time DESC')
             ->page($this->page, $this->pageSize)
             ->select();
