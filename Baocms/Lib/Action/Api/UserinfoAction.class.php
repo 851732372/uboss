@@ -1083,13 +1083,18 @@ class UserinfoAction extends BaseAction
             if ($cashType != 'weixin' && $cashType != 'alipay' && $cashType != 'bank') return outMessage(-1, '提现账户类型错误 ');
             $accountId = 0;
             $accountModel = D('UserCashAccount');
-            if ($cashType == 'alipay' && !$account)
+            if ($cashType == 'bank' && !$bankId)
             {
-                return outMessage(-1, '支付宝账号不能为空');
-                if (empty($accountName)) return outMessage(-1, '缺少支付宝真实姓名');
+                return outMessage(-1, '请选择提现账户');
             }
             else
             {
+                $accountId = $bankId;
+            }
+            if ($cashType == 'alipay')
+            {
+                if (empty($account)) return outMessage(-1, '支付宝账号不能为空');
+                if (empty($accountName)) return outMessage(-1, '缺少支付宝真实姓名');
                 if ($accountInfo = $accountModel->where(array('account' => $account))->find())
                 {
                     $accountId = $accountInfo['account_id'];
@@ -1106,21 +1111,14 @@ class UserinfoAction extends BaseAction
                     $accountId = $accountModel->add($accountData);
                 }
             }
-            if ($cashType == 'bank' && !$bankId)
-            {
-                return outMessage(-1, '请选择提现账户');
-            }
-            else
-            {
-                $accountId = $bankId;
-            }
+
             $putForward = D('UserMoneyLogs')->query("SELECT SUM(money) AS putForward FROM uboss_user_money_logs WHERE user_id = {$userId} AND type = 3 AND `status` = 1");
             $cashMoney = $putForward[0]['putForward'];
             $userMoney = session('userInfo.money');
             $money = $money * 100;
             if ($money > ($userMoney - $cashMoney)) return outMessage(-1, '余额不足，不能提现');
             $moneyModel = D('UserMoneyLogs');
-           $data = array(
+            $data = array(
                 'user_id' => $userId,
                 'money' => $money,
                 'create_time' => NOW_TIME,
@@ -1131,13 +1129,13 @@ class UserinfoAction extends BaseAction
                 'user_account_id' => $accountId
             );
 
-           if ($moneyModel->add($data))
-           {
-               return outMessage(1, '提现申请成功，审核中...');
-           }
+            if ($moneyModel->add($data))
+            {
+                return outMessage(1, '提现申请成功，审核中...');
+            }
             return outMessage(-1, '失败');
         }
-    }
+}
 
     /**
      * 用户余额变动记录
