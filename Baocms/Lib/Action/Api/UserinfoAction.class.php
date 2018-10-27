@@ -1075,11 +1075,46 @@ class UserinfoAction extends BaseAction
             $userId = (int) $this->_post('userId');
             $money = $this->_post('money');
             $account = $this->_post('account');
+            $accountName = htmlspecialchars($this->_post('accountName'));
             $cashType = $this->_post('cashType');
+            $bankId = (int)$this->_post('accountId');
             if (!$userId) return outMessage(-1, 'userId不能为空');
             if ($userId != session('userInfo.user_id')) return outMessage(-1, '用户信息不一致');
-            if ($cashType != 'weixin' && $cashType != 'alipay') return outMessage(-1, '提现账户类型错误 ');
-            if ($cashType != 'weixin' && !$account) return outMessage(-1, '提现账户不能为空');
+            if ($cashType != 'weixin' && $cashType != 'alipay' && $cashType != 'bank') return outMessage(-1, '提现账户类型错误 ');
+            $accountId = 0;
+            $accountModel = D('UserCashAccount');
+            if ($cashType == 'alipay' && !$account)
+            {
+                return outMessage(-1, '支付宝账号不能为空');
+                if (empty($accountName)) return outMessage(-1, '缺少支付宝真实姓名');
+            }
+            else
+            {
+                if ($accountInfo = $accountModel->where(array('account' => $account))->find())
+                {
+                    $accountId = $accountInfo['account_id'];
+                }
+                else
+                {
+                    $accountData = array(
+                        'bcard_id' => 6,
+                        'account' => $account,
+                        'user_id' => $userId,
+                        'account_name' => $accountName,
+                        'create_time' => NOW_TIME
+                    );
+                    $accountModel->startTrans();
+                    $accountId = $accountModel->add($accountData);
+                }
+            }
+            if ($cashType == 'bank' && !$bankId)
+            {
+                return outMessage(-1, '请选择提现账户');
+            }
+            else
+            {
+                $accountId = $bankId;
+            }
             $putForward = D('UserMoneyLogs')->query("SELECT SUM(money) AS putForward FROM uboss_user_money_logs WHERE user_id = {$userId} AND type = 3 AND `status` = 1");
             $cashMoney = $putForward[0]['putForward'];
             $userMoney = session('userInfo.money');
@@ -1094,22 +1129,15 @@ class UserinfoAction extends BaseAction
                 'intro' => '提现',
                 'status' => 1,
                 'type' => 3,//提现
+                'user_account_id' => $accountId
             );
-           $accountData = array(
-                'account_type' => $cashType,
-                'account' => $account,
-                'create_time' => NOW_TIME
-            );
-           $moneyModel->startTrans();
-           if ($accountData['log_id'] = $moneyModel->add($data))
+
+           if ($moneyModel->add($data))
            {
-               if (D('UserCashAccount')->add($accountData))
-               {
-                   $moneyModel->commit();
-                   return outMessage(1, '提现申请成功，审核中...');
-               }
+               $accountModel->commit();
+               return outMessage(1, '提现申请成功，审核中...');
            }
-            $moneyModel->rollback();
+            $accountModel->rollback();
             return outMessage(-1, '失败');
         }
     }
@@ -1448,17 +1476,18 @@ class UserinfoAction extends BaseAction
      */
     public function bindBank()
     {
-        if ($this->_post())
+        if ($this->isPost())
         {
             $params = $this->_post();
             $userName = htmlspecialchars($params['userName']);
             $account = htmlspecialchars($params['account']);
-            $mobile = htmlspecialchars($params['mobile']);
+            $mobile = trim($params['mobile'], ',');
             $bankId = (int) $params['bankId'];
             $userId = (int) $params['userId'];
             if (!$userId) return outMessage(-1, '缺少用户id');
             if ($userId != session('userInfo.user_id')) return outMessage(-1, '用户信息不一致');
             if (empty($userName) || empty($account) || empty($mobile) || empty($bankId)) return outMessage(-1, '您提交的信息不完整');
+            if (!isMobile($mobile)) return outMessage(-1, '手机号码格式错误');
             $cashModel = D('UserCashAccount');
             $bankModel = D('BankCard');
             if (!$bankModel->find($bankId)) return outMessage(-1, '请选择列表中支持的银行');
@@ -1472,7 +1501,7 @@ class UserinfoAction extends BaseAction
                 'create_time' => NOW_TIME,
                 'is_del' => 1
             );
-            return outJson($data);
+//            return outJson($data);
             if ($cashModel->add($data))
             {
                 return outMessage(1, '恭喜您，绑定成功，可以提现喽');
@@ -1496,7 +1525,7 @@ class UserinfoAction extends BaseAction
         if (!$userId) return outMessage(-1, '缺少用户id');
         if ($userId != session('userInfo.user_id')) return outMessage(-1, '用户信息不一致');
         $list = D('UserCashAccount')
-            ->field()
+            ->field('account_id accountId,bcard_id bankId,account,create_time time,user_id userId,account_name userName,tel mobile')
             ->where(array('is_del' => 1, 'user_id' =>$userId))
             ->order('create_time DESC')
             ->page($this->page, $this->pageSize)
@@ -1514,6 +1543,7 @@ class UserinfoAction extends BaseAction
         $accountId = (int) $this->_post('accountId');
         $userId = (int) $this->_post('userId');
         if (!$userId) return outMessage(-1, '缺少用户id');
+        if (!$accountId) return outMessage(-1, '缺少银行卡id');
         if ($userId != session('userInfo.user_id')) return outMessage(-1, '用户信息不一致');
         if (D('UserCashAccount')->where(array('is_del' => 1))->find($accountId))
         {
