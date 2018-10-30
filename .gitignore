@@ -1,5 +1,10 @@
-
 .idea
-Baocms/Runtime/
+Baocms/Runtime
 access_token.php
 jsapi_ticket.php
+*.png
+*.jpg
+*.gif
+*.jpej
+*.log
+api
